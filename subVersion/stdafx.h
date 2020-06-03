@@ -17,7 +17,7 @@
     with subVersion GTA:O SC External Hack.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define __SC_VERSION__
+//#define __SC_VERSION__
 //#define __STEAM_VERSION__
 
 #ifndef STDAFX_H
@@ -50,22 +50,6 @@
 #include "entity.h"
 #include "hack.h"
 
-
-//Addresses from GTAV.exe module
-#ifdef __SC_VERSION__
-#define ADDRESS_WORLD					0x24AECE0		//48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07
-#define ADDRESS_WAYPOINT				0x1F35770		//4C 8D 05 ? ? ? ? 0F B7 C1
-#define ADDRESS_OBJECTIVE				0x1F8A090
-#define ADDRESS_AMMO					0x0EE073D		//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
-#define ADDRESS_MAGAZINE				0x0EE06F8		//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
-#endif
-#ifdef __STEAM_VERSION__
-#define ADDRESS_WORLD					0x24AECE0
-#define ADDRESS_WAYPOINT				0x1F8E150
-#define ADDRESS_OBJECTIVE				0x1F8E200
-#define ADDRESS_AMMO					0x0F79881
-#define ADDRESS_MAGAZINE				0x0F7983C
-#endif
 
 //offset from WORLD
 #define OFFSET_PLAYER					0x08			//playerbase
@@ -111,7 +95,7 @@
 //weapon offsets
 #define OFFSET_WEAPON_MANAGER			0x10C8			//from playerbase
 #define OFFSET_WEAPON_CURRENT			0x20			//from weapon manager
-#define OFFSET_WEAPON_AMMOINFO			0x48			//from weaponbase
+#define OFFSET_WEAPON_AMMOINFO			0x60			//from weaponbase
 #define OFFSET_WEAPON_AMMOINFO_MAX		0x28			//ammoinfo
 #define OFFSET_WEAPON_AMMOINFO_CUR_1	0x08			//ptr lvl 1, ptr 1
 #define OFFSET_WEAPON_AMMOINFO_CUR_2	0x00			//ptr tr lvl 2, ptr 1
@@ -125,8 +109,8 @@
 #define OFFSET_WEAPON_NAME_HASH			0x10
 #define OFFSET_WEAPON_RELOAD_VEHICLE	0x110
 #define OFFSET_WEAPON_RANGE				0x28C
-#define OFFSET_WEAPON_SPINUP			0x124
-#define OFFSET_WEAPON_SPIN				0x128
+#define OFFSET_WEAPON_SPINUP			0x138
+#define OFFSET_WEAPON_SPIN				0x13C
 #define OFFSET_WEAPON_BULLET_BATCH		0x118			//dwBulletInBatch
 #define OFFSET_WEAPON_MUZZLE_VELOCITY	0x114			//fMuzzleVelocity
 #define OFFSET_WEAPON_BATCH_SPREAD		0x74			//fBatchSpread
@@ -185,5 +169,11 @@ extern bool		g_bKillSwitch;
 extern bool		g_bKillRender;
 extern bool		g_bKillAttach;
 extern bool		g_bKillHack;
+//Addresses from GTAV.exe module
+extern long     ADDRESS_WORLD;				//48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07
+extern long		ADDRESS_WAYPOINT;			//4C 8D 05 ? ? ? ? 0F B7 C1
+extern long		ADDRESS_AMMO;				//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
+extern long		ADDRESS_MAGAZINE;			//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
+extern long		ADDRESS_TUNABLE;
 
 #endif

@@ -153,6 +153,7 @@ void hack::checkKeys()
 
 BYTE	hack::initPointers()
 {
+	
 	BYTE r	= 0;
 
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_hModule + ADDRESS_WORLD, &m_dwpWorldBase);

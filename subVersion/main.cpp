@@ -32,6 +32,11 @@ bool		g_bKillRender	= false;
 bool		g_bKillAttach	= false;
 bool		g_bKillHack		= false;
 
+long		ADDRESS_WORLD	= 0;
+long		ADDRESS_WAYPOINT= 0;
+long		ADDRESS_AMMO	= 0;
+long		ADDRESS_MAGAZINE= 0;
+long		ADDRESS_TUNABLE = 0;
 //fuction prototypes
 LRESULT	__stdcall	WindowProc(	HWND	hWnd,
 								UINT	message,
@@ -85,11 +90,11 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_W_DAMAGE]			= g_pSettings->addFeature(1, -1, "武器伤害系数", feat_slider, "bulletDamage", 1.f, 10.f);
 	g_iFeature[FEATURE_W_AMMO]				= g_pSettings->addFeature(1, -1, "无限弹药", feat_toggle, "infAmmo");
 	g_iFeature[FEATURE_W_RANGE]				= g_pSettings->addFeature(1, -1, "射程", feat_slider, "weapRange", 1.f, 10.f);
-	g_iFeature[FEATURE_W_SPINUP]			= g_pSettings->addFeature(1, -1, "No Spin-Up", feat_toggle, "weapSpin");
+	g_iFeature[FEATURE_W_SPINUP]			= g_pSettings->addFeature(1, -1, "加特林无需预热", feat_toggle, "weapSpin");
 	g_iFeature[FEATURE_W_EXPLOSIVEAMMO]		= g_pSettings->addFeature(1, -1, "爆炸子弹", feat_toggle, "explAmmo");
 	g_iFeature[FEATURE_W_FIREAMMO]			= g_pSettings->addFeature(1, -1, "燃烧子弹", feat_toggle, "fireAmmo");
 	g_iFeature[FEATURE_W_BULLET_BATCH]		= g_pSettings->addFeature(1, -1, "批量子弹", feat_slider, "bulletBatch", 1.f, 10.f, (float) 1.f / 9.f);
-	g_iFeature[FEATURE_W_BATCH_SPREAD]		= g_pSettings->addFeature(1, -1, "Batch Spread", feat_slider, "batchSpread", 0.f, 0.12f);
+	g_iFeature[FEATURE_W_BATCH_SPREAD]		= g_pSettings->addFeature(1, -1, "批量传播", feat_slider, "batchSpread", 0.f, 0.12f);
 	g_iFeature[FEATURE_W_MUZZLE_VELOCITY]	= g_pSettings->addFeature(1, -1, "初速", feat_slider, "muzzleVelo", 1.f, 10.f);
 
 	g_iFeature[FEATURE_V_TRUEGOD]			= g_pSettings->addFeature(2, -1, "无敌", feat_toggle, "vehTrueGodMode");

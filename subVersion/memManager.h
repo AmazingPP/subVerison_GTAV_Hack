@@ -20,7 +20,6 @@
 #pragma once
 #ifndef MEMMANAGER_H
 #define MEMMANAGER_H
-
 class memManager
 {
 	public:
@@ -32,6 +31,7 @@ class memManager
 		bool	findWindow();
 		HWND	getWindow();
 		void	setWindowName(LPCSTR str);
+		void	initPtr();
 
 		template <typename rT>
 		void	readMem(DWORD_PTR address, rT* output, DWORD size = NULL, DWORD prot = NULL)

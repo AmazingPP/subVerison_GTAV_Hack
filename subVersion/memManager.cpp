@@ -47,6 +47,7 @@ bool	memManager::attach()
 	m_hProc = OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_QUERY_INFORMATION, 0, dwProcId);
 	if(m_hProc == nullptr)
 		return 0;
+	initPtr();
 
 	return 1;
 }
@@ -89,4 +90,27 @@ HWND	memManager::getWindow()
 void	memManager::setWindowName(LPCSTR str)
 {
 	m_szWindowName	= str;
+}
+
+void memManager::initPtr()
+{
+	HMODULE hModule = memManager::getModuleAddress("steam_api64.dll");
+	if (hModule != 0)
+	{
+		//Steam
+		ADDRESS_WORLD = 0x24B0C50;
+		ADDRESS_WAYPOINT = 0x1F373D0;
+		ADDRESS_AMMO = 0x0EE1E19;
+		ADDRESS_MAGAZINE = 0x0EE1DD4;
+		ADDRESS_TUNABLE = 0x2D46198;
+	}
+	else
+	{
+		//Epic
+		ADDRESS_WORLD = 0x24AECE0;
+		ADDRESS_WAYPOINT = 0x1F35770;
+		ADDRESS_AMMO = 0x0EE073D;
+		ADDRESS_MAGAZINE = 0x0EE06F8;
+		ADDRESS_TUNABLE = 0x2D431F8;
+	}
 }
