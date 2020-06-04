@@ -88,7 +88,7 @@
 #define OFFSET_VEHICLE_HANDLING_UPSHIFT				0x58
 #define OFFSET_VEHICLE_HANDLING_SUSPENSION_FORCE	0xBC			//fSuspensionForce 
 #define OFFSET_VEHICLE_BULLETPROOF_TIRES			0x883			//btBulletproofTires;  (btBulletproofTires & 0x20) ? true : false
-#define OFFSET_VEHICLE_ALARM_LENGTH					0x9E4			//dwCarAlarmLength
+//#define OFFSET_VEHICLE_ALARM_LENGTH				0x9E4			//dwCarAlarmLength
 //#define OFFSET_VEHICLE_OPENABLE_DOORS				0xB30			//btOpenableDoors
 #define OFFSET_VEHICLE_GRAVITY						0xC1C			//fGravity
 
@@ -156,7 +156,7 @@
 #define FEATURE_V_SUSPENSION_FORCE	0x21
 #define FEATURE_P_STAMINA			0x22
 //#define FEATURE_V_DISABLE_DOORS		0x23
-#define FEATURE_V_INF_CAR_ALARM		0x24
+//#define FEATURE_V_INF_CAR_ALARM		0x24
 
 
 void	killProgram	();

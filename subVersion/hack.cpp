@@ -879,21 +879,21 @@ void hack::vehicleDisableDoors(feat* feature)
 	return;
 }*/
 
-void hack::vehicleInfAlarm(feat* feature)
-{
-	if(!feature->m_bOn)
-	{
-		if(!feature->m_bRestored)
-		{
-			m_vehicle.getAlarmLength();
-			if(m_vehicle.m_dwAlarmLength != 0)
-				m_vehicle.setAlarmLength(0);
-			feature->m_bRestored = true;
-		}
-		return;
-	}
-	m_vehicle.getAlarmLength();
-	if(m_vehicle.m_dwAlarmLength != 0xFF)
-		m_vehicle.setAlarmLength(0xFF);
-	return;
-}
+//void hack::vehicleInfAlarm(feat* feature)
+//{
+//	if(!feature->m_bOn)
+//	{
+//		if(!feature->m_bRestored)
+//		{
+//			m_vehicle.getAlarmLength();
+//			if(m_vehicle.m_dwAlarmLength != 0)
+//				m_vehicle.setAlarmLength(0);
+//			feature->m_bRestored = true;
+//		}
+//		return;
+//	}
+//	m_vehicle.getAlarmLength();
+//	if(m_vehicle.m_dwAlarmLength != 0xFF)
+//		m_vehicle.setAlarmLength(0xFF);
+//	return;
+//}

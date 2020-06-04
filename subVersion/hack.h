@@ -91,7 +91,7 @@ class hack : public trainer
 		void	batchSpread(feat* feature);
 		void	vehicleSuspensionForce(feat* feature);
 		//void	vehicleDisableDoors(feat* feature);
-		void	vehicleInfAlarm(feat* feature);
+		//void	vehicleInfAlarm(feat* feature);
 
 	private:
 		DWORD_PTR	m_dwpWorldBase,

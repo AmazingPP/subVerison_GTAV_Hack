@@ -365,17 +365,17 @@ void vehicle::setOpenableDoors(BYTE value)
 	return;
 }*/
 
-void vehicle::getAlarmLength()
-{
-	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_ALARM_LENGTH, &m_dwAlarmLength);
-	return;
-}
-
-void vehicle::setAlarmLength(DWORD value)
-{
-	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_ALARM_LENGTH, &value);
-	return;
-}
+//void vehicle::getAlarmLength()
+//{
+//	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_ALARM_LENGTH, &m_dwAlarmLength);
+//	return;
+//}
+//
+//void vehicle::setAlarmLength(DWORD value)
+//{
+//	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_ALARM_LENGTH, &value);
+//	return;
+//}
 
 /*
 	WEAPON
