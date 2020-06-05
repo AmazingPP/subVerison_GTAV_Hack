@@ -69,12 +69,13 @@ void entity::setHealth(float hp)
 	PLAYER
 */
 player::player(){}
-player::~player()
+player::~player() 
 {
 	this->setRunSpeed(1);
 	this->setSwimSpeed(1);
 	this->setRagdoll(m_btRagdoll | 0x20);
 	this->setSeatbelt((m_btSeatbelt & 0x01) ? m_btSeatbelt ^ 0x01 : m_btSeatbelt);
+	restorePlayerData();
 	//this->setWantedCanChange(1.f);
 }
 
@@ -90,6 +91,21 @@ void player::setHealth(float hp, float armor)
 	entity::setHealth(hp);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_ARMOR, &armor);
 	return;
+}
+
+bool player::loadPlayerData()
+{
+	if (m_dwpBase == 0)
+		return 0;
+	this->getWaterProof();
+
+	m_playerDataRestore = m_playerDataCur;
+	return 1;
+}
+
+void player::restorePlayerData()
+{
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR)m_dwpBase + OFFSET_PLAYER_WATER_PROOF, &m_playerDataRestore.m_dwWaterProof);
 }
 
 void player::getWanted()
@@ -157,6 +173,18 @@ void player::getFrameFlags()
 void player::setFrameFlags(DWORD value)
 {
 	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_FRAMEFLAGS, &value);
+	return;
+}
+
+void player::getWaterProof()
+{
+	g_pMemMan->readMem<DWORD>((DWORD_PTR)m_dwpBase + OFFSET_PLAYER_WATER_PROOF, &m_playerDataCur.m_dwWaterProof);
+	return;
+}
+
+void player::setWaterProof(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR)m_dwpBase + OFFSET_PLAYER_WATER_PROOF, &value);
 	return;
 }
 
@@ -236,6 +264,7 @@ bool vehicle::loadHandling()
 	this->getTractionCurveMin();
 	this->getDeformationDamageMult();
 	this->getUpShift();
+	this->getDownShift();
 	this->getSuspensionForce();
 	if(m_handlingCur.m_dwpHandling != m_handlingRestore.m_dwpHandling)
 	{
@@ -253,6 +282,7 @@ void vehicle::restoreHandling()
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN, &m_handlingRestore.m_fTractionCurveMin);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_DEFORM_MULTIPLIER, &m_handlingRestore.m_fDeformationDamageMult);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_UPSHIFT, &m_handlingRestore.m_fUpShift);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_DOWNSHIFT, &m_handlingRestore.m_fDownShift);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_SUSPENSION_FORCE, &m_handlingRestore.m_fSuspensionForce);
 	return;
 }
@@ -365,17 +395,17 @@ void vehicle::setOpenableDoors(BYTE value)
 	return;
 }*/
 
-//void vehicle::getAlarmLength()
-//{
-//	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_ALARM_LENGTH, &m_dwAlarmLength);
-//	return;
-//}
-//
-//void vehicle::setAlarmLength(DWORD value)
-//{
-//	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_ALARM_LENGTH, &value);
-//	return;
-//}
+void vehicle::getDownShift()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_DOWNSHIFT, &m_handlingCur.m_fDownShift);
+	return;
+}
+
+void vehicle::setDownShift(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_DOWNSHIFT, &value);
+	return;
+}
 
 /*
 	WEAPON

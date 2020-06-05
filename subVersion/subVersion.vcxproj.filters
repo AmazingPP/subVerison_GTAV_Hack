@@ -62,6 +62,9 @@
     <ClInclude Include="vector.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CallbackProxy.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GTA d3d9.rc">

@@ -32,6 +32,8 @@
 #include <psapi.h>
 #include <vector>
 #include <regex>
+#include <string>
+#include <map>
 
 #include <Dwmapi.h>
 #pragma comment(lib,"Dwmapi.lib")
@@ -49,6 +51,7 @@
 #include "settings.h"
 #include "entity.h"
 #include "hack.h"
+#include "CallbackProxy.h"
 
 
 //offset from WORLD
@@ -77,6 +80,7 @@
 #define OFFSET_PLAYER_SEATBELT					0x13EC			//byte; CPed.seatBelt: 0xC8 = off; 0xC9 = on
 #define OFFSET_PLAYER_INVEHICLE					0x146B
 #define OFFSET_PLAYER_ARMOR						0x14B8			//armour
+#define OFFSET_PLAYER_WATER_PROOF				0x188			//water proof; DWORD; +0x1000000 = on
 
 //vehicle offsets
 #define OFFSET_VEHICLE_HEALTH						0x8E8			//vehicle health; 0.f-1000.f
@@ -86,9 +90,9 @@
 #define OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN	0x90			//fTractionCurveMin
 #define OFFSET_VEHICLE_HANDLING_DEFORM_MULTIPLIER	0xF8			//fDeformationDamageMult
 #define OFFSET_VEHICLE_HANDLING_UPSHIFT				0x58
+#define OFFSET_VEHICLE_HANDLING_DOWNSHIFT			0x5C
 #define OFFSET_VEHICLE_HANDLING_SUSPENSION_FORCE	0xBC			//fSuspensionForce 
-#define OFFSET_VEHICLE_BULLETPROOF_TIRES			0x883			//btBulletproofTires;  (btBulletproofTires & 0x20) ? true : false
-//#define OFFSET_VEHICLE_ALARM_LENGTH				0x9E4			//dwCarAlarmLength
+#define OFFSET_VEHICLE_BULLETPROOF_TIRES			0x923			//btBulletproofTires;  (btBulletproofTires & 0x20) ? true : false
 //#define OFFSET_VEHICLE_OPENABLE_DOORS				0xB30			//btOpenableDoors
 #define OFFSET_VEHICLE_GRAVITY						0xC1C			//fGravity
 
@@ -156,7 +160,10 @@
 #define FEATURE_V_SUSPENSION_FORCE	0x21
 #define FEATURE_P_STAMINA			0x22
 //#define FEATURE_V_DISABLE_DOORS		0x23
-//#define FEATURE_V_INF_CAR_ALARM		0x24
+#define FEATURE_V_DOWNSHIFT			0x24
+#define FEATURE_P_SUICIDE			0x25
+#define FEATURE_W_FILL_AMMO			0x26
+#define FEATURE_P_WATER_PROOF		0x27
 
 
 void	killProgram	();
@@ -175,5 +182,4 @@ extern long		ADDRESS_WAYPOINT;			//4C 8D 05 ? ? ? ? 0F B7 C1
 extern long		ADDRESS_AMMO;				//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
 extern long		ADDRESS_MAGAZINE;			//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
 extern long		ADDRESS_TUNABLE;
-
 #endif

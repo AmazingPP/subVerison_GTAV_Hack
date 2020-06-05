@@ -25,7 +25,9 @@ hack*		g_pHack;
 settings*	g_pSettings;
 memManager*	g_pMemMan;
 D3D9Render*	g_pD3D9Render;
+std::map<int, CallbackProxy<hack, float>*>* g_pCBMap;
 int			g_iFeature[MAX_MENU_FEATURES]	= {};
+int			g_iIndex;
 
 bool		g_bKillSwitch	= false;
 bool		g_bKillRender	= false;
@@ -42,6 +44,12 @@ LRESULT	__stdcall	WindowProc(	HWND	hWnd,
 								UINT	message,
 								WPARAM	wParam,
 								LPARAM	lParam);
+int					addFeature( int cat, 
+								int parent,
+								std::string name,
+								featType type,
+								void (hack::* fun)(float*),
+								float arg);
 DWORD __stdcall		threadAttach(LPVOID lpParam);
 DWORD __stdcall		threadRender(LPVOID lpParam);
 DWORD __stdcall		threadHack	(LPVOID lpParam);
@@ -54,10 +62,12 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	if(FindWindow("sub1toOverlay", nullptr))	//make sure the hack is not already running
 		exit(0);
 
+	g_iIndex		= 0;
 	g_pMemMan		= new memManager;
 	g_pSettings		= new settings;
 	g_pD3D9Render	= new D3D9Render;
 	g_pHack			= new hack;
+	g_pCBMap		= new std::map<int, CallbackProxy<hack, float>*>;
 
 	//LPCSTR	szWindowTitleTarget	= "Untitled - Notepad";
 	LPCSTR	szWindowTitleTarget	= "Grand Theft Auto V";
@@ -68,11 +78,12 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeatureCategory("玩家");		//0
 	g_pSettings->addFeatureCategory("武器");		//1
 	g_pSettings->addFeatureCategory("载具");		//2
-	g_pSettings->addFeatureCategory("传送");	//3
+	g_pSettings->addFeatureCategory("传送");		//3
 	
 
 	g_iFeature[FEATURE_P_TRUEGOD]			= g_pSettings->addFeature(0, -1, "无敌", feat_toggle, "trueGodMode");
 	g_iFeature[FEATURE_P_GOD]				= g_pSettings->addFeature(0, -1, "半无敌", feat_toggle, "godMode");
+	g_iFeature[FEATURE_P_SUICIDE]			= addFeature(0, -1, "自杀", feat_btn, &hack::suicide, -1.f);
 	g_iFeature[FEATURE_P_WANTED]			= g_pSettings->addFeature(0, -1, "通缉等级", feat_slider, "wanted", 0.f, 5.f, .2f);
 	g_iFeature[FEATURE_P_NEVERWANTED]		= g_pSettings->addFeature(0, -1, "永不通缉", feat_toggle, "neverWanted");
 	g_iFeature[FEATURE_P_ANTINPC]			= g_pSettings->addFeature(0, -1, "杀死攻击NPC", feat_toggle, "antiNpc");
@@ -81,8 +92,10 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_P_SUPERJUMP]			= g_pSettings->addFeature(0, -1, "超级跳跃", feat_toggle, "superJump");
 	g_iFeature[FEATURE_P_EXPLOSIVEMELEE]	= g_pSettings->addFeature(0, -1, "爆炸近战", feat_toggle, "explMelee");
 	g_iFeature[FEATURE_P_NORAGDOLL]			= g_pSettings->addFeature(0, -1, "无布娃娃", feat_toggle, "noRagdoll");
+	g_iFeature[FEATURE_P_WATER_PROOF]		= g_pSettings->addFeature(0, -1, "水下行走", feat_toggle, "waterProof");
 	g_iFeature[FEATURE_P_STAMINA]			= g_pSettings->addFeature(0, -1, "无限耐力", feat_toggle, "infStam");
 
+	g_iFeature[FEATURE_W_FILL_AMMO]			= addFeature(1, -1, "补满当前弹药", feat_btn, &hack::fillAmmo, -1.f);
 	g_iFeature[FEATURE_W_SPREAD]			= g_pSettings->addFeature(1, -1, "无扩散", feat_toggle, "noSpread");	
 	g_iFeature[FEATURE_W_RECOIL]			= g_pSettings->addFeature(1, -1, "无后座", feat_toggle, "noRecoil");	
 	g_iFeature[FEATURE_W_NORELOAD]			= g_pSettings->addFeature(1, -1, "无需换弹", feat_toggle, "noReload");
@@ -101,46 +114,48 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_V_GOD]				= g_pSettings->addFeature(2, -1, "半无敌", feat_toggle, "vehGodMode");
 	g_iFeature[FEATURE_V_BULLETPROOFTIRES]	= g_pSettings->addFeature(2, -1, "防爆轮胎", feat_toggle, "vehBulletproofTires");
 	g_iFeature[FEATURE_V_SEATBELT]			= g_pSettings->addFeature(2, -1, "安全带", feat_toggle, "seatbelt");
-	g_iFeature[FEATURE_V_DEFORMATION]		= g_pSettings->addFeature(2, -1, "变形系数", feat_slider, "vehDeform", 0.f, 1.f);
-	g_iFeature[FEATURE_V_ACCELERATION]		= g_pSettings->addFeature(2, -1, "加速度", feat_slider, "vehAccel", 1.f, 10.f);
-	g_iFeature[FEATURE_V_UPSHIFT]			= g_pSettings->addFeature(2, -1, "高速挡", feat_slider, "vehUpShift", 1.f, 25.f);
-	g_iFeature[FEATURE_V_BRAKEFORCE]		= g_pSettings->addFeature(2, -1, "刹车制动力", feat_slider, "vehBrakeForce", 1.f, 10.f);
-	g_iFeature[FEATURE_V_TRACTION]			= g_pSettings->addFeature(2, -1, "牵引力", feat_slider, "vehTraction", 1.f, 2.f);
 	g_iFeature[FEATURE_V_GRAVITY]			= g_pSettings->addFeature(2, -1, "重力", feat_slider, "vehGravity", 0.f, 25.f);
-	g_iFeature[FEATURE_V_SUSPENSION_FORCE]	= g_pSettings->addFeature(2, -1, "悬挂", feat_slider, "vehSuspensionForce", 0.f, 2.f);
+	int handing = g_pSettings->addFeature(2, -1, "参数 >>", feat_parent);
+	g_iFeature[FEATURE_V_DEFORMATION]		= g_pSettings->addFeature(-1, handing, "变形系数", feat_slider, "vehDeform", 0.f, 1.f);
+	g_iFeature[FEATURE_V_ACCELERATION]		= g_pSettings->addFeature(-1, handing, "加速度", feat_slider, "vehAccel", 1.f, 10.f);
+	g_iFeature[FEATURE_V_UPSHIFT]			= g_pSettings->addFeature(-1, handing, "加挡速度", feat_slider, "vehUpShift", 1.f, 25.f);
+	g_iFeature[FEATURE_V_DOWNSHIFT]			= g_pSettings->addFeature(-1, handing, "减档速度", feat_slider, "vehDownShift", 1.f, 25.f);
+	g_iFeature[FEATURE_V_BRAKEFORCE]		= g_pSettings->addFeature(-1, handing, "刹车制动力", feat_slider, "vehBrakeForce", 1.f, 10.f);
+	g_iFeature[FEATURE_V_TRACTION]			= g_pSettings->addFeature(-1, handing, "牵引力", feat_slider, "vehTraction", 1.f, 2.f);
+	g_iFeature[FEATURE_V_SUSPENSION_FORCE]	= g_pSettings->addFeature(-1, handing, "悬挂", feat_slider, "vehSuspensionForce", 0.f, 2.f);
 	//g_iFeature[FEATURE_V_DISABLE_DOORS]		= g_pSettings->addFeature(2, -1, "Disable Doors", feat_toggle, "vehDisableDoors");
-	//g_iFeature[FEATURE_V_INF_CAR_ALARM]		= g_pSettings->addFeature(2, -1, "Infinite Alarm", feat_toggle, "vehInfAlarm");
 
 	g_pSettings->addFeature(3, -1, "导航点", feat_teleport, tp_waypoint);
 	g_pSettings->addFeature(3, -1, "目标点", feat_teleport, tp_objective);
 
 	int interior = g_pSettings->addFeature(3, -1, "室内 >>", feat_parent);
-	g_pSettings->addFeature(-1, interior, "FIB Building Top", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
-	g_pSettings->addFeature(-1, interior, "Garment Factory", feat_teleport, tp_static, 712.716f, -962.906f, 30.6f);
-	g_pSettings->addFeature(-1, interior, "Franklin's House", feat_teleport, tp_static, 7.119f, 536.615f, 176.2f);
-	g_pSettings->addFeature(-1, interior, "Michael's House", feat_teleport, tp_static, -813.603f, 179.474f, 72.5f);
-	g_pSettings->addFeature(-1, interior, "Trevor's House", feat_teleport, tp_static, 1972.610f, 3817.040f, 33.65f);
-	g_pSettings->addFeature(-1, interior, "Aunt Denise's House", feat_teleport, tp_static, -14.380f, -1438.510f, 31.3f);
-	g_pSettings->addFeature(-1, interior, "Floyd's House", feat_teleport, tp_static, -1151.770f, -1518.138f, 10.85f);
-	g_pSettings->addFeature(-1, interior, "Lester's House", feat_teleport, tp_static, 1273.898f, -1719.304f, 54.8f);
-	g_pSettings->addFeature(-1, interior, "Vanilla Unicorn Office", feat_teleport, tp_static, 97.271f, -1290.994f, 29.45f);
-	g_pSettings->addFeature(-1, interior, "Bank Vault (Pacific Standard)", feat_teleport, tp_static, 255.85f, 217.f, 101.9f);
-	g_pSettings->addFeature(-1, interior, "Comedy Club", feat_teleport, tp_static, 378.100f, -999.964f, -98.6f);
-	g_pSettings->addFeature(-1, interior, "Humane Labs", feat_teleport, tp_static, 3614.394f, 3744.803f, 28.9f);
-	g_pSettings->addFeature(-1, interior, "Humane Labs Tunnel", feat_teleport, tp_static, 3525.201f, 3709.625f, 21.2f);
-	g_pSettings->addFeature(-1, interior, "IAA Office", feat_teleport, tp_static, 113.568f, -619.001f, 206.25f);
-	g_pSettings->addFeature(-1, interior, "Torture Room", feat_teleport, tp_static, 142.746f, -2201.189f, 4.9f);
-	g_pSettings->addFeature(-1, interior, "Fort Zancudo Tower", feat_teleport, tp_static, -2358.132f, 3249.754f, 101.65f);
-	g_pSettings->addFeature(-1, interior, "Mine Shaft", feat_teleport, tp_static, -595.342f, 2086.008f, 131.6f);
+	g_pSettings->addFeature(-1, interior, "FIB大楼楼顶", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
+	g_pSettings->addFeature(-1, interior, "服装厂", feat_teleport, tp_static, 712.716f, -962.906f, 30.6f);
+	g_pSettings->addFeature(-1, interior, "富兰克林家", feat_teleport, tp_static, 7.119f, 536.615f, 176.2f);
+	g_pSettings->addFeature(-1, interior, "麦克家", feat_teleport, tp_static, -813.603f, 179.474f, 72.5f);
+	g_pSettings->addFeature(-1, interior, "崔佛家", feat_teleport, tp_static, 1972.610f, 3817.040f, 33.65f);
+	g_pSettings->addFeature(-1, interior, "丹尼斯阿姨家", feat_teleport, tp_static, -14.380f, -1438.510f, 31.3f);
+	g_pSettings->addFeature(-1, interior, "弗洛伊德家", feat_teleport, tp_static, -1151.770f, -1518.138f, 10.85f);
+	g_pSettings->addFeature(-1, interior, "莱斯特家", feat_teleport, tp_static, 1273.898f, -1719.304f, 54.8f);
+	g_pSettings->addFeature(-1, interior, "脱衣舞俱乐部", feat_teleport, tp_static, 97.271f, -1290.994f, 29.45f);
+	g_pSettings->addFeature(-1, interior, "银行金库（太平洋标准）", feat_teleport, tp_static, 255.85f, 217.f, 101.9f);
+	g_pSettings->addFeature(-1, interior, "喜剧俱乐部", feat_teleport, tp_static, 378.100f, -999.964f, -98.6f);
+	g_pSettings->addFeature(-1, interior, "人道实验室", feat_teleport, tp_static, 3614.394f, 3744.803f, 28.9f);
+	g_pSettings->addFeature(-1, interior, "人道实验室地道", feat_teleport, tp_static, 3525.201f, 3709.625f, 21.2f);
+	g_pSettings->addFeature(-1, interior, "IAA办公室", feat_teleport, tp_static, 113.568f, -619.001f, 206.25f);
+	g_pSettings->addFeature(-1, interior, "刑讯室", feat_teleport, tp_static, 142.746f, -2201.189f, 4.9f);
+	g_pSettings->addFeature(-1, interior, "军事基地高塔", feat_teleport, tp_static, -2358.132f, 3249.754f, 101.65f);
+	g_pSettings->addFeature(-1, interior, "矿井", feat_teleport, tp_static, -595.342f, 2086.008f, 131.6f);
 
-	g_pSettings->addFeature(3, -1, "自定义保存点1", feat_teleport, "pos0", tp_saved);
-	g_pSettings->addFeature(3, -1, "自定义保存点2", feat_teleport, "pos1", tp_saved);
-	g_pSettings->addFeature(3, -1, "自定义保存点3", feat_teleport, "pos2", tp_saved);
-	g_pSettings->addFeature(3, -1, "自定义保存点4", feat_teleport, "pos3", tp_saved);
-	g_pSettings->addFeature(3, -1, "自定义保存点5", feat_teleport, "pos4", tp_saved);
-	g_pSettings->addFeature(3, -1, "自定义保存点6", feat_teleport, "pos5", tp_saved);
+	int saved = g_pSettings->addFeature(3, -1, "自定义保存点 >>", feat_parent);
+	g_pSettings->addFeature(-1, saved, "保存点1", feat_teleport, "pos0", tp_saved);
+	g_pSettings->addFeature(-1, saved, "保存点2", feat_teleport, "pos1", tp_saved);
+	g_pSettings->addFeature(-1, saved, "保存点3", feat_teleport, "pos2", tp_saved);
+	g_pSettings->addFeature(-1, saved, "保存点4", feat_teleport, "pos3", tp_saved);
+	g_pSettings->addFeature(-1, saved, "保存点5", feat_teleport, "pos4", tp_saved);
+	g_pSettings->addFeature(-1, saved, "保存点6", feat_teleport, "pos5", tp_saved);
 	g_pSettings->addFeature(3, -1, "洛圣都改车王", feat_teleport, tp_static, -365.425f, -131.809f, -225.f);//38.9f);
-	g_pSettings->addFeature(3, -1, "军事基地", feat_teleport, tp_static, -1336.f, -3044.f, -225.f);//14.15f);
+	g_pSettings->addFeature(3, -1, "LS机场", feat_teleport, tp_static, -1336.f, -3044.f, -225.f);//14.15f);
 	g_pSettings->addFeature(3, -1, "桑迪海岸机场", feat_teleport, tp_static, 1747.f, 3273.f, -225.f);//41.35f);
 	g_pSettings->addFeature(3, -1, "千年山", feat_teleport, tp_static, 489.979f, 5587.527f, 794.3f);
 
@@ -233,6 +248,13 @@ LRESULT __stdcall WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 	return DefWindowProc (hWnd, message, wParam, lParam); //default behaviour for any unhandled messages
 }
 
+int addFeature(int cat, int parent, std::string name, featType type, void (hack::* fun)(float*),float arg)
+{
+	(*g_pCBMap)[g_iIndex] = new CallbackProxy<hack, float>;
+	(*g_pCBMap)[g_iIndex]->Set(g_pHack, fun);
+	return g_pSettings->addFeature(cat, parent, name, type, g_iIndex++, arg);
+}
+
 DWORD __stdcall threadAttach(LPVOID lpParam)
 {
 	while(!g_bKillSwitch)
@@ -309,6 +331,7 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 			g_pHack->godMode(g_pSettings->getFeature(g_iFeature[FEATURE_P_TRUEGOD]));
 			g_pHack->noRagdoll(g_pSettings->getFeature(g_iFeature[FEATURE_P_NORAGDOLL]));
 			g_pHack->seatbelt(g_pSettings->getFeature(g_iFeature[FEATURE_V_SEATBELT]));
+			g_pHack->waterProof(g_pSettings->getFeature(g_iFeature[FEATURE_P_WATER_PROOF]));
 
 			g_pHack->frameFlags(	g_pSettings->getFeature(g_iFeature[FEATURE_P_SUPERJUMP]),
 									g_pSettings->getFeature(g_iFeature[FEATURE_P_EXPLOSIVEMELEE]),
@@ -325,7 +348,6 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->vehicleGravity(g_pSettings->getFeature(g_iFeature[FEATURE_V_GRAVITY]));
 				g_pHack->vehicleBulletproofTires(g_pSettings->getFeature(g_iFeature[FEATURE_V_BULLETPROOFTIRES]));
 				//g_pHack->vehicleDisableDoors(g_pSettings->getFeature(g_iFeature[FEATURE_V_DISABLE_DOORS]));			THIS ONLY WORKS CLIENT SIDE
-				//g_pHack->vehicleInfAlarm(g_pSettings->getFeature(g_iFeature[FEATURE_V_INF_CAR_ALARM]));
 
 				if(g_pHack->m_vehicle.loadHandling())
 				{
@@ -334,6 +356,7 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 					g_pHack->vehicleTraction(g_pSettings->getFeature(g_iFeature[FEATURE_V_TRACTION]));
 					g_pHack->vehicleDeformation(g_pSettings->getFeature(g_iFeature[FEATURE_V_DEFORMATION]));
 					g_pHack->vehicleUpShift(g_pSettings->getFeature(g_iFeature[FEATURE_V_UPSHIFT]));
+					g_pHack->vehicleDownShift(g_pSettings->getFeature(g_iFeature[FEATURE_V_DOWNSHIFT]));
 					g_pHack->vehicleSuspensionForce(g_pSettings->getFeature(g_iFeature[FEATURE_V_SUSPENSION_FORCE]));
 				}
 			}

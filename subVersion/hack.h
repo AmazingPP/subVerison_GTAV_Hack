@@ -18,6 +18,7 @@
 */
 
 #pragma once
+#include<map>
 #ifndef HACK_H
 #define HACK_H
 
@@ -62,6 +63,9 @@ class hack : public trainer
 		void	notWanted();
 		void	killNpc();
 		void	fillAmmo();
+		void	suicide(float* arg);
+		void	fillAmmo(float* arg);
+		void	waterProof(feat* feature);
 		void	noSpread(feat* feature);
 		void	noRecoil(feat* feature);
 		void	quickReload(feat* feature);
@@ -91,7 +95,7 @@ class hack : public trainer
 		void	batchSpread(feat* feature);
 		void	vehicleSuspensionForce(feat* feature);
 		//void	vehicleDisableDoors(feat* feature);
-		//void	vehicleInfAlarm(feat* feature);
+		void	vehicleDownShift(feat* feature);
 
 	private:
 		DWORD_PTR	m_dwpWorldBase,

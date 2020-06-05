@@ -331,6 +331,33 @@ void	hack::fillAmmo()
 	return;
 }
 
+void	hack::suicide(float* arg)
+{
+	m_player.setHealth(0, 0);
+}
+
+void	hack::fillAmmo(float* arg)
+{
+	this->fillAmmo();
+}
+
+void	hack::waterProof(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_player.m_playerDataCur.m_dwWaterProof != m_player.m_playerDataRestore.m_dwWaterProof)
+				m_player.setWaterProof(m_player.m_playerDataRestore.m_dwWaterProof);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	if (m_player.m_playerDataCur.m_dwWaterProof != 0)
+		m_player.setWaterProof(m_player.m_playerDataCur.m_dwWaterProof + 0x1000000);
+	return;
+}
+
 void	hack::noSpread(feat* feature)
 {
 	if(!feature->m_bOn)
@@ -879,21 +906,20 @@ void hack::vehicleDisableDoors(feat* feature)
 	return;
 }*/
 
-//void hack::vehicleInfAlarm(feat* feature)
-//{
-//	if(!feature->m_bOn)
-//	{
-//		if(!feature->m_bRestored)
-//		{
-//			m_vehicle.getAlarmLength();
-//			if(m_vehicle.m_dwAlarmLength != 0)
-//				m_vehicle.setAlarmLength(0);
-//			feature->m_bRestored = true;
-//		}
-//		return;
-//	}
-//	m_vehicle.getAlarmLength();
-//	if(m_vehicle.m_dwAlarmLength != 0xFF)
-//		m_vehicle.setAlarmLength(0xFF);
-//	return;
-//}
+void	hack::vehicleDownShift(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_vehicle.m_handlingCur.m_fDownShift != m_vehicle.m_handlingRestore.m_fDownShift)
+				m_vehicle.setDownShift(m_vehicle.m_handlingRestore.m_fDownShift);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = static_cast<featSlider*>(feature)->m_fValue;
+	if (m_vehicle.m_handlingCur.m_fDownShift != fValue)
+		m_vehicle.setDownShift(fValue);
+	return;
+}

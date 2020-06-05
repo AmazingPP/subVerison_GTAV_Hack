@@ -59,7 +59,7 @@ class featCat
 		std::string	m_szName;
 };
 
-enum featType	{ feat_toggle, feat_slider, feat_teleport, feat_parent };
+enum featType	{ feat_btn, feat_toggle, feat_slider, feat_teleport, feat_parent };
 enum teleType	{ tp_saved, tp_waypoint, tp_static, tp_objective };
 
 class feat
@@ -79,6 +79,17 @@ class feat
 		virtual	void	toggle();
 		virtual void	inc();
 		virtual void	dec();
+};
+
+class featBtn : public feat
+{
+	public:
+		int			m_iIndex;
+		float		m_fArg;
+
+		featBtn();
+		~featBtn();
+		void toggle();
 };
 
 class featSlider : public feat
@@ -206,6 +217,7 @@ class settings
 
 		int			addFeature(int cat, int parent, std::string name, featType type);
 		int			addFeature(int cat, int parent, std::string name, featType type, std::string iniKey);
+		int			addFeature(int cat, int parent, std::string name, featType type, int index,float arg);
 		int			addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, float min, float max);
 		int			addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, float min, float max, float mod);
 		int			addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, teleType tpType);

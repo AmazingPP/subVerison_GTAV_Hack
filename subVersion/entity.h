@@ -60,10 +60,19 @@ class player : public entity
 		bool	m_bIsInVehicle;
 		curmax	m_cmStamina;
 
+		struct playerData
+		{
+			DWORD m_dwWaterProof;
+		};
+		playerData	m_playerDataRestore,//the original values will be stored here.
+					m_playerDataCur;
+
 						player();
 						~player();
 		virtual	void	getHealth();
 		virtual	void	setHealth(float hp, float armor);
+				bool	loadPlayerData();
+				void	restorePlayerData();
 				void	getWanted();
 				void	setWanted(DWORD stars);
 				void	getWantedCanChange();
@@ -75,6 +84,8 @@ class player : public entity
 				void	setSwimSpeed(float value);
 				void	getFrameFlags();
 				void	setFrameFlags(DWORD value);
+				void	getWaterProof();
+				void	setWaterProof(DWORD value);
 				void	getRagdoll();
 				void	setRagdoll(BYTE value);
 				void	getSeatbelt();
@@ -90,9 +101,7 @@ class vehicle : public entity
 	public:
 		curmax	m_cmHpVehicle;
 		float	m_fGravity;
-		BYTE	m_btBulletproofTires,
-				m_btOpenableDoors[2];
-		DWORD	m_dwAlarmLength;
+		BYTE	m_btBulletproofTires;
 
 		struct vehicleHandling
 		{
@@ -102,6 +111,7 @@ class vehicle : public entity
 						m_fTractionCurveMin,
 						m_fDeformationDamageMult,
 						m_fUpShift,
+						m_fDownShift,
 						m_fSuspensionForce;
 		};
 
@@ -130,10 +140,10 @@ class vehicle : public entity
 		void	setUpShift(float value);
 		void	getSuspensionForce();
 		void	setSuspensionForce(float value);
-		void	getOpenableDoors();
-		void	setOpenableDoors(BYTE value);
-		void	getAlarmLength();
-		void	setAlarmLength(DWORD value);
+		//void	getOpenableDoors();
+		//void	setOpenableDoors(BYTE value);
+		void	getDownShift();
+		void	setDownShift(float value);
 };
 
 class weapon

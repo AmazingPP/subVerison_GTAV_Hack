@@ -208,6 +208,9 @@ int		settings::addFeature(int cat, int parent, std::string name, featType type)
 		case feat_toggle:
 			m_pFeature[m_nFeature]		= new feat;
 		break;
+		case feat_btn:
+			m_pFeature[m_nFeature]		= new featBtn;
+		break;
 		case feat_slider:
 			m_pFeature[m_nFeature]		= new featSlider;
 		break;
@@ -225,6 +228,17 @@ int		settings::addFeature(int cat, int parent, std::string name, featType type)
 	m_pFeature[m_nFeature]->m_szName	= name;
 	m_nFeature++;
 	return m_nFeature - 1;
+}
+
+int		settings::addFeature(int cat, int parent, std::string name, featType type, int index, float arg)
+{
+	int id = this->addFeature(cat, parent, name, type);
+	if (id < 0)
+		return id;
+	dynamic_cast<featBtn*>(m_pFeature[id])->m_iIndex = index;
+	dynamic_cast<featBtn*>(m_pFeature[id])->m_fArg = arg;
+
+	return id;
 }
 
 int		settings::addFeature(int cat, int parent, std::string name, featType type, std::string iniKey)
@@ -432,6 +446,13 @@ void	feat::toggle()
 void	feat::inc() {}
 void	feat::dec() {}
 
+featBtn::featBtn() {}
+featBtn::~featBtn() {}
+
+void	featBtn::toggle()
+{
+	(*g_pCBMap)[this->m_iIndex]->Exec(&this->m_fArg);
+}
 
 featSlider::featSlider() {}
 featSlider::~featSlider() {}

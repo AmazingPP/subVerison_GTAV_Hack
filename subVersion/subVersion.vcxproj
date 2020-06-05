@@ -28,6 +28,7 @@
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CallbackProxy.h" />
     <ClInclude Include="D3D9Render.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="hack.h" />
