@@ -146,7 +146,6 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeature(-1, interior, "刑讯室", feat_teleport, tp_static, 142.746f, -2201.189f, 4.9f);
 	g_pSettings->addFeature(-1, interior, "军事基地高塔", feat_teleport, tp_static, -2358.132f, 3249.754f, 101.65f);
 	g_pSettings->addFeature(-1, interior, "矿井", feat_teleport, tp_static, -595.342f, 2086.008f, 131.6f);
-
 	int saved = g_pSettings->addFeature(3, -1, "自定义保存点 >>", feat_parent);
 	g_pSettings->addFeature(-1, saved, "保存点1", feat_teleport, "pos0", tp_saved);
 	g_pSettings->addFeature(-1, saved, "保存点2", feat_teleport, "pos1", tp_saved);
@@ -248,10 +247,10 @@ LRESULT __stdcall WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 	return DefWindowProc (hWnd, message, wParam, lParam); //default behaviour for any unhandled messages
 }
 
-int addFeature(int cat, int parent, std::string name, featType type, void (hack::* fun)(float*),float arg)
+int addFeature(int cat, int parent, std::string name, featType type, void (hack::* func)(float*), float arg)
 {
 	(*g_pCBMap)[g_iIndex] = new CallbackProxy<hack, float>;
-	(*g_pCBMap)[g_iIndex]->Set(g_pHack, fun);
+	(*g_pCBMap)[g_iIndex]->Set(g_pHack, func);
 	return g_pSettings->addFeature(cat, parent, name, type, g_iIndex++, arg);
 }
 
@@ -331,7 +330,10 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 			g_pHack->godMode(g_pSettings->getFeature(g_iFeature[FEATURE_P_TRUEGOD]));
 			g_pHack->noRagdoll(g_pSettings->getFeature(g_iFeature[FEATURE_P_NORAGDOLL]));
 			g_pHack->seatbelt(g_pSettings->getFeature(g_iFeature[FEATURE_V_SEATBELT]));
-			g_pHack->waterProof(g_pSettings->getFeature(g_iFeature[FEATURE_P_WATER_PROOF]));
+			if (g_pHack->m_player.loadPlayerData())
+			{
+				g_pHack->waterProof(g_pSettings->getFeature(g_iFeature[FEATURE_P_WATER_PROOF]));
+			}
 
 			g_pHack->frameFlags(	g_pSettings->getFeature(g_iFeature[FEATURE_P_SUPERJUMP]),
 									g_pSettings->getFeature(g_iFeature[FEATURE_P_EXPLOSIVEMELEE]),

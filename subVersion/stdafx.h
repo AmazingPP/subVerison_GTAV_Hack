@@ -77,24 +77,38 @@
 #define OFFSET_PLAYER_INFO_WANTED				0x848			//wanted level; DWORD
 #define OFFSET_PLAYER_INFO_STAMINA				0xC80			//fStamina, fStaminaMax
 #define OFFSET_PLAYER_RAGDOLL					0x10A8			//byte; CPed.noRagdoll: 0x20 = off; 0x00/0x01 = on
-#define OFFSET_PLAYER_SEATBELT					0x13EC			//byte; CPed.seatBelt: 0xC8 = off; 0xC9 = on
+#define OFFSET_PLAYER_SEATBELT					0xC00			//byte; CPed.seatBelt: 0xC8 = off; 0xC9 = on
 #define OFFSET_PLAYER_INVEHICLE					0x146B
 #define OFFSET_PLAYER_ARMOR						0x14B8			//armour
 #define OFFSET_PLAYER_WATER_PROOF				0x188			//water proof; DWORD; +0x1000000 = on
+#define OFFSET_PLAYER_DAMAGE_MP					0xC18			//fDamageMultiplier
+#define OFFSET_PLAYER_MELEE_DAMAGE_MP			0xC20			//fMeleeDamageMultiplier
+#define OFFSET_PLAYER_VEHICLE_DAMAGE_MP			0xC28			//fVehicleDamageMultiplier
+#define OFFSET_PLAYER_SUPER_PUNCH				0xCA8			//super punck/kick;float;
 
 //vehicle offsets
 #define OFFSET_VEHICLE_HEALTH						0x8E8			//vehicle health; 0.f-1000.f
 #define OFFSET_VEHICLE_HANDLING						0x918
 #define OFFSET_VEHICLE_HANDLING_ACCELERATION		0x4C
 #define OFFSET_VEHICLE_HANDLING_BRAKEFORCE			0x6C
+#define OFFSET_VEHICLE_HANDLING_HANDBRAKEFORCE		0x7C			//fHandbrakeForce
+#define OFFSET_VEHICLE_HANDLING_BUOYANCY			0x40			//fBuoyancy
+#define OFFSET_VEHICLE_HANDLING_Mass				0xC				//fMass
 #define OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN	0x90			//fTractionCurveMin
 #define OFFSET_VEHICLE_HANDLING_DEFORM_MULTIPLIER	0xF8			//fDeformationDamageMult
+#define OFFSET_VEHICLE_HANDLING_WEAPON_DAMAGE_MP	0xF4			//fWeaponDamageMult
+#define OFFSET_VEHICLE_HANDLING_COLISION_DAMAGE_MP	0xF0			//fColisionDamageMult
 #define OFFSET_VEHICLE_HANDLING_UPSHIFT				0x58
 #define OFFSET_VEHICLE_HANDLING_DOWNSHIFT			0x5C
 #define OFFSET_VEHICLE_HANDLING_SUSPENSION_FORCE	0xBC			//fSuspensionForce 
+#define OFFSET_VEHICLE_HANDLING_SUSPENSION_HEIGH	0xD0			//fSuspensionHeight
 #define OFFSET_VEHICLE_BULLETPROOF_TIRES			0x923			//btBulletproofTires;  (btBulletproofTires & 0x20) ? true : false
 //#define OFFSET_VEHICLE_OPENABLE_DOORS				0xB30			//btOpenableDoors
 #define OFFSET_VEHICLE_GRAVITY						0xC1C			//fGravity
+#define OFFSET_VEHICLE_BO0ST						0x320			//fBoost
+#define OFFSET_VEHICLE_FUEL_LEVEL					0x322			//byte:Rocket Fuel Level
+#define OFFSET_VEHICLE_RECHARGE_SPEED				0x324			//fRocketRechargeSpeed
+
 
 //weapon offsets
 #define OFFSET_WEAPON_MANAGER			0x10C8			//from playerbase
@@ -118,7 +132,21 @@
 #define OFFSET_WEAPON_BULLET_BATCH		0x118			//dwBulletInBatch
 #define OFFSET_WEAPON_MUZZLE_VELOCITY	0x114			//fMuzzleVelocity
 #define OFFSET_WEAPON_BATCH_SPREAD		0x74			//fBatchSpread
+#define OFFSET_WEAPON_IMPACT_TYPE		0x20			//dwImpactType; 1: Fists,3; Bullets,5: Explosives
+#define OFFSET_WEAPON_IMPACT_EXPLOSION	0x24			//dwImpactExplosion
+#define OFFSET_WEAPON_BULLET_DAMAGE		0xB0			//fBulletDamage
+//#define OFFSET_WEAPON_BULLET_MASS		0xD8			//dwBulletMass
+#define OFFSET_WEAPON_MUZZLE_FLASH_SIZE 0x1D4			//fMuzzleFlashSize
+#define OFFSET_WEAPON_PENETRATION		0x108			//fPenetration
+#define OFFSET_WEAPON_FORCE_ON_PED		0xD4			//fForceOnPed
+#define OFFSET_WEAPON_FORCE_ON_VEHICLE	0xD8			//fForceOnVehicle
+#define OFFSET_WEAPON_FORCE_ON_HELI		0xDC			//fForceOnHeli
+#define OFFSET_WEAPON_ROCKET_SPEED		0x58			//Rocket Speed (25000 instant);float
+#define OFFSET_WEAPON_GRAVITY			0x68			//fThrowablesGravity
 
+
+//tunable offsets
+#define OFFSET_TUNABLE_MIN_MISSION_PAYOUT			0x4BC8			//fMinMissionPayout
 
 #define OFFSET_ATTACKER_DISTANCE		0x18			//changed to 0x18, from 0x10
 

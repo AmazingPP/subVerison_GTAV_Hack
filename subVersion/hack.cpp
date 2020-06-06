@@ -151,7 +151,7 @@ void hack::checkKeys()
 	}
 }
 
-BYTE	hack::initPointers()
+BYTE hack::initPointers()
 {
 	
 	BYTE r	= 0;
@@ -192,7 +192,7 @@ BYTE	hack::initPointers()
 	return r;
 }
 
-void	hack::getWaypoint()
+void hack::getWaypoint()
 {
 	DWORD_PTR a = (DWORD_PTR)m_hModule + ADDRESS_WAYPOINT;
 	for (size_t i = 2000; i > 1; i--)
@@ -212,7 +212,7 @@ void	hack::getWaypoint()
 	return;
 }
 
-void	hack::getObjective()
+void hack::getObjective()
 {
 	DWORD_PTR a = (DWORD_PTR)m_hModule + ADDRESS_WAYPOINT;
 	for (size_t i = 2000; i > 1; i--)
@@ -232,7 +232,7 @@ void	hack::getObjective()
 	return;
 }
 
-void	hack::teleport(v3 v)
+void hack::teleport(v3 v)
 {
 	m_player.getInVehicle();
 	if(m_player.m_bIsInVehicle)
@@ -244,7 +244,7 @@ void	hack::teleport(v3 v)
 	return;
 }
 
-bool	hack::teleportWaypoint()
+bool hack::teleportWaypoint()
 {
 	getWaypoint();
 	if(m_v2Waypoint.x == 64000.f && m_v2Waypoint.y == 64000.f)
@@ -256,7 +256,7 @@ bool	hack::teleportWaypoint()
 }
 
 
-bool	hack::teleportObjective()
+bool hack::teleportObjective()
 {
 	getObjective();
 	if(m_v3Objective.x == 64000.f && m_v3Objective.y == 64000.f && m_v3Objective.z == 64000.f)
@@ -267,7 +267,7 @@ bool	hack::teleportObjective()
 	return true;
 }
 
-void	hack::restoreHealth()
+void hack::restoreHealth()
 {
 	m_player.getHealth();
 	if(m_player.m_flArmor < 50.f || m_player.m_cmHp.cur < m_player.m_cmHp.max)
@@ -275,7 +275,7 @@ void	hack::restoreHealth()
 	return;
 }
 
-void	hack::restoreVehicleHealth()
+void hack::restoreVehicleHealth()
 {
 	m_vehicle.getHealth();
 	if((m_vehicle.m_cmHp.cur < m_vehicle.m_cmHp.max && m_vehicle.m_cmHp.cur > 0.f) ||
@@ -284,7 +284,7 @@ void	hack::restoreVehicleHealth()
 	return;
 }
 
-void	hack::restoreStamina()
+void hack::restoreStamina()
 {
 	m_player.getStamina();
 	if(m_player.m_cmStamina.cur < m_player.m_cmStamina.max)
@@ -292,7 +292,7 @@ void	hack::restoreStamina()
 	return;
 }
 
-void	hack::notWanted()
+void hack::notWanted()
 {
 	m_player.getWanted();
 	if(m_player.m_dwWanted == 0)
@@ -301,7 +301,7 @@ void	hack::notWanted()
 	return;
 }
 
-void	hack::killNpc()
+void hack::killNpc()
 {
 	if(m_dwpAttackerBase == 0)
 		return;
@@ -320,7 +320,7 @@ void	hack::killNpc()
 	return;
 }
 
-void	hack::fillAmmo()
+void hack::fillAmmo()
 {
 	if(!m_weapon.findAmmoBase())
 		return;
@@ -331,17 +331,17 @@ void	hack::fillAmmo()
 	return;
 }
 
-void	hack::suicide(float* arg)
+void hack::suicide(float* arg)
 {
 	m_player.setHealth(0, 0);
 }
 
-void	hack::fillAmmo(float* arg)
+void hack::fillAmmo(float* arg)
 {
 	this->fillAmmo();
 }
 
-void	hack::waterProof(feat* feature)
+void hack::waterProof(feat* feature)
 {
 	if (!feature->m_bOn)
 	{
@@ -353,12 +353,12 @@ void	hack::waterProof(feat* feature)
 		}
 		return;
 	}
-	if (m_player.m_playerDataCur.m_dwWaterProof != 0)
-		m_player.setWaterProof(m_player.m_playerDataCur.m_dwWaterProof + 0x1000000);
+	if (m_player.m_playerDataCur.m_dwWaterProof != m_player.m_playerDataRestore.m_dwWaterProof + 0x1000000)
+		m_player.setWaterProof(m_player.m_playerDataRestore.m_dwWaterProof + 0x1000000);
 	return;
 }
 
-void	hack::noSpread(feat* feature)
+void hack::noSpread(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -375,7 +375,7 @@ void	hack::noSpread(feat* feature)
 	return;
 }
 
-void	hack::noRecoil(feat* feature)
+void hack::noRecoil(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -392,7 +392,7 @@ void	hack::noRecoil(feat* feature)
 	return;
 }
 
-void	hack::quickReload(feat* feature)
+void hack::quickReload(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -415,7 +415,7 @@ void	hack::quickReload(feat* feature)
 	return;
 }
 
-void	hack::bulletDamage(feat* feature)
+void hack::bulletDamage(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -433,7 +433,7 @@ void	hack::bulletDamage(feat* feature)
 	return;
 }
 
-void	hack::weaponRange(feat* feature)
+void hack::weaponRange(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -451,7 +451,7 @@ void	hack::weaponRange(feat* feature)
 	return;
 }
 
-void	hack::weaponSpin(feat* feature)
+void hack::weaponSpin(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -474,7 +474,7 @@ void	hack::weaponSpin(feat* feature)
 	return;
 }
 
-void	hack::runSpeed(feat* feature)
+void hack::runSpeed(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -494,7 +494,7 @@ void	hack::runSpeed(feat* feature)
 	return;
 }
 
-void	hack::swimSpeed(feat* feature)
+void hack::swimSpeed(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -514,7 +514,7 @@ void	hack::swimSpeed(feat* feature)
 	return;
 }
 
-void	hack::godMode(feat* feature)
+void hack::godMode(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -533,7 +533,7 @@ void	hack::godMode(feat* feature)
 	return;
 }
 
-void	hack::frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featFireAmmo, feat* featExplosiveAmmo)
+void hack::frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featFireAmmo, feat* featExplosiveAmmo)
 {
 	DWORD dwValue	= 0;
 	m_player.getFrameFlags();
@@ -550,7 +550,7 @@ void	hack::frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featF
 	return;
 }
 
-void	hack::vehicleGod(feat* feature)
+void hack::vehicleGod(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -569,7 +569,7 @@ void	hack::vehicleGod(feat* feature)
 	return;
 }
 
-void	hack::infAmmo(feat* feature)
+void hack::infAmmo(feat* feature)
 {
 	BYTE	cur[3]		= {};
 	if(!feature->m_bOn)
@@ -591,7 +591,7 @@ void	hack::infAmmo(feat* feature)
 	return;
 }
 
-void	hack::noReload(feat* feature)
+void hack::noReload(feat* feature)
 {
 	BYTE	cur[3]		= {};
 	if(!feature->m_bOn)
@@ -613,7 +613,7 @@ void	hack::noReload(feat* feature)
 	return;
 }
 
-void	hack::seatbelt(feat* feature)
+void hack::seatbelt(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -774,7 +774,7 @@ void hack::wanted(feat* feature)
 	return;
 }
 
-void	hack::bulletBatch(feat* feature)
+void hack::bulletBatch(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -793,7 +793,7 @@ void	hack::bulletBatch(feat* feature)
 	return;
 }
 
-void	hack::muzzleVelocity(feat* feature)
+void hack::muzzleVelocity(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -811,7 +811,7 @@ void	hack::muzzleVelocity(feat* feature)
 	return;
 }
 
-void	hack::vehicleDeformation(feat* feature)
+void hack::vehicleDeformation(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -829,7 +829,7 @@ void	hack::vehicleDeformation(feat* feature)
 	return;
 }
 
-void	hack::vehicleUpShift(feat* feature)
+void hack::vehicleUpShift(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -847,7 +847,7 @@ void	hack::vehicleUpShift(feat* feature)
 	return;
 }
 
-void	hack::batchSpread(feat* feature)
+void hack::batchSpread(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
@@ -865,7 +865,7 @@ void	hack::batchSpread(feat* feature)
 	return;
 }
 
-void	hack::vehicleSuspensionForce(feat* feature)
+void hack::vehicleSuspensionForce(feat* feature)
 {
 	if(!feature->m_bOn)
 	{
