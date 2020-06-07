@@ -26,7 +26,7 @@
 #define MAX_KEYS						0x10		//max indexed keys (keybinds)
 #define MAX_MENU_TABS					0x08		//max amount of overlay menu tabs
 #define MAX_MENU_FEATURES				0x60		//max amount of features
-#define MAX_MENU_FEATURES_DISPLAYED		0x0A		//max features displayed
+#define MAX_MENU_FEATURES_DISPLAYED		0x14		//max features displayed
 #define MENU_FEATURE_SCROLL_PADDING		0x02
 #define NAME_BUFFER_SIZE				0x20
 

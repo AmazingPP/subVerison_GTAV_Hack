@@ -26,6 +26,7 @@
 #define INITPTR_INVALID_PLAYER	1 << 1
 #define INITPTR_INVALID_VEHICLE	1 << 2
 #define INITPTR_INVALID_WEAPON	1 << 3
+#define INITPTR_INVALID_TUNABLE 1 << 4
 
 class trainer
 {
@@ -46,6 +47,7 @@ class hack : public trainer
 		player	m_player;
 		vehicle m_vehicle;
 		weapon	m_weapon;
+		tunable m_tunable;
 
 		HMODULE	m_hModule;
 
@@ -63,9 +65,13 @@ class hack : public trainer
 		void	notWanted();
 		void	killNpc();
 		void	fillAmmo();
+		void	healVehicle(float* arg);
+		void	healPlayer(float* arg);
 		void	suicide(float* arg);
 		void	fillAmmo(float* arg);
 		void	waterProof(feat* feature);
+		void	undeadOffradar(feat* feature);
+		void	superPunch(feat* feature);
 		void	noSpread(feat* feature);
 		void	noRecoil(feat* feature);
 		void	quickReload(feat* feature);
@@ -94,8 +100,19 @@ class hack : public trainer
 		void	vehicleUpShift(feat* feature);
 		void	batchSpread(feat* feature);
 		void	vehicleSuspensionForce(feat* feature);
-		//void	vehicleDisableDoors(feat* feature);
 		void	vehicleDownShift(feat* feature);
+		void	vehicleMass(feat* feature);
+		void	vehicleBuoyancy(feat* feature);
+		void	vehicleHandbrakeForce(feat* feature);
+		void	boost(feat* feature);
+		void	vehicleRocketRechargeSpeed(feat* feature);
+		void	vehicleSuspensionHeigh(feat* feature);
+		void	vehicleColisionDamageMult(feat* feature);
+		void	vehicleWeaponDamageMult(feat* feature);
+		void	vehicleEngineDamageMult(feat* feature);
+		void	tunableRpMult(feat* feature);
+		void	tunableApMult(feat* feature);
+		void	tunableMissionPayout(feat* feature);
 
 	private:
 		DWORD_PTR	m_dwpWorldBase,
@@ -104,7 +121,8 @@ class hack : public trainer
 					m_dwpAttackerBase,
 					m_dwpWeaponManager,
 					m_dwpWeaponCur,
-					m_dwpAmmoInfo;
+					m_dwpAmmoInfo,
+					m_dwpTunableBase;
 
 		void	getWaypoint();
 		void	getObjective();

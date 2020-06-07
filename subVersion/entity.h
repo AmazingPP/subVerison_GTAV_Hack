@@ -52,7 +52,8 @@ class player : public entity
 		float	m_flArmor,
 				m_flRunSpd,
 				m_flSwimSpd,
-				m_flWantedCanChange;
+				m_flWantedCanChange,
+				m_flVehicleDamageMult;
 		DWORD	m_dwWanted,
 				m_dwFrameFlags;
 		BYTE	m_btRagdoll,
@@ -62,7 +63,9 @@ class player : public entity
 
 		struct playerData
 		{
-			DWORD m_dwWaterProof;
+			bool	m_isInit;
+			DWORD	m_dwWaterProof;
+			float	m_maxHealth;
 		};
 		playerData	m_playerDataRestore,//the original values will be stored here.
 					m_playerDataCur;
@@ -73,6 +76,10 @@ class player : public entity
 		virtual	void	setHealth(float hp, float armor);
 				bool	loadPlayerData();
 				void	restorePlayerData();
+				void	getMaxHealth();
+				void	setMaxHealth(float hp);
+				void	getVehicleDamageMult();
+				void	setVehicleDamageMult(float value);
 				void	getWanted();
 				void	setWanted(DWORD stars);
 				void	getWantedCanChange();
@@ -100,19 +107,28 @@ class vehicle : public entity
 {
 	public:
 		curmax	m_cmHpVehicle;
-		float	m_fGravity;
+		float	m_fBoost,
+				m_fRocketRechargeSpeed,
+				m_fGravity;
 		BYTE	m_btBulletproofTires;
 
 		struct vehicleHandling
 		{
 			DWORD_PTR	m_dwpHandling = 0;
-			float		m_fAcceleration,
-						m_fBrakeForce,
-						m_fTractionCurveMin,
-						m_fDeformationDamageMult,
+			float		m_fMass,
+						m_fBuoyancy,
+						m_fAcceleration,
 						m_fUpShift,
 						m_fDownShift,
-						m_fSuspensionForce;
+						m_fBrakeForce,
+						m_fHandbrakeForce,
+						m_fTractionCurveMin,
+						m_fSuspensionForce,
+						m_fSuspensionHeigh,
+						m_fColisionDamageMult,
+						m_fWeaponDamageMult,
+						m_fDeformationDamageMult,
+						m_fEngineDamageMult;
 		};
 
 		vehicleHandling	m_handlingRestore,
@@ -124,14 +140,24 @@ class vehicle : public entity
 		void	setHealth(float hp);
 		bool	loadHandling();
 		void	restoreHandling();
+		void	getMass();
+		void	setMass(float value);
+		void	getBuoyancy();
+		void	setBuoyancy(float value);
 		void	getAcceleration();
 		void	setAcceleration(float value);
 		void	getBrakeForce();
 		void	setBrakeForce(float value);
+		void	getHandbrakeForce();
+		void	setHandbrakeForce(float value);
 		void	getTractionCurveMin();
 		void	setTractionCurveMin(float value);
 		void	getGravity();
 		void	setGravity(float value);
+		void	getBoost();
+		void	setBoost(float value);
+		void	getRocketRechargeSpeed();
+		void	setRocketRechargeSpeed(float value);
 		void	getBulletproofTires();
 		void	setBulletproofTires(BYTE value);
 		void	getDeformationDamageMult();
@@ -140,8 +166,14 @@ class vehicle : public entity
 		void	setUpShift(float value);
 		void	getSuspensionForce();
 		void	setSuspensionForce(float value);
-		//void	getOpenableDoors();
-		//void	setOpenableDoors(BYTE value);
+		void	getSuspensionHeigh();
+		void	setSuspensionHeigh(float value);
+		void	getColisionDamageMult();
+		void	setColisionDamageMult(float value);
+		void	getWeaponDamageMult();
+		void	setWeaponDamageMult(float value);
+		void	getEngineDamageMult();
+		void	setEngineDamageMult(float value);
 		void	getDownShift();
 		void	setDownShift(float value);
 };
@@ -208,4 +240,22 @@ class weapon
 					m_dwpCurAmmoBase;
 };
 
+class tunable
+{
+	public:
+		float		m_fRpMult,
+					m_fApMult,
+					m_fMinMissionPayout;
+				tunable();
+				~tunable();
+		void	restoreTunable();
+		void	getRpMult();
+		void	setRpMult(float value);
+		void	getApMult();
+		void	setApMult(float value);
+		void	getMinMissionPayout();
+		void	setMinMissionPayout(float value);
+
+		DWORD_PTR	m_dwpTunableBase;
+};
 #endif

@@ -160,6 +160,11 @@ BYTE hack::initPointers()
 	if(m_dwpWorldBase == 0)
 		return INITPTR_INVALID_WORLD;
 
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_hModule + ADDRESS_TUNABLE, &m_dwpTunableBase);
+	if (m_dwpTunableBase == 0)
+		return INITPTR_INVALID_TUNABLE;
+	m_tunable.m_dwpTunableBase		= m_dwpTunableBase;
+
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpWorldBase + OFFSET_PLAYER, &m_dwpPlayerBase);
 	if(m_dwpPlayerBase == 0)
 		return INITPTR_INVALID_PLAYER;
@@ -270,8 +275,8 @@ bool hack::teleportObjective()
 void hack::restoreHealth()
 {
 	m_player.getHealth();
-	if(m_player.m_flArmor < 50.f || m_player.m_cmHp.cur < m_player.m_cmHp.max)
-		m_player.setHealth(m_player.m_cmHp.max, 50.f);
+	if(m_player.m_flArmor < 100.f || m_player.m_cmHp.cur < m_player.m_cmHp.max)
+		m_player.setHealth(m_player.m_cmHp.max, 100.f);
 	return;
 }
 
@@ -331,6 +336,16 @@ void hack::fillAmmo()
 	return;
 }
 
+void hack::healVehicle(float* arg)
+{
+	restoreVehicleHealth();
+}
+
+void hack::healPlayer(float* arg)
+{
+	restoreHealth();
+}
+
 void hack::suicide(float* arg)
 {
 	m_player.setHealth(0, 0);
@@ -355,6 +370,42 @@ void hack::waterProof(feat* feature)
 	}
 	if (m_player.m_playerDataCur.m_dwWaterProof != m_player.m_playerDataRestore.m_dwWaterProof + 0x1000000)
 		m_player.setWaterProof(m_player.m_playerDataRestore.m_dwWaterProof + 0x1000000);
+	return;
+}
+
+void hack::undeadOffradar(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_player.m_playerDataCur.m_maxHealth != m_player.m_playerDataRestore.m_maxHealth)
+				m_player.setMaxHealth(m_player.m_playerDataRestore.m_maxHealth);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	if (m_player.m_playerDataCur.m_maxHealth > 0)
+		m_player.setMaxHealth(0);
+	return;
+}
+
+void hack::superPunch(feat* feature)
+{
+	if (!feature->m_bOn) 
+	{
+		if (!feature->m_bRestored)
+		{
+			m_player.getVehicleDamageMult();
+			if (m_player.m_flVehicleDamageMult != 1)
+				m_player.setVehicleDamageMult(1);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = static_cast<featSlider*>(feature)->m_fValue;
+	if (m_player.m_flVehicleDamageMult != fValue)
+		m_player.setVehicleDamageMult(fValue);
 	return;
 }
 
@@ -921,5 +972,230 @@ void	hack::vehicleDownShift(feat* feature)
 	float fValue = static_cast<featSlider*>(feature)->m_fValue;
 	if (m_vehicle.m_handlingCur.m_fDownShift != fValue)
 		m_vehicle.setDownShift(fValue);
+	return;
+}
+
+void hack::vehicleMass(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_vehicle.m_handlingCur.m_fMass != m_vehicle.m_handlingRestore.m_fMass)
+				m_vehicle.setMass(m_vehicle.m_handlingRestore.m_fMass);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = static_cast<featSlider*>(feature)->m_fValue;
+	if (m_vehicle.m_handlingCur.m_fMass != fValue)
+		m_vehicle.setMass(fValue);
+	return;
+}
+
+void hack::vehicleBuoyancy(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_vehicle.m_handlingCur.m_fBuoyancy != m_vehicle.m_handlingRestore.m_fBuoyancy)
+				m_vehicle.setBuoyancy(m_vehicle.m_handlingRestore.m_fBuoyancy);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = static_cast<featSlider*>(feature)->m_fValue;
+	if (m_vehicle.m_handlingCur.m_fBuoyancy != fValue)
+		m_vehicle.setBuoyancy(fValue);
+	return;
+}
+
+void hack::vehicleHandbrakeForce(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_vehicle.m_handlingCur.m_fHandbrakeForce != m_vehicle.m_handlingRestore.m_fHandbrakeForce)
+				m_vehicle.setHandbrakeForce(m_vehicle.m_handlingRestore.m_fHandbrakeForce);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = static_cast<featSlider*>(feature)->m_fValue;
+	if (m_vehicle.m_handlingCur.m_fHandbrakeForce != fValue)
+		m_vehicle.setHandbrakeForce(fValue);
+	return;
+}
+
+void hack::boost(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			m_vehicle.getBoost();
+			if (m_vehicle.m_fBoost != 1)
+				m_vehicle.setBoost(1);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	m_vehicle.getBoost();
+	if (m_vehicle.m_fBoost != 1)
+		m_vehicle.setBoost(1);
+	return;
+}
+
+void hack::vehicleRocketRechargeSpeed(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			m_vehicle.getRocketRechargeSpeed();
+			if (m_vehicle.m_fRocketRechargeSpeed != 0.5f)
+				m_vehicle.setRocketRechargeSpeed(0.5f);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	m_vehicle.getRocketRechargeSpeed();
+	float fValue = static_cast<featSlider*>(feature)->m_fValue;
+	if (m_vehicle.m_fRocketRechargeSpeed != fValue)
+		m_vehicle.setRocketRechargeSpeed(fValue);
+	return;
+}
+
+void hack::vehicleSuspensionHeigh(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_vehicle.m_handlingCur.m_fSuspensionHeigh != m_vehicle.m_handlingRestore.m_fSuspensionHeigh)
+				m_vehicle.setSuspensionHeigh(m_vehicle.m_handlingRestore.m_fSuspensionHeigh);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = static_cast<featSlider*>(feature)->m_fValue;
+	if (m_vehicle.m_handlingCur.m_fSuspensionHeigh != fValue)
+		m_vehicle.setSuspensionHeigh(fValue);
+	return;
+}
+
+void hack::vehicleColisionDamageMult(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_vehicle.m_handlingCur.m_fColisionDamageMult != m_vehicle.m_handlingRestore.m_fColisionDamageMult)
+				m_vehicle.setColisionDamageMult(m_vehicle.m_handlingRestore.m_fColisionDamageMult);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = static_cast<featSlider*>(feature)->m_fValue;
+	if (m_vehicle.m_handlingCur.m_fColisionDamageMult != fValue)
+		m_vehicle.setColisionDamageMult(fValue);
+	return;
+}
+
+void hack::vehicleWeaponDamageMult(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_vehicle.m_handlingCur.m_fWeaponDamageMult != m_vehicle.m_handlingRestore.m_fWeaponDamageMult)
+				m_vehicle.setWeaponDamageMult(m_vehicle.m_handlingRestore.m_fWeaponDamageMult);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = static_cast<featSlider*>(feature)->m_fValue;
+	if (m_vehicle.m_handlingCur.m_fWeaponDamageMult != fValue)
+		m_vehicle.setWeaponDamageMult(fValue);
+	return;
+}
+
+void hack::vehicleEngineDamageMult(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_vehicle.m_handlingCur.m_fEngineDamageMult != m_vehicle.m_handlingRestore.m_fEngineDamageMult)
+				m_vehicle.setEngineDamageMult(m_vehicle.m_handlingRestore.m_fEngineDamageMult);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = static_cast<featSlider*>(feature)->m_fValue;
+	if (m_vehicle.m_handlingCur.m_fEngineDamageMult != fValue)
+		m_vehicle.setEngineDamageMult(fValue);
+	return;
+}
+
+void hack::tunableRpMult(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			m_tunable.getRpMult();
+			if (m_tunable.m_fRpMult != 1)
+				m_tunable.setRpMult(1);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = static_cast<featSlider*>(feature)->m_fValue;
+	m_tunable.getRpMult();
+	if (m_tunable.m_fRpMult != fValue)
+		m_tunable.setRpMult(fValue);
+	return;
+}
+
+void hack::tunableApMult(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			m_tunable.getApMult();
+			if (m_tunable.m_fApMult != 1)
+				m_tunable.setApMult(1);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = static_cast<featSlider*>(feature)->m_fValue;
+	m_tunable.getApMult();
+	if (m_tunable.m_fApMult != fValue)
+		m_tunable.setApMult(fValue);
+	return;
+}
+
+void hack::tunableMissionPayout(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			m_tunable.getMinMissionPayout();
+			if (m_tunable.m_fMinMissionPayout != 0)
+				m_tunable.setMinMissionPayout(0);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = static_cast<featSlider*>(feature)->m_fValue;
+	m_tunable.getMinMissionPayout();
+	if (m_tunable.m_fMinMissionPayout != fValue)
+		m_tunable.setMinMissionPayout(fValue);
 	return;
 }

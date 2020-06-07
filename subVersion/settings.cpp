@@ -180,6 +180,10 @@ void settings::menuBack()
 		m_iFeatureCurDisplayOffset	= parent->m_iDisplayOffsetRet;
 		m_iActiveFeature			= parent->m_iActiveFeatureRet;
 	}
+	else
+	{
+		toggleMenu();
+	}
 	return;
 }
 

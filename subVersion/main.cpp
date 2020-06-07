@@ -79,18 +79,22 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeatureCategory("武器");		//1
 	g_pSettings->addFeatureCategory("载具");		//2
 	g_pSettings->addFeatureCategory("传送");		//3
+	g_pSettings->addFeatureCategory("参数");		//4
 	
 
 	g_iFeature[FEATURE_P_TRUEGOD]			= g_pSettings->addFeature(0, -1, "无敌", feat_toggle, "trueGodMode");
 	g_iFeature[FEATURE_P_GOD]				= g_pSettings->addFeature(0, -1, "半无敌", feat_toggle, "godMode");
+	g_iFeature[FEATURE_P_HEAL]				= addFeature(0, -1, "治疗", feat_btn, &hack::healPlayer, -1.f);
 	g_iFeature[FEATURE_P_SUICIDE]			= addFeature(0, -1, "自杀", feat_btn, &hack::suicide, -1.f);
 	g_iFeature[FEATURE_P_WANTED]			= g_pSettings->addFeature(0, -1, "通缉等级", feat_slider, "wanted", 0.f, 5.f, .2f);
 	g_iFeature[FEATURE_P_NEVERWANTED]		= g_pSettings->addFeature(0, -1, "永不通缉", feat_toggle, "neverWanted");
 	g_iFeature[FEATURE_P_ANTINPC]			= g_pSettings->addFeature(0, -1, "杀死攻击NPC", feat_toggle, "antiNpc");
 	g_iFeature[FEATURE_P_RUNSPD]			= g_pSettings->addFeature(0, -1, "奔跑速度", feat_slider, "runSpd", 1.f, 5.f);
 	g_iFeature[FEATURE_P_SWIMSPD]			= g_pSettings->addFeature(0, -1, "游泳速度", feat_slider, "swimSpd", 1.f, 5.f);
+	g_iFeature[FEATURE_P_SUPER_PUNCH]		= g_pSettings->addFeature(0, -1, "近战击退倍数", feat_slider, "superPunch", 0.f, 1000.f, (float)1.f / 10.f);
 	g_iFeature[FEATURE_P_SUPERJUMP]			= g_pSettings->addFeature(0, -1, "超级跳跃", feat_toggle, "superJump");
 	g_iFeature[FEATURE_P_EXPLOSIVEMELEE]	= g_pSettings->addFeature(0, -1, "爆炸近战", feat_toggle, "explMelee");
+	g_iFeature[FEATURE_P_UNDEAD_OFFRADAR]	= g_pSettings->addFeature(0, -1, "假死雷达隐匿", feat_toggle, "undeadOffradar");
 	g_iFeature[FEATURE_P_NORAGDOLL]			= g_pSettings->addFeature(0, -1, "无布娃娃", feat_toggle, "noRagdoll");
 	g_iFeature[FEATURE_P_WATER_PROOF]		= g_pSettings->addFeature(0, -1, "水下行走", feat_toggle, "waterProof");
 	g_iFeature[FEATURE_P_STAMINA]			= g_pSettings->addFeature(0, -1, "无限耐力", feat_toggle, "infStam");
@@ -100,7 +104,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_W_RECOIL]			= g_pSettings->addFeature(1, -1, "无后座", feat_toggle, "noRecoil");	
 	g_iFeature[FEATURE_W_NORELOAD]			= g_pSettings->addFeature(1, -1, "无需换弹", feat_toggle, "noReload");
 	g_iFeature[FEATURE_W_RELOAD]			= g_pSettings->addFeature(1, -1, "快速换弹", feat_slider, "quickReload", 1.f, 10.f);
-	g_iFeature[FEATURE_W_DAMAGE]			= g_pSettings->addFeature(1, -1, "武器伤害系数", feat_slider, "bulletDamage", 1.f, 10.f);
+	g_iFeature[FEATURE_W_DAMAGE]			= g_pSettings->addFeature(1, -1, "武器伤害倍数", feat_slider, "bulletDamage", 1.f, 10.f);
 	g_iFeature[FEATURE_W_AMMO]				= g_pSettings->addFeature(1, -1, "无限弹药", feat_toggle, "infAmmo");
 	g_iFeature[FEATURE_W_RANGE]				= g_pSettings->addFeature(1, -1, "射程", feat_slider, "weapRange", 1.f, 10.f);
 	g_iFeature[FEATURE_W_SPINUP]			= g_pSettings->addFeature(1, -1, "加特林无需预热", feat_toggle, "weapSpin");
@@ -112,18 +116,27 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 
 	g_iFeature[FEATURE_V_TRUEGOD]			= g_pSettings->addFeature(2, -1, "无敌", feat_toggle, "vehTrueGodMode");
 	g_iFeature[FEATURE_V_GOD]				= g_pSettings->addFeature(2, -1, "半无敌", feat_toggle, "vehGodMode");
+	g_iFeature[FEATURE_V_HEAL]				= addFeature(2, -1, "修复", feat_btn, &hack::healVehicle, -1.f);
 	g_iFeature[FEATURE_V_BULLETPROOFTIRES]	= g_pSettings->addFeature(2, -1, "防爆轮胎", feat_toggle, "vehBulletproofTires");
 	g_iFeature[FEATURE_V_SEATBELT]			= g_pSettings->addFeature(2, -1, "安全带", feat_toggle, "seatbelt");
 	g_iFeature[FEATURE_V_GRAVITY]			= g_pSettings->addFeature(2, -1, "重力", feat_slider, "vehGravity", 0.f, 25.f);
-	int handing = g_pSettings->addFeature(2, -1, "参数 >>", feat_parent);
-	g_iFeature[FEATURE_V_DEFORMATION]		= g_pSettings->addFeature(-1, handing, "变形系数", feat_slider, "vehDeform", 0.f, 1.f);
-	g_iFeature[FEATURE_V_ACCELERATION]		= g_pSettings->addFeature(-1, handing, "加速度", feat_slider, "vehAccel", 1.f, 10.f);
+	g_iFeature[FEATURE_V_BOOST]				= g_pSettings->addFeature(2, -1, "无限喷射", feat_toggle, "vehBoost");
+	g_iFeature[FEATURE_V_RECHARGE_SPEED]	= g_pSettings->addFeature(2, -1, "喷射恢复速度", feat_slider, "vehRrchargeSpeed", .5f, 5.f);
+	int handing = g_pSettings->addFeature(2, -1, "属性 >>", feat_parent);
+	g_iFeature[FEATURE_V_MASS]				= g_pSettings->addFeature(-1, handing, "质量", feat_slider, "vehMass", 0.f, 1000000.f);
+	g_iFeature[FEATURE_V_BUOYANCY]			= g_pSettings->addFeature(-1, handing, "浮力", feat_slider, "vehBuoyancy", 0.f, 1000.f);
+	g_iFeature[FEATURE_V_ACCELERATION]		= g_pSettings->addFeature(-1, handing, "加速度", feat_slider, "vehAccel", 1.f, 1000.f);
 	g_iFeature[FEATURE_V_UPSHIFT]			= g_pSettings->addFeature(-1, handing, "加挡速度", feat_slider, "vehUpShift", 1.f, 25.f);
 	g_iFeature[FEATURE_V_DOWNSHIFT]			= g_pSettings->addFeature(-1, handing, "减档速度", feat_slider, "vehDownShift", 1.f, 25.f);
-	g_iFeature[FEATURE_V_BRAKEFORCE]		= g_pSettings->addFeature(-1, handing, "刹车制动力", feat_slider, "vehBrakeForce", 1.f, 10.f);
-	g_iFeature[FEATURE_V_TRACTION]			= g_pSettings->addFeature(-1, handing, "牵引力", feat_slider, "vehTraction", 1.f, 2.f);
-	g_iFeature[FEATURE_V_SUSPENSION_FORCE]	= g_pSettings->addFeature(-1, handing, "悬挂", feat_slider, "vehSuspensionForce", 0.f, 2.f);
-	//g_iFeature[FEATURE_V_DISABLE_DOORS]		= g_pSettings->addFeature(2, -1, "Disable Doors", feat_toggle, "vehDisableDoors");
+	g_iFeature[FEATURE_V_BRAKEFORCE]		= g_pSettings->addFeature(-1, handing, "刹车制动力", feat_slider, "vehBrakeForce", 1.f, 25.f);
+	g_iFeature[FEATURE_V_HANDBRAKEFORCE]	= g_pSettings->addFeature(-1, handing, "手刹制动力", feat_slider, "vehBuoyancy", 1.f, 25.f);
+	g_iFeature[FEATURE_V_TRACTION]			= g_pSettings->addFeature(-1, handing, "牵引力", feat_slider, "vehTraction", 1.f, 25.f);
+	g_iFeature[FEATURE_V_SUSPENSION_FORCE]	= g_pSettings->addFeature(-1, handing, "悬挂支撑力", feat_slider, "vehSuspensionForce", 0.f, 25.f);
+	g_iFeature[FEATURE_V_SUSPENSION_HEIGH]	= g_pSettings->addFeature(-1, handing, "悬挂高度", feat_slider, "vehSuspensionHeigh", 0.f, 1.f);
+	g_iFeature[FEATURE_V_COLISION_DAMAGE_MP]= g_pSettings->addFeature(-1, handing, "撞击伤害倍数", feat_slider, "vehColisionDamage", 0.f, 25.f);
+	g_iFeature[FEATURE_V_WEAPON_DAMAGE_MP]	= g_pSettings->addFeature(-1, handing, "武器伤害倍数", feat_slider, "vehWeaponDamage", 0.f, 25.f);	
+	g_iFeature[FEATURE_V_DEFORMATION]		= g_pSettings->addFeature(-1, handing, "变形系数", feat_slider, "vehDeform", 0.f, 25.f);
+	g_iFeature[FEATURE_V_ENGINE_DAMAGE_MP]	= g_pSettings->addFeature(-1, handing, "引擎伤害倍数", feat_slider, "vehEngineDamage", 0.f, 25.f);
 
 	g_pSettings->addFeature(3, -1, "导航点", feat_teleport, tp_waypoint);
 	g_pSettings->addFeature(3, -1, "目标点", feat_teleport, tp_objective);
@@ -157,6 +170,10 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeature(3, -1, "LS机场", feat_teleport, tp_static, -1336.f, -3044.f, -225.f);//14.15f);
 	g_pSettings->addFeature(3, -1, "桑迪海岸机场", feat_teleport, tp_static, 1747.f, 3273.f, -225.f);//41.35f);
 	g_pSettings->addFeature(3, -1, "千年山", feat_teleport, tp_static, 489.979f, 5587.527f, 794.3f);
+
+	g_iFeature[FEATURE_T_RP_MP]			   = g_pSettings->addFeature(4, -1, "RP倍数", feat_slider,"RP", 1.f, 1000.f , (float)1.f / 9.f);
+	g_iFeature[FEATURE_T_AP_MP]			   = g_pSettings->addFeature(4, -1, "AP倍数", feat_slider, "AP", 1.f, 1000.f, (float)1.f / 9.f);
+	g_iFeature[FEATURE_T_MISSION_PAYOUT]   = g_pSettings->addFeature(4, -1, "最小任务金额", feat_slider, "MinMissionPayout", 0.f, 100000.f);
 
 	g_pSettings->setActiveCat(0);			//this needs to be called so we can fill the current feature buffer
 
@@ -330,8 +347,10 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 			g_pHack->godMode(g_pSettings->getFeature(g_iFeature[FEATURE_P_TRUEGOD]));
 			g_pHack->noRagdoll(g_pSettings->getFeature(g_iFeature[FEATURE_P_NORAGDOLL]));
 			g_pHack->seatbelt(g_pSettings->getFeature(g_iFeature[FEATURE_V_SEATBELT]));
+			g_pHack->superPunch(g_pSettings->getFeature(g_iFeature[FEATURE_P_SUPER_PUNCH]));
 			if (g_pHack->m_player.loadPlayerData())
 			{
+				g_pHack->undeadOffradar(g_pSettings->getFeature(g_iFeature[FEATURE_P_UNDEAD_OFFRADAR]));
 				g_pHack->waterProof(g_pSettings->getFeature(g_iFeature[FEATURE_P_WATER_PROOF]));
 			}
 
@@ -349,7 +368,8 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->vehicleGod(g_pSettings->getFeature(g_iFeature[FEATURE_V_TRUEGOD]));
 				g_pHack->vehicleGravity(g_pSettings->getFeature(g_iFeature[FEATURE_V_GRAVITY]));
 				g_pHack->vehicleBulletproofTires(g_pSettings->getFeature(g_iFeature[FEATURE_V_BULLETPROOFTIRES]));
-				//g_pHack->vehicleDisableDoors(g_pSettings->getFeature(g_iFeature[FEATURE_V_DISABLE_DOORS]));			THIS ONLY WORKS CLIENT SIDE
+				g_pHack->boost(g_pSettings->getFeature(g_iFeature[FEATURE_V_BOOST]));
+				g_pHack->vehicleRocketRechargeSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_V_RECHARGE_SPEED]));
 
 				if(g_pHack->m_vehicle.loadHandling())
 				{
@@ -360,6 +380,13 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 					g_pHack->vehicleUpShift(g_pSettings->getFeature(g_iFeature[FEATURE_V_UPSHIFT]));
 					g_pHack->vehicleDownShift(g_pSettings->getFeature(g_iFeature[FEATURE_V_DOWNSHIFT]));
 					g_pHack->vehicleSuspensionForce(g_pSettings->getFeature(g_iFeature[FEATURE_V_SUSPENSION_FORCE]));
+					g_pHack->vehicleMass(g_pSettings->getFeature(g_iFeature[FEATURE_V_MASS]));
+					g_pHack->vehicleBuoyancy(g_pSettings->getFeature(g_iFeature[FEATURE_V_BUOYANCY]));
+					g_pHack->vehicleHandbrakeForce(g_pSettings->getFeature(g_iFeature[FEATURE_V_HANDBRAKEFORCE]));
+					g_pHack->vehicleSuspensionHeigh(g_pSettings->getFeature(g_iFeature[FEATURE_V_SUSPENSION_HEIGH]));
+					g_pHack->vehicleColisionDamageMult(g_pSettings->getFeature(g_iFeature[FEATURE_V_COLISION_DAMAGE_MP]));
+					g_pHack->vehicleWeaponDamageMult(g_pSettings->getFeature(g_iFeature[FEATURE_V_WEAPON_DAMAGE_MP]));
+					g_pHack->vehicleEngineDamageMult(g_pSettings->getFeature(g_iFeature[FEATURE_V_ENGINE_DAMAGE_MP]));
 				}
 			}
 
@@ -376,6 +403,13 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->muzzleVelocity(g_pSettings->getFeature(g_iFeature[FEATURE_W_MUZZLE_VELOCITY]));
 				g_pHack->infAmmo(g_pSettings->getFeature(g_iFeature[FEATURE_W_AMMO]));
 				g_pHack->noReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_NORELOAD]));
+			}
+
+			if (!(btInit & INITPTR_INVALID_TUNABLE))
+			{
+				g_pHack->tunableRpMult(g_pSettings->getFeature(g_iFeature[FEATURE_T_RP_MP]));
+				g_pHack->tunableApMult(g_pSettings->getFeature(g_iFeature[FEATURE_T_AP_MP]));
+				g_pHack->tunableMissionPayout(g_pSettings->getFeature(g_iFeature[FEATURE_T_MISSION_PAYOUT]));
 			}
 		}
 		Sleep(1);

@@ -97,15 +97,44 @@ bool player::loadPlayerData()
 {
 	if (m_dwpBase == 0)
 		return 0;
+	m_playerDataCur.m_isInit = true;
+	this->getMaxHealth();
 	this->getWaterProof();
-
-	m_playerDataRestore = m_playerDataCur;
+	if (m_playerDataCur.m_isInit != m_playerDataRestore.m_isInit)
+	{
+		m_playerDataRestore = m_playerDataCur;
+	}
 	return 1;
 }
 
 void player::restorePlayerData()
 {
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_dwpBase + OFFSET_ENTITY_HEALTH_MAX, &m_playerDataRestore.m_maxHealth);
 	g_pMemMan->writeMem<DWORD>((DWORD_PTR)m_dwpBase + OFFSET_PLAYER_WATER_PROOF, &m_playerDataRestore.m_dwWaterProof);
+}
+
+void player::getMaxHealth()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_dwpBase + OFFSET_ENTITY_HEALTH_MAX, &m_playerDataCur.m_maxHealth);
+	return;
+}
+
+void player::setMaxHealth(float hp)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_dwpBase + OFFSET_ENTITY_HEALTH_MAX, &hp);
+	return;
+}
+
+void player::getVehicleDamageMult()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_dwpPlayerInfo + OFFSET_PLAYER_VEHICLE_DAMAGE_MP, &m_flVehicleDamageMult);
+	return;
+}
+
+void player::setVehicleDamageMult(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_dwpPlayerInfo + OFFSET_PLAYER_VEHICLE_DAMAGE_MP, &value);
+	return;
 }
 
 void player::getWanted()
@@ -237,8 +266,8 @@ vehicle::~vehicle()
 {
 	this->restoreHandling();
 	this->setGravity(9.8f);
-	//if(m_btOpenableDoors[0] != m_btOpenableDoors[1])
-	//	this->setOpenableDoors(m_btOpenableDoors[1]);
+	this->setBoost(1.f);
+	this->setRocketRechargeSpeed(0.5f);
 }
 
 void vehicle::getHealth()
@@ -252,6 +281,7 @@ void vehicle::setHealth(float hp)
 {
 	entity::setHealth(hp);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_HEALTH, &hp);
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_dwpBase + OFFSET_VEHICLE_HEALTH2, &hp);
 	return;
 }
 
@@ -259,13 +289,20 @@ bool vehicle::loadHandling()
 {
 	if(m_dwpBase == 0)
 		return 0;
+	this->getMass();
+	this->getBuoyancy();
 	this->getAcceleration();
 	this->getBrakeForce();
+	this->getHandbrakeForce();
 	this->getTractionCurveMin();
 	this->getDeformationDamageMult();
+	this->getColisionDamageMult();
+	this->getWeaponDamageMult();
+	this->getEngineDamageMult();
 	this->getUpShift();
 	this->getDownShift();
 	this->getSuspensionForce();
+	this->getSuspensionHeigh();
 	if(m_handlingCur.m_dwpHandling != m_handlingRestore.m_dwpHandling)
 	{
 		if(m_handlingRestore.m_dwpHandling != 0)
@@ -277,13 +314,44 @@ bool vehicle::loadHandling()
 
 void vehicle::restoreHandling()
 {
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_MASS, &m_handlingRestore.m_fMass);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_BUOYANCY, &m_handlingRestore.m_fBuoyancy);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_ACCELERATION, &m_handlingRestore.m_fAcceleration);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_BRAKEFORCE, &m_handlingRestore.m_fBrakeForce);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_HANDBRAKEFORCE, &m_handlingRestore.m_fHandbrakeForce);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN, &m_handlingRestore.m_fTractionCurveMin);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_DEFORM_MULTIPLIER, &m_handlingRestore.m_fDeformationDamageMult);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_COLISION_DAMAGE_MP, &m_handlingRestore.m_fColisionDamageMult);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_WEAPON_DAMAGE_MP, &m_handlingRestore.m_fWeaponDamageMult);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_ENGINE_DAMAGE_MP, &m_handlingRestore.m_fEngineDamageMult);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_UPSHIFT, &m_handlingRestore.m_fUpShift);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_DOWNSHIFT, &m_handlingRestore.m_fDownShift);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_SUSPENSION_FORCE, &m_handlingRestore.m_fSuspensionForce);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_SUSPENSION_HEIGH, &m_handlingRestore.m_fSuspensionHeigh);
+	return;
+}
+
+void vehicle::getMass()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_MASS, &m_handlingCur.m_fMass);
+	return;
+}
+
+void vehicle::setMass(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_MASS, &value);
+	return;
+}
+
+void vehicle::getBuoyancy()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_BUOYANCY, &m_handlingCur.m_fBuoyancy);
+	return;
+}
+
+void vehicle::setBuoyancy(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_BUOYANCY, &value);
 	return;
 }
 
@@ -311,6 +379,18 @@ void vehicle::setBrakeForce(float value)
 	return;
 }
 
+void vehicle::getHandbrakeForce()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_HANDBRAKEFORCE, &m_handlingCur.m_fHandbrakeForce);
+	return;
+}
+
+void vehicle::setHandbrakeForce(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_HANDBRAKEFORCE, &value);
+	return;
+}
+
 void vehicle::getTractionCurveMin()
 {
 	g_pMemMan->readMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN, &m_handlingCur.m_fTractionCurveMin);
@@ -332,6 +412,30 @@ void vehicle::getGravity()
 void vehicle::setGravity(float value)
 {
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_GRAVITY, &value);
+	return;
+}
+
+void vehicle::getBoost()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_dwpBase + OFFSET_VEHICLE_BOOST, &m_fBoost);
+	return;
+}
+
+void vehicle::setBoost(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_dwpBase + OFFSET_VEHICLE_BOOST, &value);
+	return;
+}
+
+void vehicle::getRocketRechargeSpeed()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_dwpBase + OFFSET_VEHICLE_RECHARGE_SPEED, &m_fRocketRechargeSpeed);
+	return;
+}
+
+void vehicle::setRocketRechargeSpeed(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_dwpBase + OFFSET_VEHICLE_RECHARGE_SPEED, &value);
 	return;
 }
 
@@ -380,6 +484,54 @@ void vehicle::getSuspensionForce()
 void vehicle::setSuspensionForce(float value)
 {
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_SUSPENSION_FORCE, &value);
+	return;
+}
+
+void vehicle::getSuspensionHeigh()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_SUSPENSION_HEIGH, &m_handlingCur.m_fSuspensionHeigh);
+	return;
+}
+
+void vehicle::setSuspensionHeigh(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_SUSPENSION_HEIGH, &value);
+	return;
+}
+
+void vehicle::getColisionDamageMult()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_COLISION_DAMAGE_MP, &m_handlingCur.m_fColisionDamageMult);
+	return;
+}
+
+void vehicle::setColisionDamageMult(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_COLISION_DAMAGE_MP, &value);
+	return;
+}
+
+void vehicle::getWeaponDamageMult()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_WEAPON_DAMAGE_MP, &m_handlingCur.m_fWeaponDamageMult);
+	return;
+}
+
+void vehicle::setWeaponDamageMult(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_WEAPON_DAMAGE_MP, &value);
+	return;
+}
+
+void vehicle::getEngineDamageMult()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_ENGINE_DAMAGE_MP, &m_handlingCur.m_fEngineDamageMult);
+	return;
+}
+
+void vehicle::setEngineDamageMult(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_ENGINE_DAMAGE_MP, &value);
 	return;
 }
 
@@ -632,5 +784,62 @@ void weapon::getBatchSpread()
 void weapon::setBatchSpread(float value)
 {
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_BATCH_SPREAD, &value);
+	return;
+}
+
+
+/*
+	TUNABLE
+*/
+
+tunable::tunable()
+{
+}
+
+tunable::~tunable() 
+{
+	this->restoreTunable();
+}
+
+void tunable::restoreTunable()
+{
+	setRpMult(1);
+	setApMult(1);
+	setMinMissionPayout(0);
+}
+
+void tunable::getRpMult()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpTunableBase + OFFSET_TUNABLE_RP_MULTIPLIER, &m_fRpMult);
+	return;
+}
+
+void tunable::setRpMult(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_RP_MULTIPLIER, &value);
+	return;
+}
+
+void tunable::getApMult()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_AP_MULTIPLIER, &m_fApMult);
+	return;
+}
+
+void tunable::setApMult(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_AP_MULTIPLIER, &value);
+	return;
+}
+
+void tunable::getMinMissionPayout()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_MIN_MISSION_PAYOUT, &m_fMinMissionPayout);
+	return;
+}
+
+void tunable::setMinMissionPayout(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_MIN_MISSION_PAYOUT, &value);
 	return;
 }
