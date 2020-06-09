@@ -178,6 +178,48 @@ class vehicle : public entity
 		void	setDownShift(float value);
 };
 
+enum ImpactTypeEnum
+{
+	Fists = 2,
+	Bullets = 3,
+	Explosives = 5,
+};
+
+enum ImpactExplosionEnum
+{
+	DefaultBullets = 4294967295,
+	GrenadeExplosion = 1,
+	StickyBombExplosion = 2,
+	MoltovCoctailExplosion = 3,
+	SuperLauncher = 59,
+	LightningExplosion = 58,
+	BigExplosion = 4,
+	MediumExplosion = 40,
+	TinyExplosion = 25,
+	BigFireyExplosion = 5,
+	SmallWaterSpray = 11,
+	SmallFireSpray = 12,
+	BigWaterSpray = 13,
+	BigFireSpray = 14,
+	MK2ExplosiveBullets = 18,
+	SmokeGrenade = 19,
+	TearGas = 20,
+	TearGas2 = 21,
+	RedFlareSmoke = 22,
+	CoolGroundExplosion = 23,
+	CRAZYSHOCKWAVEEXPLOSION = 26,
+	HUGEFireyExplosion = 28,
+	MassiveBlimpExplosion = 29,
+	MassiveBlimpExplosion2 = 37,
+	LargeExplosionFallingDebris = 31,
+	FireBallExplosion = 32,
+	FireworkExplosion = 38,
+	SnowballHit = 39,
+	TinyExplosions2 = 33,
+	JustScreenShake = 41,
+	SPOOFEXPLOSION = 99
+};
+
 class weapon
 {
 	public:
@@ -187,7 +229,9 @@ class weapon
 		struct weaponData
 		{
 			DWORD		m_dwHash = 0,
-						m_dwBulletBatch;
+						m_dwBulletBatch,
+						m_dwImpactType,
+						m_dwImpactExplosion;
 			DWORD_PTR	m_dwpWeapon	= 0;
 			float		m_fSpread,		
 						m_fRecoil,
@@ -198,6 +242,10 @@ class weapon
 						m_fSpinUp,
 						m_fSpin,
 						m_fMuzzleVelocity,
+						m_fPenetration,
+						m_fForceOnPed,
+						m_fForceOnVehicle,
+						m_fForceOnHeli,
 						m_fBatchSpread;
 		};
 
@@ -224,6 +272,12 @@ class weapon
 		void	setSpinUp(float value);
 		void	getSpin();
 		void	setSpin(float value);
+		void	getForceOnPed();
+		void	setForceOnPed(float value);
+		void	getForceOnVehicle();
+		void	setForceOnVehicle(float value);
+		void	getForceOnHeli();
+		void	setForceOnHeli(float value);
 		void	getHash();
 		bool	findAmmoBase();
 		void	getCurAmmo();
@@ -231,6 +285,10 @@ class weapon
 		void	getMaxAmmo();
 		void	getBulletBatch();
 		void	setBulletBatch(DWORD value);
+		void	getImpactType();
+		void	setImpactType(DWORD  value);
+		void	getImpactExplosion();
+		void	setImpactExplosion(DWORD  value);
 		void	getMuzzleVelocity();
 		void	setMuzzleVelocity(float value);
 		void	getBatchSpread();

@@ -88,7 +88,7 @@ void hack::checkKeys()
 	}
 	if(checkKeyState(g_pSettings->m_iKeys[keyHotAmmo]))
 	{
-		g_pHack->fillAmmo();
+		g_pHack->fillAllAmmo(NULL);
 		return;
 	}
 
@@ -183,9 +183,10 @@ BYTE hack::initPointers()
 		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpVehicleBase + OFFSET_VEHICLE_HANDLING, &m_vehicle.m_handlingCur.m_dwpHandling);
 	}
 
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_hModule + ADDRESS_WEAPON, &m_dwpWeaponBase);
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpPlayerBase + OFFSET_WEAPON_MANAGER, &m_dwpWeaponManager);
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpWeaponManager + OFFSET_WEAPON_CURRENT, &m_dwpWeaponCur);
-	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
+	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0 || m_dwpWeaponBase == 0)
 		r |=	INITPTR_INVALID_WEAPON;
 	else
 	{
@@ -303,6 +304,9 @@ void hack::notWanted()
 	if(m_player.m_dwWanted == 0)
 		return;
 	m_player.setWanted(0);
+	feat* fpWanted = g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED]);
+	if (fpWanted->m_bOn)
+		fpWanted->toggle();
 	return;
 }
 
@@ -334,6 +338,34 @@ void hack::fillAmmo()
 	if(m_weapon.m_dwCurAmmo != m_weapon.m_dwMaxAmmo)
 		m_weapon.setCurAmmo(m_weapon.m_dwMaxAmmo);
 	return;
+}
+
+void hack::setImpactExplosion(float* arg)
+{
+	this->m_explosion = (ImpactExplosionEnum)((DWORD)*arg);
+}
+
+void hack::fillAllAmmo(float* arg)
+{
+	for (size_t i = 0; i < 0xFFF; i++)
+	{
+		DWORD_PTR dwpWeapon,dwpAmmoInfo, dwpAmmoPtr1, dwpAmmoPtr2;
+		DWORD dwCurAmmo,dwMaxAmmo,test = 9999;
+		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpWeaponBase + i, &dwpWeapon);
+		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)dwpWeapon + OFFSET_WEAPON_AMMOINFO, &dwpAmmoInfo);
+
+		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)dwpAmmoInfo + OFFSET_WEAPON_AMMOINFO_CUR_1, &dwpAmmoPtr1);
+		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)dwpAmmoPtr1 + OFFSET_WEAPON_AMMOINFO_CUR_2, &dwpAmmoPtr2);
+		g_pMemMan->readMem<DWORD>((DWORD_PTR)dwpAmmoPtr2 + OFFSET_WEAPON_AMMOINFO_CURAMMO, &dwCurAmmo);
+		if (dwCurAmmo >= 0 && dwCurAmmo <= 9999)
+		{
+			g_pMemMan->readMem<DWORD>((DWORD_PTR)dwpAmmoInfo + OFFSET_WEAPON_AMMOINFO_MAX, &dwMaxAmmo);
+			if (dwMaxAmmo >= 20 && dwMaxAmmo <= 9999 && dwCurAmmo != dwMaxAmmo)
+			{
+				g_pMemMan->writeMem<DWORD>((DWORD_PTR)dwpAmmoPtr2 + OFFSET_WEAPON_AMMOINFO_CURAMMO, &test);
+			}
+		}
+	}
 }
 
 void hack::healVehicle(float* arg)
@@ -522,6 +554,81 @@ void hack::weaponSpin(feat* feature)
 		m_weapon.setSpin(0);
 		m_weapon.setSpinUp(0);
 	}
+	return;
+}
+
+void hack::weaponForceOnPed(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_weapon.m_weapDataCur.m_fForceOnPed != m_weapon.m_weapDataRestore.m_fForceOnPed)
+				m_weapon.setForceOnPed(m_weapon.m_weapDataRestore.m_fForceOnPed);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = m_weapon.m_weapDataRestore.m_fForceOnPed * static_cast<featSlider*>(feature)->m_fValue;
+	if (m_weapon.m_weapDataCur.m_fForceOnPed != fValue)
+		m_weapon.setForceOnPed(fValue);
+	return;
+}
+
+void hack::weaponForceOnVehicle(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_weapon.m_weapDataCur.m_fForceOnVehicle != m_weapon.m_weapDataRestore.m_fForceOnVehicle)
+				m_weapon.setForceOnVehicle(m_weapon.m_weapDataRestore.m_fForceOnVehicle);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = m_weapon.m_weapDataRestore.m_fForceOnVehicle * static_cast<featSlider*>(feature)->m_fValue;
+	if (m_weapon.m_weapDataCur.m_fForceOnVehicle != fValue)
+		m_weapon.setForceOnVehicle(fValue);
+	return;
+}
+
+void hack::weaponForceOnHeli(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_weapon.m_weapDataCur.m_fForceOnHeli != m_weapon.m_weapDataRestore.m_fForceOnHeli)
+				m_weapon.setForceOnHeli(m_weapon.m_weapDataRestore.m_fForceOnHeli);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = m_weapon.m_weapDataRestore.m_fForceOnHeli * static_cast<featSlider*>(feature)->m_fValue;
+	if (m_weapon.m_weapDataCur.m_fForceOnHeli != fValue)
+		m_weapon.setForceOnHeli(fValue);
+	return;
+}
+
+void hack::weaponBulletEdit(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_weapon.m_weapDataCur.m_dwImpactType != m_weapon.m_weapDataRestore.m_dwImpactType)
+				m_weapon.setImpactType(m_weapon.m_weapDataRestore.m_dwImpactType);
+			if (m_weapon.m_weapDataCur.m_dwImpactExplosion != ImpactExplosionEnum::DefaultBullets)
+				m_weapon.setImpactExplosion(ImpactExplosionEnum::DefaultBullets);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	if (m_weapon.m_weapDataCur.m_dwImpactType != 0 && m_weapon.m_weapDataCur.m_dwImpactType != ImpactTypeEnum::Fists)
+		m_weapon.setImpactType(ImpactTypeEnum::Explosives);
+	if (m_weapon.m_weapDataCur.m_dwImpactType != 0 && m_explosion != 0)
+		m_weapon.setImpactExplosion(m_explosion);
 	return;
 }
 
@@ -820,8 +927,13 @@ void hack::wanted(feat* feature)
 		return;
 	m_player.getWanted();
 	float fValue	= static_cast<featSlider*>(feature)->m_fValue;
-	if(m_player.m_dwWanted != (DWORD) fValue)
-		m_player.setWanted((DWORD) fValue);
+	if (m_player.m_dwWanted != (DWORD)fValue)
+	{
+		m_player.setWanted((DWORD)fValue);
+		feat* fpNeverWanted = g_pSettings->getFeature(g_iFeature[FEATURE_P_NEVERWANTED]);
+		if (fpNeverWanted->m_bOn)
+			fpNeverWanted->toggle();
+	}
 	return;
 }
 

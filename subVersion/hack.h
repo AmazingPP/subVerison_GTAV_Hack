@@ -27,7 +27,6 @@
 #define INITPTR_INVALID_VEHICLE	1 << 2
 #define INITPTR_INVALID_WEAPON	1 << 3
 #define INITPTR_INVALID_TUNABLE 1 << 4
-
 class trainer
 {
 	public:
@@ -48,6 +47,7 @@ class hack : public trainer
 		vehicle m_vehicle;
 		weapon	m_weapon;
 		tunable m_tunable;
+		ImpactExplosionEnum m_explosion;
 
 		HMODULE	m_hModule;
 
@@ -65,6 +65,8 @@ class hack : public trainer
 		void	notWanted();
 		void	killNpc();
 		void	fillAmmo();
+		void	setImpactExplosion(float* arg);
+		void	fillAllAmmo(float* arg);
 		void	healVehicle(float* arg);
 		void	healPlayer(float* arg);
 		void	suicide(float* arg);
@@ -78,6 +80,10 @@ class hack : public trainer
 		void	bulletDamage(feat* feature);
 		void	weaponRange(feat* feature);
 		void	weaponSpin(feat* feature);
+		void	weaponForceOnPed(feat* feature);
+		void	weaponForceOnVehicle(feat* feature);
+		void	weaponForceOnHeli(feat* feature);
+		void	weaponBulletEdit(feat* feature);
 		void	runSpeed(feat* feature);
 		void	swimSpeed(feat* feature);
 		void	godMode(feat* feature);
@@ -122,6 +128,7 @@ class hack : public trainer
 					m_dwpWeaponManager,
 					m_dwpWeaponCur,
 					m_dwpAmmoInfo,
+					m_dwpWeaponBase,
 					m_dwpTunableBase;
 
 		void	getWaypoint();

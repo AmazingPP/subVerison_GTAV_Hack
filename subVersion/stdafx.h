@@ -132,14 +132,10 @@
 #define OFFSET_WEAPON_BATCH_SPREAD		0x74			//fBatchSpread
 #define OFFSET_WEAPON_IMPACT_TYPE		0x20			//dwImpactType; 1: Fists,3; Bullets,5: Explosives
 #define OFFSET_WEAPON_IMPACT_EXPLOSION	0x24			//dwImpactExplosion
-#define OFFSET_WEAPON_BULLET_DAMAGE		0xB0			//fBulletDamage
-#define OFFSET_WEAPON_MUZZLE_FLASH_SIZE 0x1D4			//fMuzzleFlashSize
 #define OFFSET_WEAPON_PENETRATION		0x108			//fPenetration
 #define OFFSET_WEAPON_FORCE_ON_PED		0xD4			//fForceOnPed
 #define OFFSET_WEAPON_FORCE_ON_VEHICLE	0xD8			//fForceOnVehicle(Bullet Mass)
 #define OFFSET_WEAPON_FORCE_ON_HELI		0xDC			//fForceOnHeli
-#define OFFSET_WEAPON_ROCKET_SPEED		0x58			//Rocket Speed (25000 instant);float
-#define OFFSET_WEAPON_GRAVITY			0x68			//fThrowablesGravity
 
 
 //tunable offsets
@@ -207,6 +203,11 @@
 #define FEATURE_T_RP_MP				0x35
 #define FEATURE_T_AP_MP				0x36
 #define FEATURE_T_MISSION_PAYOUT	0x37
+#define FEATURE_W_FILL_ALL_AMMO		0x38
+#define FEATURE_W_FORCE_ON_PED		0x39
+#define FEATURE_W_FORCE_ON_VEHICLE	0x3A
+#define FEATURE_W_FORCE_ON_HELI		0x3B
+#define FEATURE_W_BULLET_EDIT		0x3C
 
 void	killProgram	();
 DWORD	strToVk(std::string str);
@@ -224,4 +225,5 @@ extern long		ADDRESS_WAYPOINT;			//4C 8D 05 ? ? ? ? 0F B7 C1
 extern long		ADDRESS_AMMO;				//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
 extern long		ADDRESS_MAGAZINE;			//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
 extern long		ADDRESS_TUNABLE;
+extern long		ADDRESS_WEAPON;
 #endif

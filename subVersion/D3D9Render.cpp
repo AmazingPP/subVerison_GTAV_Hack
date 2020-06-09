@@ -162,7 +162,7 @@ bool	D3D9Render::render()
 				float		mod	= (slider->m_fValue - slider->m_fMin) / (slider->m_fMax - slider->m_fMin);
 				this->drawBoxBorder(x, y, w, h, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_SLIDER_BG, LAYOUT_COLOR_BORDER);
 				this->drawBoxBorder(x + (int) (mod * (w - h)), y, h, h, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_SLIDER_BTN, LAYOUT_COLOR_BORDER);
-				this->drawText(floatToString(slider->m_fValue), x, y, w - 1, h, 0, LAYOUT_COLOR_VALUE_TEXT, DT_CENTER | DT_VCENTER);
+				//this->drawText(floatToString(slider->m_fValue), x, y, w - 1, h, 0, LAYOUT_COLOR_VALUE_TEXT, DT_CENTER | DT_VCENTER);
 			}
 		}
 

@@ -616,12 +616,17 @@ bool weapon::loadWeapon()
 	this->getBulletDamage();
 	this->getReloadSpeed();
 	this->getReloadVehicle();
+	this->getForceOnPed();
+	this->getForceOnVehicle();
+	this->getForceOnHeli();
 	this->getRecoil();
 	this->getSpread();
 	this->getRange();
 	this->getSpinUp();
 	this->getSpin();
 	this->getBulletBatch();
+	this->getImpactType();
+	this->getImpactExplosion();
 	this->getMuzzleVelocity();
 	this->getBatchSpread();
 	if(m_weapDataCur.m_dwHash != m_weapDataRestore.m_dwHash)
@@ -643,7 +648,12 @@ void weapon::restoreWeapon()
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_RANGE, &m_weapDataRestore.m_fRange);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_SPINUP, &m_weapDataRestore.m_fSpinUp);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_SPIN, &m_weapDataRestore.m_fSpin);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_FORCE_ON_PED, &m_weapDataRestore.m_fForceOnPed);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_FORCE_ON_VEHICLE, &m_weapDataRestore.m_fForceOnVehicle);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_FORCE_ON_HELI, &m_weapDataRestore.m_fForceOnHeli);
 	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_BULLET_BATCH, &m_weapDataRestore.m_dwBulletBatch);
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_IMPACT_TYPE, &m_weapDataRestore.m_dwImpactType);
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_IMPACT_EXPLOSION, &m_weapDataRestore.m_dwImpactExplosion);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_MUZZLE_VELOCITY, &m_weapDataRestore.m_fMuzzleVelocity);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_BATCH_SPREAD, &m_weapDataRestore.m_fBatchSpread);
 	return;
@@ -745,6 +755,42 @@ void weapon::setSpin(float value)
 	return;
 }
 
+void weapon::getForceOnPed()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_FORCE_ON_PED, &m_weapDataCur.m_fForceOnPed);
+	return;
+}
+
+void weapon::setForceOnPed(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_FORCE_ON_PED, &value);
+	return;
+}
+
+void weapon::getForceOnVehicle()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_FORCE_ON_VEHICLE, &m_weapDataCur.m_fForceOnVehicle);
+	return;
+}
+
+void weapon::setForceOnVehicle(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_FORCE_ON_VEHICLE, &value);
+	return;
+}
+
+void weapon::getForceOnHeli()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_FORCE_ON_HELI, &m_weapDataCur.m_fForceOnHeli);
+	return;
+}
+
+void weapon::setForceOnHeli(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_FORCE_ON_HELI, &value);
+	return;
+}
+
 void weapon::getHash()
 {
 	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_weapDataCur.m_dwpWeapon	+ OFFSET_WEAPON_NAME_HASH, &m_weapDataCur.m_dwHash);
@@ -760,6 +806,30 @@ void weapon::getBulletBatch()
 void weapon::setBulletBatch(DWORD value)
 {
 	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_BULLET_BATCH, &value);
+	return;
+}
+
+void weapon::getImpactType()
+{
+	g_pMemMan->readMem<DWORD>((DWORD_PTR)m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_IMPACT_TYPE, &m_weapDataCur.m_dwImpactType);
+	return;
+}
+
+void weapon::setImpactType(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR)m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_IMPACT_TYPE, &value);
+	return;
+}
+
+void weapon::getImpactExplosion()
+{
+	g_pMemMan->readMem<DWORD>((DWORD_PTR)m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_IMPACT_EXPLOSION, &m_weapDataCur.m_dwImpactExplosion);
+	return;
+}
+
+void weapon::setImpactExplosion(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR)m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_IMPACT_EXPLOSION, &value);
 	return;
 }
 

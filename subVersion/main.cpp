@@ -39,6 +39,7 @@ long		ADDRESS_WAYPOINT= 0;
 long		ADDRESS_AMMO	= 0;
 long		ADDRESS_MAGAZINE= 0;
 long		ADDRESS_TUNABLE = 0;
+long		ADDRESS_WEAPON	= 0;
 //fuction prototypes
 LRESULT	__stdcall	WindowProc(	HWND	hWnd,
 								UINT	message,
@@ -99,11 +100,47 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_P_WATER_PROOF]		= g_pSettings->addFeature(0, -1, "Ë®ÏÂÐÐ×ß", feat_toggle, "waterProof");
 	g_iFeature[FEATURE_P_STAMINA]			= g_pSettings->addFeature(0, -1, "ÎÞÏÞÄÍÁ¦", feat_toggle, "infStam");
 
-	g_iFeature[FEATURE_W_FILL_AMMO]			= addFeature(1, -1, "²¹Âúµ±Ç°µ¯Ò©", feat_btn, &hack::fillAmmo, -1.f);
+	g_iFeature[FEATURE_W_FILL_ALL_AMMO]		= addFeature(1, -1, "²¹ÂúËùÓÐÎäÆ÷µ¯Ò©", feat_btn, &hack::fillAllAmmo, -1.f);
+	g_iFeature[FEATURE_W_FILL_AMMO]			= addFeature(1, -1, "²¹Âúµ±Ç°ÎäÆ÷µ¯Ò©", feat_btn, &hack::fillAmmo, -1.f);
 	g_iFeature[FEATURE_W_SPREAD]			= g_pSettings->addFeature(1, -1, "ÎÞÀ©É¢", feat_toggle, "noSpread");	
 	g_iFeature[FEATURE_W_RECOIL]			= g_pSettings->addFeature(1, -1, "ÎÞºó×ù", feat_toggle, "noRecoil");	
 	g_iFeature[FEATURE_W_NORELOAD]			= g_pSettings->addFeature(1, -1, "ÎÞÐè»»µ¯", feat_toggle, "noReload");
 	g_iFeature[FEATURE_W_RELOAD]			= g_pSettings->addFeature(1, -1, "¿ìËÙ»»µ¯", feat_slider, "quickReload", 1.f, 10.f);
+	int bulletEdit = g_pSettings->addFeature(1, -1, "×Óµ¯±à¼­ >>", feat_parent);
+	g_iFeature[FEATURE_W_BULLET_EDIT] = g_pSettings->addFeature(-1, bulletEdit, "¿ª/¹Ø", feat_toggle, "bulletEdit");
+	addFeature(-1, bulletEdit, "ÊÖÁñµ¯", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::GrenadeExplosion);
+	addFeature(-1, bulletEdit, "Õ³µ¯", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::StickyBombExplosion);
+	addFeature(-1, bulletEdit, "È¼ÉÕÆ¿", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MoltovCoctailExplosion);
+	addFeature(-1, bulletEdit, "ÒþÐÎ±¬Õ¨", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SuperLauncher);
+	addFeature(-1, bulletEdit, "ÉÁµç±¬Õ¨", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::LightningExplosion);
+	addFeature(-1, bulletEdit, "´ó±¬Õ¨", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::BigExplosion);
+	addFeature(-1, bulletEdit, "´ó±¬Õ¨2", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::BigFireyExplosion);
+	addFeature(-1, bulletEdit, "ÖÐ±¬Õ¨", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MediumExplosion);
+	addFeature(-1, bulletEdit, "Ð¡±¬Õ¨", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::TinyExplosion);
+	addFeature(-1, bulletEdit, "Ð¡±¬Õ¨2", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::TinyExplosions2);
+	addFeature(-1, bulletEdit, "Ð¡Ë®Öù", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SmallWaterSpray);
+	addFeature(-1, bulletEdit, "Ð¡»ðÖù", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SmallFireSpray);
+	addFeature(-1, bulletEdit, "´óË®Öù", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::BigWaterSpray);
+	addFeature(-1, bulletEdit, "´ó»ðÖù", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::BigFireSpray);
+	addFeature(-1, bulletEdit, "MK2±¬Õ¨×Óµ¯", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MK2ExplosiveBullets);
+	addFeature(-1, bulletEdit, "ÑÌÎíµ¯", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SmokeGrenade);
+	addFeature(-1, bulletEdit, "´ßÀáÍßË¹", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::TearGas);
+	addFeature(-1, bulletEdit, "´ßÀáÍßË¹2", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::TearGas2);
+	addFeature(-1, bulletEdit, "ÐÅºÅµ¯", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::RedFlareSmoke);
+	addFeature(-1, bulletEdit, "´øÌØÐ§µÄ±¬Õ¨", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::CoolGroundExplosion);
+	addFeature(-1, bulletEdit, "´ó³å»÷²¨±¬Õ¨", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::CRAZYSHOCKWAVEEXPLOSION);
+	addFeature(-1, bulletEdit, "´ó»ðÔÖ±¬Õ¨", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::HUGEFireyExplosion);
+	addFeature(-1, bulletEdit, "³¬´óÐÍ·ÉÍ§±¬Õ¨", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MassiveBlimpExplosion);
+	addFeature(-1, bulletEdit, "³¬´óÐÍ·ÉÍ§±¬Õ¨2", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MassiveBlimpExplosion2);
+	addFeature(-1, bulletEdit, "´ó±¬Õ¨+×¹ÂäËéÆ¬", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::LargeExplosionFallingDebris);
+	addFeature(-1, bulletEdit, "»ðÇò±¬Õ¨", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::FireBallExplosion);
+	addFeature(-1, bulletEdit, "ÑÌ»¨", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::FireworkExplosion);
+	addFeature(-1, bulletEdit, "Ñ©Çò", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SnowballHit);
+	addFeature(-1, bulletEdit, "ÆÁÄ»¶¶¶¯±¬Õ¨", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::JustScreenShake);
+	addFeature(-1, bulletEdit, "¼Ù±¬Õ¨£¨ÎÞÉËº¦£©", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SPOOFEXPLOSION);
+	g_iFeature[FEATURE_W_FORCE_ON_PED]		= g_pSettings->addFeature(1, -1, "ÈË³å»÷Á¦", feat_slider, "forceOnPed", 1.f, 10000.f);
+	g_iFeature[FEATURE_W_FORCE_ON_VEHICLE]	= g_pSettings->addFeature(1, -1, "³µÁ¾³å»÷Á¦", feat_slider, "forceOnVeh", 1.f, 10000.f);
+	g_iFeature[FEATURE_W_FORCE_ON_HELI]		= g_pSettings->addFeature(1, -1, "Ö±Éý»ú³å»÷Á¦", feat_slider, "forceOnHeli", 1.f, 10000.f);
 	g_iFeature[FEATURE_W_DAMAGE]			= g_pSettings->addFeature(1, -1, "ÎäÆ÷ÉËº¦±¶Êý", feat_slider, "bulletDamage", 1.f, 10.f);
 	g_iFeature[FEATURE_W_AMMO]				= g_pSettings->addFeature(1, -1, "ÎÞÏÞµ¯Ò©", feat_toggle, "infAmmo");
 	g_iFeature[FEATURE_W_RANGE]				= g_pSettings->addFeature(1, -1, "Éä³Ì", feat_slider, "weapRange", 1.f, 10.f);
@@ -392,12 +429,16 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 
 			if(!(btInit & INITPTR_INVALID_WEAPON) && g_pHack->m_weapon.loadWeapon())
 			{
+				g_pHack->weaponBulletEdit(g_pSettings->getFeature(g_iFeature[FEATURE_W_BULLET_EDIT]));
 				g_pHack->noSpread(g_pSettings->getFeature(g_iFeature[FEATURE_W_SPREAD]));
 				g_pHack->noRecoil(g_pSettings->getFeature(g_iFeature[FEATURE_W_RECOIL]));
 				g_pHack->quickReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_RELOAD]));
 				g_pHack->bulletDamage(g_pSettings->getFeature(g_iFeature[FEATURE_W_DAMAGE]));
 				g_pHack->weaponRange(g_pSettings->getFeature(g_iFeature[FEATURE_W_RANGE]));
 				g_pHack->weaponSpin(g_pSettings->getFeature(g_iFeature[FEATURE_W_SPINUP]));
+				g_pHack->weaponForceOnPed(g_pSettings->getFeature(g_iFeature[FEATURE_W_FORCE_ON_PED]));
+				g_pHack->weaponForceOnVehicle(g_pSettings->getFeature(g_iFeature[FEATURE_W_FORCE_ON_VEHICLE]));
+				g_pHack->weaponForceOnHeli(g_pSettings->getFeature(g_iFeature[FEATURE_W_FORCE_ON_HELI]));
 				g_pHack->bulletBatch(g_pSettings->getFeature(g_iFeature[FEATURE_W_BULLET_BATCH]));
 				g_pHack->batchSpread(g_pSettings->getFeature(g_iFeature[FEATURE_W_BATCH_SPREAD]));
 				g_pHack->muzzleVelocity(g_pSettings->getFeature(g_iFeature[FEATURE_W_MUZZLE_VELOCITY]));
