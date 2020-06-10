@@ -35,7 +35,7 @@ bool		g_bKillAttach	= false;
 bool		g_bKillHack		= false;
 
 long		ADDRESS_WORLD	= 0;
-long		ADDRESS_WAYPOINT= 0;
+long		ADDRESS_BLIP	= 0;
 long		ADDRESS_AMMO	= 0;
 long		ADDRESS_MAGAZINE= 0;
 long		ADDRESS_TUNABLE = 0;
@@ -89,7 +89,8 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_P_SUICIDE]			= addFeature(0, -1, "自杀", feat_btn, &hack::suicide, -1.f);
 	g_iFeature[FEATURE_P_WANTED]			= g_pSettings->addFeature(0, -1, "通缉等级", feat_slider, "wanted", 0.f, 5.f, .2f);
 	g_iFeature[FEATURE_P_NEVERWANTED]		= g_pSettings->addFeature(0, -1, "永不通缉", feat_toggle, "neverWanted");
-	g_iFeature[FEATURE_P_ANTINPC]			= g_pSettings->addFeature(0, -1, "杀死攻击NPC", feat_toggle, "antiNpc");
+	g_iFeature[FEATURE_P_ANTINPC]			= g_pSettings->addFeature(0, -1, "反NPC", feat_toggle, "antiNpc");
+	g_iFeature[FEATURE_P_NPC_IGNORE]		= g_pSettings->addFeature(0, -1, "NPC无视玩家", feat_toggle, "npcIgnore");
 	g_iFeature[FEATURE_P_RUNSPD]			= g_pSettings->addFeature(0, -1, "奔跑速度", feat_slider, "runSpd", 1.f, 5.f);
 	g_iFeature[FEATURE_P_SWIMSPD]			= g_pSettings->addFeature(0, -1, "游泳速度", feat_slider, "swimSpd", 1.f, 5.f);
 	g_iFeature[FEATURE_P_SUPER_PUNCH]		= g_pSettings->addFeature(0, -1, "近战击退倍数", feat_slider, "superPunch", 0.f, 1000.f, (float)1.f / 10.f);
@@ -172,7 +173,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_V_SUSPENSION_HEIGH]	= g_pSettings->addFeature(-1, handing, "悬挂高度", feat_slider, "vehSuspensionHeigh", 0.f, 1.f);
 	g_iFeature[FEATURE_V_COLISION_DAMAGE_MP]= g_pSettings->addFeature(-1, handing, "撞击伤害倍数", feat_slider, "vehColisionDamage", 0.f, 25.f);
 	g_iFeature[FEATURE_V_WEAPON_DAMAGE_MP]	= g_pSettings->addFeature(-1, handing, "武器伤害倍数", feat_slider, "vehWeaponDamage", 0.f, 25.f);	
-	g_iFeature[FEATURE_V_DEFORMATION]		= g_pSettings->addFeature(-1, handing, "变形系数", feat_slider, "vehDeform", 0.f, 25.f);
+	g_iFeature[FEATURE_V_DEFORMATION]		= g_pSettings->addFeature(-1, handing, "变形倍数", feat_slider, "vehDeform", 0.f, 25.f);
 	g_iFeature[FEATURE_V_ENGINE_DAMAGE_MP]	= g_pSettings->addFeature(-1, handing, "引擎伤害倍数", feat_slider, "vehEngineDamage", 0.f, 25.f);
 
 	g_pSettings->addFeature(3, -1, "导航点", feat_teleport, tp_waypoint);
@@ -381,6 +382,7 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 			g_pHack->wanted(g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED]));
 			g_pHack->runSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_RUNSPD]));
 			g_pHack->swimSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_SWIMSPD]));
+			g_pHack->npcIgnore(g_pSettings->getFeature(g_iFeature[FEATURE_P_NPC_IGNORE]));
 			g_pHack->godMode(g_pSettings->getFeature(g_iFeature[FEATURE_P_TRUEGOD]));
 			g_pHack->noRagdoll(g_pSettings->getFeature(g_iFeature[FEATURE_P_NORAGDOLL]));
 			g_pHack->seatbelt(g_pSettings->getFeature(g_iFeature[FEATURE_V_SEATBELT]));

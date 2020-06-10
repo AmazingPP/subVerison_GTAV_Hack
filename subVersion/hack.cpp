@@ -200,7 +200,7 @@ BYTE hack::initPointers()
 
 void hack::getWaypoint()
 {
-	DWORD_PTR a = (DWORD_PTR)m_hModule + ADDRESS_WAYPOINT;
+	DWORD_PTR a = (DWORD_PTR)m_hModule + ADDRESS_BLIP;
 	for (size_t i = 2000; i > 1; i--)
 	{
 		DWORD64 n;
@@ -220,7 +220,7 @@ void hack::getWaypoint()
 
 void hack::getObjective()
 {
-	DWORD_PTR a = (DWORD_PTR)m_hModule + ADDRESS_WAYPOINT;
+	DWORD_PTR a = (DWORD_PTR)m_hModule + ADDRESS_BLIP;
 	for (size_t i = 2000; i > 1; i--)
 	{
 		DWORD64 n;
@@ -228,7 +228,7 @@ void hack::getObjective()
 		g_pMemMan->readMem<DWORD64>((DWORD_PTR)a + (i * 8), &n);
 		g_pMemMan->readMem<DWORD>((DWORD_PTR)n + 0x40, &buf[0]);
 		g_pMemMan->readMem<DWORD>((DWORD_PTR)n + 0x48, &buf[1]);
-		if (n > 0 && (buf[0] == 1 && buf[1] == 5) || (buf[0] == 60 && buf[1] == 66))
+		if (n > 0 && buf[0] == 1 && (buf[1] == 5 || buf[1] == 60 || buf[1] == 66))
 		{
 			g_pMemMan->readMem<v3>((DWORD_PTR)n + 0x10, &m_v3Objective);
 		}
@@ -350,7 +350,7 @@ void hack::fillAllAmmo(float* arg)
 	for (size_t i = 0; i < 0xFFF; i++)
 	{
 		DWORD_PTR dwpWeapon,dwpAmmoInfo, dwpAmmoPtr1, dwpAmmoPtr2;
-		DWORD dwCurAmmo,dwMaxAmmo,test = 9999;
+		DWORD dwCurAmmo,dwMaxAmmo;
 		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpWeaponBase + i, &dwpWeapon);
 		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)dwpWeapon + OFFSET_WEAPON_AMMOINFO, &dwpAmmoInfo);
 
@@ -360,9 +360,9 @@ void hack::fillAllAmmo(float* arg)
 		if (dwCurAmmo >= 0 && dwCurAmmo <= 9999)
 		{
 			g_pMemMan->readMem<DWORD>((DWORD_PTR)dwpAmmoInfo + OFFSET_WEAPON_AMMOINFO_MAX, &dwMaxAmmo);
-			if (dwMaxAmmo >= 20 && dwMaxAmmo <= 9999 && dwCurAmmo != dwMaxAmmo)
+			if (dwMaxAmmo >= 20 && dwMaxAmmo <= 9999 && dwCurAmmo < dwMaxAmmo)
 			{
-				g_pMemMan->writeMem<DWORD>((DWORD_PTR)dwpAmmoPtr2 + OFFSET_WEAPON_AMMOINFO_CURAMMO, &test);
+				g_pMemMan->writeMem<DWORD>((DWORD_PTR)dwpAmmoPtr2 + OFFSET_WEAPON_AMMOINFO_CURAMMO, &dwMaxAmmo);
 			}
 		}
 	}
@@ -669,6 +669,25 @@ void hack::swimSpeed(feat* feature)
 	float fValue	= static_cast<featSlider*>(feature)->m_fValue;
 	if(m_player.m_flSwimSpd != fValue)
 		m_player.setSwimSpeed(fValue);
+	return;
+}
+
+void hack::npcIgnore(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			m_player.getNpcIgnore();
+			if (m_player.m_dwNpcIgnore > 0)
+				m_player.setNpcIgnore(0);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	m_player.getNpcIgnore();
+	if (m_player.m_dwNpcIgnore != 0x450000)
+		m_player.setNpcIgnore(0x450000);
 	return;
 }
 

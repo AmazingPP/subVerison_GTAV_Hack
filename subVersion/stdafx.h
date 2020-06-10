@@ -74,6 +74,7 @@
 #define	OFFSET_PLAYER_INFO_RUN_SPD				0x14C			//run speed; def 1; float
 #define OFFSET_PLAYER_INFO_FRAMEFLAGS			0x1F9			//frame flags; DWORD
 #define OFFSET_PLAYER_INFO_WANTED_CAN_CHANGE	0x71C			//fWantedCanChange
+#define OFFSET_PLAYER_INFO_NPC_IGNORE			0x830			//npc ignore; DWORD; everyone = 0x450000;
 #define OFFSET_PLAYER_INFO_WANTED				0x848			//wanted level; DWORD
 #define OFFSET_PLAYER_INFO_STAMINA				0xCB0			//fStamina, fStaminaMax
 #define OFFSET_PLAYER_RAGDOLL					0x10A8			//byte; CPed.noRagdoll: 0x20 = off; 0x00/0x01 = on
@@ -208,6 +209,7 @@
 #define FEATURE_W_FORCE_ON_VEHICLE	0x3A
 #define FEATURE_W_FORCE_ON_HELI		0x3B
 #define FEATURE_W_BULLET_EDIT		0x3C
+#define FEATURE_P_NPC_IGNORE		0x3D
 
 void	killProgram	();
 DWORD	strToVk(std::string str);
@@ -221,7 +223,7 @@ extern bool		g_bKillAttach;
 extern bool		g_bKillHack;
 //Addresses from GTAV.exe module
 extern long     ADDRESS_WORLD;				//48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07
-extern long		ADDRESS_WAYPOINT;			//4C 8D 05 ? ? ? ? 0F B7 C1
+extern long		ADDRESS_BLIP;				//4C 8D 05 ? ? ? ? 0F B7 C1
 extern long		ADDRESS_AMMO;				//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
 extern long		ADDRESS_MAGAZINE;			//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
 extern long		ADDRESS_TUNABLE;

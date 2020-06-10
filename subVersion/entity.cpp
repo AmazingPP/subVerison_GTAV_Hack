@@ -193,6 +193,18 @@ void player::setSwimSpeed(float value)
 	return;
 }
 
+void player::getNpcIgnore()
+{
+	g_pMemMan->readMem<DWORD>((DWORD_PTR)m_dwpPlayerInfo + OFFSET_PLAYER_INFO_NPC_IGNORE, &m_dwNpcIgnore);
+	return;
+}
+
+void player::setNpcIgnore(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR)m_dwpPlayerInfo + OFFSET_PLAYER_INFO_NPC_IGNORE, &value);
+	return;
+}
+
 void player::getFrameFlags()
 {
 	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_FRAMEFLAGS, &m_dwFrameFlags);

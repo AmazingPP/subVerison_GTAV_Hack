@@ -86,6 +86,7 @@ class hack : public trainer
 		void	weaponBulletEdit(feat* feature);
 		void	runSpeed(feat* feature);
 		void	swimSpeed(feat* feature);
+		void	npcIgnore(feat* feature);
 		void	godMode(feat* feature);
 		void	frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featFireAmmo, feat* featExplosiveAmmo);
 		void	vehicleGod(feat* feature);

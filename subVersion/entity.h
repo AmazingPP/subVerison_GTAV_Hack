@@ -55,6 +55,7 @@ class player : public entity
 				m_flWantedCanChange,
 				m_flVehicleDamageMult;
 		DWORD	m_dwWanted,
+				m_dwNpcIgnore,
 				m_dwFrameFlags;
 		BYTE	m_btRagdoll,
 				m_btSeatbelt;
@@ -89,6 +90,8 @@ class player : public entity
 				void	setRunSpeed(float value);
 				void	getSwimSpeed();
 				void	setSwimSpeed(float value);
+				void	getNpcIgnore();
+				void	setNpcIgnore(DWORD value);
 				void	getFrameFlags();
 				void	setFrameFlags(DWORD value);
 				void	getWaterProof();
