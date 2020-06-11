@@ -107,7 +107,28 @@
 #define OFFSET_VEHICLE_GRAVITY						0xC1C			//fGravity
 #define OFFSET_VEHICLE_BOOST						0x320			//fBoost
 #define OFFSET_VEHICLE_RECHARGE_SPEED				0x324			//fRocketRechargeSpeed
-
+#define OFFSET_VEHICLE_MISSLES						0x1280			//btVehicleMissles
+#define OFFSET_VEHICLE_BOMBS						0x1294			//btAircraftBombs
+#define OFFSET_VEHICLE_COUNTERMEASURES				0x1298			//btAircraftCountermeasures
+#define OFFSET_VEHICLE_MK2_MISSLES					0x1284			//btOppressorMK2Misseles
+#define OFFSET_VEHICLE_TAMPA_MISSLES				0x127C			//btTampaMissles
+#define	OFFSET_VEHICLE_CUSTOM						0x48
+#define	OFFSET_VEHICLE_CUSTOM_EMS					0x3D6			//btEngineManagementSystem; 0x3 = max
+#define	OFFSET_VEHICLE_CUSTOM_BRAKES				0x3D7			//btBrakes; 0x6 = max
+#define	OFFSET_VEHICLE_CUSTOM_TRANSMISSION			0x3D8			//btTransmission; 0x8 = max
+#define	OFFSET_VEHICLE_CUSTOM_SUSPENSION			0x3DA			//btSuspension; 0x1B = max
+#define	OFFSET_VEHICLE_CUSTOM_ARMOR					0x3DB			//btArmor; 0x1B = max
+#define	OFFSET_VEHICLE_CUSTOM_TURBO_TUNING			0x3DD			//btTurboTuning; 0x1 = on
+#define	OFFSET_VEHICLE_CUSTOM_NEON_COLOR			0x3A0			//NeonColor; DWORD
+#define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHTS_L			0x402			//btNeonLightLeft; 0x0 = off; 0x1 = on
+#define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHTS_R			0x403			//btNeonLightRight; 0x0 = off; 0x1 = on
+#define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHTS_F			0x404			//btNeonLightFront; 0x0 = off; 0x1 = on
+#define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHTS_B			0x405			//btNeonLightBack; 0x0 = off; 0x1 = on
+#define	OFFSET_VEHICLE_CUSTOM_TYRE_SMOKE			0x3DF			//btTyreSmoke; 0x1 = on
+#define	OFFSET_VEHICLE_CUSTOM_TYRE_SMOKE_R			0x3FC			//btTyreSmokeRed
+#define	OFFSET_VEHICLE_CUSTOM_TYRE_SMOKE_G			0x3FD			//btTyreSmokeGreen
+#define	OFFSET_VEHICLE_CUSTOM_TYRE_SMOKE_B			0x3FE			//btTyreSmokeBlue
+#define	OFFSET_VEHICLE_CUSTOM_LIMO_WINDOWS			0x3FF			//btLimoWindows; 0x1 = on
 
 //weapon offsets
 #define OFFSET_WEAPON_MANAGER			0x10C8			//from playerbase
@@ -143,6 +164,10 @@
 #define OFFSET_TUNABLE_RP_MULTIPLIER			0x10
 #define OFFSET_TUNABLE_AP_MULTIPLIER			0x30F80
 #define OFFSET_TUNABLE_MIN_MISSION_PAYOUT		0x4BC8			//fMinMissionPayout
+#define OFFSET_TUNABLE_ANTI_IDLE_KICK1			0x2C0			//AFK;DWORD;2000000000 = Anti idle kick
+#define OFFSET_TUNABLE_ANTI_IDLE_KICK2			0x2C8
+#define OFFSET_TUNABLE_ANTI_IDLE_KICK3			0x2D0
+#define OFFSET_TUNABLE_ANTI_IDLE_KICK4			0x2D8
 
 #define OFFSET_ATTACKER_DISTANCE		0x18			//changed to 0x18, from 0x10
 
