@@ -347,7 +347,7 @@ void hack::setImpactExplosion(float* arg)
 
 void hack::fillAllAmmo(float* arg)
 {
-	for (size_t i = 0; i < 0xFFF; i++)
+	for (size_t i = 0; i < 0x400; i++)
 	{
 		DWORD_PTR dwpWeapon,dwpAmmoInfo, dwpAmmoPtr1, dwpAmmoPtr2;
 		DWORD dwCurAmmo,dwMaxAmmo;
