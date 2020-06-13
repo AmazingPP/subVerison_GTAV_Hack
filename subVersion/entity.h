@@ -133,6 +133,10 @@ class vehicle : public entity
 						m_fDeformationDamageMult,
 						m_fEngineDamageMult;
 		};
+		struct vehicleCustom
+		{
+			DWORD_PTR	m_dwCustom = 0;
+		};
 
 		vehicleHandling	m_handlingRestore,
 						m_handlingCur;
@@ -318,5 +322,32 @@ class tunable
 		void	setMinMissionPayout(float value);
 
 		DWORD_PTR	m_dwpTunableBase;
+};
+
+
+class global
+{
+	public:
+		DWORD_PTR	m_dwpStatHash,
+					m_dwpStatValue,
+					m_dwpStatCall;
+
+		DWORD		m_dwStatHash,
+					m_dwStatValue,
+					m_dwStatCall;
+			
+				global();
+				~global();
+		bool	initPtr(HMODULE base);
+		void	getStatHash();
+		void	setStatHash(DWORD value);
+		void	getStatValue();
+		void	setStatValue(DWORD value);
+		void	getStatCall();
+		void	setStatCall(int value);
+
+		DWORD_PTR	m_dwpGlobalBase;
+private:
+		DWORD_PTR globalHandle(int value, HMODULE base);
 };
 #endif

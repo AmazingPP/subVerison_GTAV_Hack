@@ -50,9 +50,6 @@
     <ClInclude Include="memManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="settings.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -65,7 +62,10 @@
     <ClInclude Include="CallbackProxy.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="resource1.h">
+    <ClInclude Include="ColorDef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

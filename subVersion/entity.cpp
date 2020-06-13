@@ -925,3 +925,68 @@ void tunable::setMinMissionPayout(float value)
 	g_pMemMan->writeMem<float>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_MIN_MISSION_PAYOUT, &value);
 	return;
 }
+
+/*
+	GLOBAL
+*/
+
+global::global()
+{
+}
+
+global::~global()
+{
+}
+
+bool global::initPtr(HMODULE base)
+{
+	m_dwpStatCall = globalHandle(1373500, base) + 0x2398;
+	m_dwpStatHash = globalHandle(1384095, base) + 0x20;
+	m_dwpStatValue = globalHandle(939452, base) + 0xACB0;
+
+	return m_dwpStatCall != 0 || m_dwpStatHash != 0 || m_dwpStatValue != 0;
+}
+
+DWORD_PTR global::globalHandle(int value, HMODULE base)
+{
+	DWORD_PTR dwpBuffer;
+	int v1 = value;
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)base + ADDRESS_GLOBAL + 8 * ((value >> 18) & 0x3Fu), &dwpBuffer);
+	return 8 * (v1 & 0x3FFFFu) + dwpBuffer;
+}
+
+void global::getStatHash()
+{
+	g_pMemMan->readMem<DWORD>(m_dwpStatHash, &m_dwStatHash);
+	return;
+}
+
+void global::setStatHash(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>(m_dwpStatHash, &value);
+	return;
+}
+
+void global::getStatValue()
+{
+	g_pMemMan->readMem<DWORD>(m_dwpStatValue, &m_dwStatValue);
+	return;
+}
+
+void global::setStatValue(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>(m_dwpStatValue, &value);
+	return;
+}
+
+void global::getStatCall()
+{
+	g_pMemMan->readMem<DWORD>(m_dwpStatCall, &m_dwStatCall);
+	return;
+}
+
+void global::setStatCall(int value)
+{
+	g_pMemMan->writeMem<int>(m_dwpStatCall, &value);
+	return;
+}

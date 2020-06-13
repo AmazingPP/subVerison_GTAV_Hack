@@ -29,12 +29,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CallbackProxy.h" />
+    <ClInclude Include="ColorDef.h" />
     <ClInclude Include="D3D9Render.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="hack.h" />
     <ClInclude Include="memManager.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="resource1.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="vector.h" />

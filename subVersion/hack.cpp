@@ -165,6 +165,12 @@ BYTE hack::initPointers()
 		return INITPTR_INVALID_TUNABLE;
 	m_tunable.m_dwpTunableBase		= m_dwpTunableBase;
 
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_hModule + ADDRESS_GLOBAL, &m_dwpGlobalBase);
+	if (m_dwpGlobalBase == 0)
+		return INITPTR_INVALID_GLOBAL;
+	m_global.m_dwpGlobalBase = m_dwpGlobalBase;
+	m_mpId = "MP0_";
+
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpWorldBase + OFFSET_PLAYER, &m_dwpPlayerBase);
 	if(m_dwpPlayerBase == 0)
 		return INITPTR_INVALID_PLAYER;
@@ -386,6 +392,43 @@ void hack::suicide(float* arg)
 void hack::fillAmmo(float* arg)
 {
 	this->fillAmmo();
+}
+
+void hack::fillSkillLevels(float* arg)
+{
+	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_STAM"), 100);
+	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_SHO"), 100);
+	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_STRN"), 100);
+	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_STL"), 100);
+	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_FLY"), 100);
+	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_DRIV"), 100);
+	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_LUNG"), 100);
+}
+
+void hack::genderChange(float* arg)
+{
+	globalStatSetInt(string_to_hash("ALLOW_GENDER_CHANGE"), 52);
+}
+
+
+void hack::globalStatSetInt(int hash,int value)
+{
+	if (m_global.initPtr(m_hModule))
+	{
+		m_global.getStatHash();
+		DWORD resotreHash = m_global.m_dwStatHash;
+		m_global.getStatValue();
+		DWORD resotreValue = m_global.m_dwStatValue;
+
+		m_global.setStatHash(hash);
+		Sleep(100);
+		m_global.setStatValue(value);
+		Sleep(100);
+		m_global.setStatCall(-1);
+		Sleep(100);
+		m_global.setStatHash(resotreHash);
+		m_global.setStatValue(resotreValue);
+	}
 }
 
 void hack::waterProof(feat* feature)

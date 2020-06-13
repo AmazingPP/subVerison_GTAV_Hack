@@ -34,12 +34,14 @@ bool		g_bKillRender	= false;
 bool		g_bKillAttach	= false;
 bool		g_bKillHack		= false;
 
-long		ADDRESS_WORLD	= 0;
-long		ADDRESS_BLIP	= 0;
-long		ADDRESS_AMMO	= 0;
-long		ADDRESS_MAGAZINE= 0;
-long		ADDRESS_TUNABLE = 0;
-long		ADDRESS_WEAPON	= 0;
+long		ADDRESS_WORLD		= 0;
+long		ADDRESS_BLIP		= 0;
+long		ADDRESS_AMMO		= 0;
+long		ADDRESS_MAGAZINE	= 0;
+long		ADDRESS_TUNABLE		= 0;
+long		ADDRESS_WEAPON		= 0;
+long		ADDRESS_GLOBAL		= 0;
+long		ADDRESS_PLAYER_LIST = 0;
 //fuction prototypes
 LRESULT	__stdcall	WindowProc(	HWND	hWnd,
 								UINT	message,
@@ -80,7 +82,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeatureCategory("武器");		//1
 	g_pSettings->addFeatureCategory("载具");		//2
 	g_pSettings->addFeatureCategory("传送");		//3
-	g_pSettings->addFeatureCategory("参数");		//4
+	g_pSettings->addFeatureCategory("杂项");		//4
 	
 
 	g_iFeature[FEATURE_P_TRUEGOD]			= g_pSettings->addFeature(0, -1, "无敌", feat_toggle, "trueGodMode");
@@ -209,9 +211,14 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeature(3, -1, "桑迪海岸机场", feat_teleport, tp_static, 1747.f, 3273.f, -225.f);//41.35f);
 	g_pSettings->addFeature(3, -1, "千年山", feat_teleport, tp_static, 489.979f, 5587.527f, 794.3f);
 
-	g_iFeature[FEATURE_T_RP_MP]			   = g_pSettings->addFeature(4, -1, "RP倍数", feat_slider,"RP", 1.f, 1000.f , (float)1.f / 9.f);
-	g_iFeature[FEATURE_T_AP_MP]			   = g_pSettings->addFeature(4, -1, "AP倍数", feat_slider, "AP", 1.f, 1000.f, (float)1.f / 9.f);
-	g_iFeature[FEATURE_T_MISSION_PAYOUT]   = g_pSettings->addFeature(4, -1, "最小任务金额", feat_slider, "MinMissionPayout", 0.f, 100000.f);
+	int tunable = g_pSettings->addFeature(4, -1, "可调参数 >>", feat_parent);
+	g_iFeature[FEATURE_T_RP_MP]			   = g_pSettings->addFeature(-1, tunable, "RP倍数", feat_slider,"RP", 1.f, 1000.f , (float)1.f / 9.f);
+	g_iFeature[FEATURE_T_AP_MP]			   = g_pSettings->addFeature(-1, tunable, "AP倍数", feat_slider, "AP", 1.f, 1000.f, (float)1.f / 9.f);
+	g_iFeature[FEATURE_T_MISSION_PAYOUT]   = g_pSettings->addFeature(-1, tunable, "最小任务金额", feat_slider, "MinMissionPayout", 0.f, 100000.f);
+	int unlock = g_pSettings->addFeature(4, -1, "解锁 >>", feat_parent);
+	addFeature(-1, unlock, "角色属性全满", feat_btn, &hack::fillSkillLevels, -1.f);
+	addFeature(-1, unlock, "修改角色性别", feat_btn, &hack::fillSkillLevels, -1.f);
+
 
 	g_pSettings->setActiveCat(0);			//this needs to be called so we can fill the current feature buffer
 

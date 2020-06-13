@@ -27,6 +27,8 @@
 #define INITPTR_INVALID_VEHICLE	1 << 2
 #define INITPTR_INVALID_WEAPON	1 << 3
 #define INITPTR_INVALID_TUNABLE 1 << 4
+#define INITPTR_INVALID_GLOBAL  1 << 5
+#define INITPTR_INVALID_PLAYER_LIST 1 << 6
 class trainer
 {
 	public:
@@ -47,6 +49,8 @@ class hack : public trainer
 		vehicle m_vehicle;
 		weapon	m_weapon;
 		tunable m_tunable;
+		global	m_global;
+		std::string m_mpId;
 		ImpactExplosionEnum m_explosion;
 
 		HMODULE	m_hModule;
@@ -71,6 +75,8 @@ class hack : public trainer
 		void	healPlayer(float* arg);
 		void	suicide(float* arg);
 		void	fillAmmo(float* arg);
+		void	fillSkillLevels(float* arg);
+		void	genderChange(float* arg);
 		void	waterProof(feat* feature);
 		void	undeadOffradar(feat* feature);
 		void	superPunch(feat* feature);
@@ -130,10 +136,28 @@ class hack : public trainer
 					m_dwpWeaponCur,
 					m_dwpAmmoInfo,
 					m_dwpWeaponBase,
-					m_dwpTunableBase;
+					m_dwpTunableBase,
+					m_dwpGlobalBase,
+					m_dwpPlayerListBase;
 
 		void	getWaypoint();
 		void	getObjective();
+		void	globalStatSetInt(int hash, int value);
+
+		unsigned int string_to_hash(std::string input)
+		{
+			unsigned int num1 = 0U;
+			input = m_mpId + input;
+			for (char c : input)
+			{
+				unsigned int num2 = num1 + (unsigned int)tolower(c);
+				unsigned int num3 = num2 + (num2 << 10);
+				num1 = num3 ^ num3 >> 6;
+			}
+			unsigned int num4 = num1 + (num1 << 3);
+			unsigned int num5 = num4 ^ num4 >> 11;
+			return num5 + (num5 << 15);
+		}
 };
 
 extern hack*		g_pHack;

@@ -68,6 +68,7 @@
 
 //player (entity) offsets
 #define OFFSET_PLAYER_VEHICLE					0xD28			//ptr to last used vehicle
+#define OFFSET_NET_PLAYER_INFO					0xA8
 #define OFFSET_PLAYER_INFO						0x10B8			//playerInfo struct
 #define OFFSET_PLAYER_INFO_NAME					0x7C
 #define OFFSET_PLAYER_INFO_SWIM_SPD				0x148			//swim speed; def 1; float
@@ -119,7 +120,9 @@
 #define	OFFSET_VEHICLE_CUSTOM_SUSPENSION			0x3DA			//btSuspension; 0x1B = max
 #define	OFFSET_VEHICLE_CUSTOM_ARMOR					0x3DB			//btArmor; 0x1B = max
 #define	OFFSET_VEHICLE_CUSTOM_TURBO_TUNING			0x3DD			//btTurboTuning; 0x1 = on
-#define	OFFSET_VEHICLE_CUSTOM_NEON_COLOR			0x3A0			//NeonColor; DWORD
+#define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHT_R			0x3A2			//btNeonLightRed
+#define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHT_G			0x3A1			//btNeonLightGreen
+#define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHT_B			0x3A0			//btNeonLightBlue
 #define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHTS_L			0x402			//btNeonLightLeft; 0x0 = off; 0x1 = on
 #define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHTS_R			0x403			//btNeonLightRight; 0x0 = off; 0x1 = on
 #define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHTS_F			0x404			//btNeonLightFront; 0x0 = off; 0x1 = on
@@ -168,6 +171,9 @@
 #define OFFSET_TUNABLE_ANTI_IDLE_KICK2			0x2C8
 #define OFFSET_TUNABLE_ANTI_IDLE_KICK3			0x2D0
 #define OFFSET_TUNABLE_ANTI_IDLE_KICK4			0x2D8
+#define OFFSET_TUNABLE_ORBITAL_CANNON_COOLDOWN	0x2C128			//OrbitalCannonCooldown;DWORD
+#define OFFSET_TUNABLE_BUNKER_RESEARCH			0x29BB8			//UnlockAllBunkerResearch;DWORD
+
 
 #define OFFSET_ATTACKER_DISTANCE		0x18			//changed to 0x18, from 0x10
 
@@ -253,4 +259,6 @@ extern long		ADDRESS_AMMO;				//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
 extern long		ADDRESS_MAGAZINE;			//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
 extern long		ADDRESS_TUNABLE;
 extern long		ADDRESS_WEAPON;
+extern long		ADDRESS_GLOBAL;				//4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11
+extern long		ADDRESS_PLAYER_LIST;		//48 8B 0D ? ? ? ? E8 ? ? ? ? 48 8B C8 E8 ? ? ? ? 48 8B CF
 #endif
