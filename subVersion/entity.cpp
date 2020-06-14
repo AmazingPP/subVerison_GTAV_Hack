@@ -957,31 +957,31 @@ DWORD_PTR global::globalHandle(int value, HMODULE base)
 
 void global::getStatHash()
 {
-	g_pMemMan->readMem<DWORD>(m_dwpStatHash, &m_dwStatHash);
+	g_pMemMan->readMem<unsigned int>(m_dwpStatHash, &m_dwStatHash);
 	return;
 }
 
-void global::setStatHash(DWORD value)
+void global::setStatHash(unsigned int value)
 {
-	g_pMemMan->writeMem<DWORD>(m_dwpStatHash, &value);
+	g_pMemMan->writeMem<unsigned int>(m_dwpStatHash, &value);
 	return;
 }
 
 void global::getStatValue()
 {
-	g_pMemMan->readMem<DWORD>(m_dwpStatValue, &m_dwStatValue);
+	g_pMemMan->readMem<int>(m_dwpStatValue, &m_dwStatValue);
 	return;
 }
 
-void global::setStatValue(DWORD value)
+void global::setStatValue(int value)
 {
-	g_pMemMan->writeMem<DWORD>(m_dwpStatValue, &value);
+	g_pMemMan->writeMem<int>(m_dwpStatValue, &value);
 	return;
 }
 
 void global::getStatCall()
 {
-	g_pMemMan->readMem<DWORD>(m_dwpStatCall, &m_dwStatCall);
+	g_pMemMan->readMem<int>(m_dwpStatCall, &m_dwStatCall);
 	return;
 }
 

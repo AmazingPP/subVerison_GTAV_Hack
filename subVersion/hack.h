@@ -76,7 +76,12 @@ class hack : public trainer
 		void	suicide(float* arg);
 		void	fillAmmo(float* arg);
 		void	fillSkillLevels(float* arg);
-		void	genderChange(float* arg);
+		void	fillAllSnacks(float* arg);
+		void	unlockHeistCars(float* arg);
+		void	unlockLSC(float* arg);
+		void	unlockWeaponCamos(float* arg);
+		void	unlockWeapon(float* arg);
+		void	unlockAllAwards(float* arg);
 		void	waterProof(feat* feature);
 		void	undeadOffradar(feat* feature);
 		void	superPunch(feat* feature);
@@ -142,12 +147,12 @@ class hack : public trainer
 
 		void	getWaypoint();
 		void	getObjective();
-		void	globalStatSetInt(int hash, int value);
+		void	globalStatSetInt(unsigned int hash, int value);
 
-		unsigned int string_to_hash(std::string input)
+		unsigned int string_to_hash(std::string input,std::string pre = "MP0_")
 		{
 			unsigned int num1 = 0U;
-			input = m_mpId + input;
+			input = pre + input;
 			for (char c : input)
 			{
 				unsigned int num2 = num1 + (unsigned int)tolower(c);

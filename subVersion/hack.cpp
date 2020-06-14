@@ -405,27 +405,228 @@ void hack::fillSkillLevels(float* arg)
 	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_LUNG"), 100);
 }
 
-void hack::genderChange(float* arg)
+void hack::fillAllSnacks(float* arg)
 {
-	globalStatSetInt(string_to_hash("ALLOW_GENDER_CHANGE"), 52);
+	globalStatSetInt(string_to_hash("NO_BOUGHT_YUM_SNACKS"), 9999);
+	globalStatSetInt(string_to_hash("NO_BOUGHT_HEALTH_SNACKS"), 9999);
+	globalStatSetInt(string_to_hash("NO_BOUGHT_EPIC_SNACKS"), 9999);
+	globalStatSetInt(string_to_hash("NUMBER_OF_ORANGE_BOUGHT"), 9999);
+	globalStatSetInt(string_to_hash("CIGARETTES_BOUGHT"), 9999);
+}
+
+void hack::unlockHeistCars(float* arg)
+{
+	globalStatSetInt(string_to_hash("CHAR_FM_VEHICLE_1_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_FM_VEHICLE_2_UNLCK"), -1);
+}
+
+void hack::unlockLSC(float* arg)
+{
+	globalStatSetInt(string_to_hash("RACES_WON"), 50);
+	globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_1_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_2_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_3_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_4_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_5_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_6_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_7_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("NUMBER_SLIPSTREAMS_IN_RACE"), 110);
+	globalStatSetInt(string_to_hash("NUMBER_TURBO_STARTS_IN_RACE"), 90);
+	globalStatSetInt(string_to_hash("USJS_FOUND"), 50);
+	globalStatSetInt(string_to_hash("USJS_COMPLETED"), 50);
+	globalStatSetInt(string_to_hash("TIMES_RACE_BEST_LAP","MPPLY_"), 101);
+	globalStatSetInt(string_to_hash("AWD_FMRALLYWONDRIVE"), 2);
+	globalStatSetInt(string_to_hash("AWD_FMWINSEARACE"), 2);
+	globalStatSetInt(string_to_hash("AWD_FMWINAIRRACE"), 2);
+	globalStatSetInt(string_to_hash("AWD_FM_RACES_FASTEST_LAP"), 101);
+}
+
+void hack::unlockWeaponCamos(float* arg)
+{
+	globalStatSetInt(string_to_hash("PISTOL_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("CMBTPISTOL_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("PISTOL50_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("APPISTOL_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("MICROSMG_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("SMG_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("ASLTSMG_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("ASLTRIFLE_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("CRBNRIFLE_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("ADVRIFLE_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("MG_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("CMBTMG_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("ASLTMG_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("PUMP_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("SAWNOFF_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("BULLPUP_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("ASLTSHTGN_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("SNIPERRFL_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("HVYSNIPER_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("GRNLAUNCH_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("RPG_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("MINIGUNS_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("GRENADE_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("SMKGRENADE_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("STKYBMB_ENEMY_KILLS"), 600);
+	globalStatSetInt(string_to_hash("MOLOTOV_ENEMY_KILLS"), 600);
+}
+
+void hack::unlockWeapon(float* arg)
+{
+	globalStatSetInt(string_to_hash("CHAR_WEAP_UNLOCKED"), -1);
+	globalStatSetInt(string_to_hash("CHAR_WEAP_UNLOCKED2"), -1);
+	globalStatSetInt(string_to_hash("CHAR_WEAP_ADDON_1_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_WEAP_ADDON_2_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_WEAP_ADDON_3_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_WEAP_ADDON_4_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_UNLOCKED"), -1);
+	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_UNLOCKED2"), -1);
+	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_1_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_2_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_3_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_4_UNLCK"), -1);
+	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_5_UNLCK"), -1);
+}
+
+void hack::unlockAllAwards(float* arg)
+{
+	globalStatSetInt(string_to_hash("AWD_100_KILLS_PISTOL"), 500);
+	globalStatSetInt(string_to_hash("AWD_100_KILLS_SNIPER"), 500);
+	globalStatSetInt(string_to_hash("AWD_50_KILLS_GRENADES"), 500);
+	globalStatSetInt(string_to_hash("AWD_100_KILLS_SHOTGUN"), 500);
+	globalStatSetInt(string_to_hash("AWD_100_KILLS_SMG"), 500);
+	globalStatSetInt(string_to_hash("AWD_50_KILLS_ROCKETLAUNCH"), 500);
+	globalStatSetInt(string_to_hash("AWD_25_KILLS_STICKYBOMBS"), 500);
+	globalStatSetInt(string_to_hash("AWD_20_KILLS_MELEE"), 500);
+	globalStatSetInt(string_to_hash("AWD_100_HEADSHOTS"), 500);
+	globalStatSetInt(string_to_hash("AWD_50_VEHICLES_BLOWNUP"), 500);
+	globalStatSetInt(string_to_hash("AWD_ENEMYDRIVEBYKILLS"), 500);
+	globalStatSetInt(string_to_hash("AWD_COPS_KILLED"), 500);
+	globalStatSetInt(string_to_hash("AWD_BUY_EVERY_GUN"), 1);
+	globalStatSetInt(string_to_hash("AWD_DRIVE_ALL_COP_CARS"), 1);
+	globalStatSetInt(string_to_hash("AWD_VEHICLE_JUMP_OVER_40M"), 50);
+	globalStatSetInt(string_to_hash("AWD_VEHICLE_JUMP0_OVER_40M"), 50);
+	globalStatSetInt(string_to_hash("AWD_VEHICLE_JUMP1_OVER_40M"), 50);
+	globalStatSetInt(string_to_hash("AWD_NO_ARMWRESTLING_WINS"), 50);
+	globalStatSetInt(string_to_hash("AWD_KILLS_MACHINEGUN"), 50);
+	globalStatSetInt(string_to_hash("AWD_ODD_JOBS"), 52);
+	globalStatSetInt(string_to_hash("AWD_PREPARATION"), 50);
+	globalStatSetInt(string_to_hash("AWD_ASLEEPONJOB"), 20);
+	globalStatSetInt(string_to_hash("AWD_DAICASHCRAB"), 100000);
+	globalStatSetInt(string_to_hash("AWD_BIGBRO"), 40);
+	globalStatSetInt(string_to_hash("AWD_SHARPSHOOTER"), 40);
+	globalStatSetInt(string_to_hash("AWD_RACECHAMP"), 40);
+	globalStatSetInt(string_to_hash("AWD_BATSWORD"), 1000000);
+	globalStatSetInt(string_to_hash("AWD_COINPURSE"), 950000);
+	globalStatSetInt(string_to_hash("AWD_ASTROCHIMP"), 3000000);
+	globalStatSetInt(string_to_hash("AWD_MASTERFUL"), 40000);
+	globalStatSetInt(string_to_hash("AWD_5STAR_WANTED_AVOIDANCE"), 50);
+	globalStatSetInt(string_to_hash("AWD_CAR_BOMBS_ENEMY_KILLS"), 50);
+	globalStatSetInt(string_to_hash("AWD_CARS_EXPORTED"), 50);
+	globalStatSetInt(string_to_hash("AWD_CONTROL_CROWDS"), 25);
+	globalStatSetInt(string_to_hash("AWD_DAILYOBJCOMPLETED"), 100);
+	globalStatSetInt(string_to_hash("AWD_DO_HEIST_AS_MEMBER"), 25);
+	globalStatSetInt(string_to_hash("AWD_DO_HEIST_AS_THE_LEADER"), 25);
+	globalStatSetInt(string_to_hash("AWD_DROPOFF_CAP_PACKAGES"), 100);
+	globalStatSetInt(string_to_hash("AWD_FINISH_HEIST_SETUP_JOB"), 50);
+	globalStatSetInt(string_to_hash("AWD_FINISH_HEISTS"), 50);
+	globalStatSetInt(string_to_hash("AWD_FM_DM_3KILLSAMEGUY"), 50);
+	globalStatSetInt(string_to_hash("AWD_FM_DM_KILLSTREAK"), 100);
+	globalStatSetInt(string_to_hash("AWD_FM_DM_STOLENKILL"), 50);
+	globalStatSetInt(string_to_hash("AWD_FM_DM_TOTALKILLS"), 500);
+	globalStatSetInt(string_to_hash("AWD_FM_DM_WINS"), 50);
+	globalStatSetInt(string_to_hash("AWD_FM_GOLF_HOLE_IN_1"), 300);
+	globalStatSetInt(string_to_hash("AWD_FM_GOLF_BIRDIES"), 25);
+	globalStatSetInt(string_to_hash("AWD_FM_GOLF_WON"), 25);
+	globalStatSetInt(string_to_hash("AWD_FM_GTA_RACES_WON"), 50);
+	globalStatSetInt(string_to_hash("AWD_FM_RACE_LAST_FIRST"), 25);
+	globalStatSetInt(string_to_hash("AWD_FM_RACES_FASTEST_LAP"), 50);
+	globalStatSetInt(string_to_hash("AWD_FM_SHOOTRANG_CT_WON"), 25);
+	globalStatSetInt(string_to_hash("AWD_FM_SHOOTRANG_RT_WON"), 25);
+	globalStatSetInt(string_to_hash("AWD_FM_SHOOTRANG_TG_WON"), 25);
+	globalStatSetInt(string_to_hash("AWD_FM_TDM_MVP"), 50);
+	globalStatSetInt(string_to_hash("AWD_FM_TDM_WINS"), 50);
+	globalStatSetInt(string_to_hash("AWD_FM_TENNIS_ACE"), 25);
+	globalStatSetInt(string_to_hash("AWD_FM_TENNIS_WON"), 25);
+	globalStatSetInt(string_to_hash("AWD_FMBASEJMP"), 25);
+	globalStatSetInt(string_to_hash("AWD_FMBBETWIN"), 50000);
+	globalStatSetInt(string_to_hash("AWD_FMCRATEDROPS"), 25);
+	globalStatSetInt(string_to_hash("AWD_FMDRIVEWITHOUTCRASH"), 30);
+	globalStatSetInt(string_to_hash("AWD_FMHORDWAVESSURVIVE"), 10);
+	globalStatSetInt(string_to_hash("AWD_FMKILLBOUNTY"), 25);
+	globalStatSetInt(string_to_hash("AWD_FMRALLYWONDRIVE"), 25);
+	globalStatSetInt(string_to_hash("AWD_FMRALLYWONNAV"), 25);
+	globalStatSetInt(string_to_hash("AWD_FMREVENGEKILLSDM"), 50);
+	globalStatSetInt(string_to_hash("AWD_FMSHOOTDOWNCOPHELI"), 25);
+	globalStatSetInt(string_to_hash("AWD_FMWINAIRRACE"), 25);
+	globalStatSetInt(string_to_hash("AWD_FMWINRACETOPOINTS"), 25);
+	globalStatSetInt(string_to_hash("AWD_FMWINSEARACE"), 25);
+	globalStatSetInt(string_to_hash("AWD_HOLD_UP_SHOPS"), 20);
+	globalStatSetInt(string_to_hash("AWD_KILL_CARRIER_CAPTURE"), 100);
+	globalStatSetInt(string_to_hash("AWD_KILL_PSYCHOPATHS"), 100);
+	globalStatSetInt(string_to_hash("AWD_KILL_TEAM_YOURSELF_LTS"), 25);
+	globalStatSetInt(string_to_hash("AWD_LAPDANCES"), 25);
+	globalStatSetInt(string_to_hash("AWD_LESTERDELIVERVEHICLES"), 25);
+	globalStatSetInt(string_to_hash("AWD_MENTALSTATE_TO_NORMAL"), 50);
+	globalStatSetInt(string_to_hash("AWD_NIGHTVISION_KILLS"), 100);
+	globalStatSetInt(string_to_hash("AWD_NO_HAIRCUTS"), 25);
+	globalStatSetInt(string_to_hash("AWD_ODISTRACTCOPSNOEATH"), 25);
+	globalStatSetInt(string_to_hash("AWD_ONLY_PLAYER_ALIVE_LTS"), 50);
+	globalStatSetInt(string_to_hash("AWD_PARACHUTE_JUMPS_20M"), 50);
+	globalStatSetInt(string_to_hash("AWD_PARACHUTE_JUMPS_50M"), 50);
+	globalStatSetInt(string_to_hash("AWD_PASSENGERTIME"), 4);
+	globalStatSetInt(string_to_hash("AWD_PICKUP_CAP_PACKAGES"), 100);
+	globalStatSetInt(string_to_hash("AWD_RACES_WON"), 50);
+	globalStatSetInt(string_to_hash("AWD_SECURITY_CARS_ROBBED"), 25);
+	globalStatSetInt(string_to_hash("AWD_TAKEDOWNSMUGPLANE"), 50);
+	globalStatSetInt(string_to_hash("AWD_TIME_IN_HELICOPTER"), 4);
+	globalStatSetInt(string_to_hash("AWD_TRADE_IN_YOUR_PROPERTY"), 25);
+	globalStatSetInt(string_to_hash("AWD_VEHICLES_JACKEDR"), 500);
+	globalStatSetInt(string_to_hash("AWD_WIN_AT_DARTS"), 25);
+	globalStatSetInt(string_to_hash("AWD_WIN_CAPTURE_DONT_DYING"), 25);
+	globalStatSetInt(string_to_hash("AWD_WIN_CAPTURES"), 50);
+	globalStatSetInt(string_to_hash("AWD_WIN_GOLD_MEDAL_HEISTS"), 25 );
+	globalStatSetInt(string_to_hash("AWD_WIN_LAST_TEAM_STANDINGS"), 50);
+	globalStatSetInt(string_to_hash("AWD_DANCE_TO_SOLOMUN"), 100);
+	globalStatSetInt(string_to_hash("AWD_DANCE_TO_TALEOFUS"), 100);
+	globalStatSetInt(string_to_hash("AWD_DANCE_TO_DIXON"), 100);
+	globalStatSetInt(string_to_hash("AWD_DANCE_TO_BLKMAD"), 100);
+	globalStatSetInt(string_to_hash("AWD_CLUB_DRUNK"), 200);
+	globalStatSetInt(string_to_hash("AWD_WATCH_YOUR_STEP"), 50);
+	globalStatSetInt(string_to_hash("AWD_TOWER_OFFENSE"), 50);
+	globalStatSetInt(string_to_hash("AWD_READY_FOR_WAR"), 50);
+	globalStatSetInt(string_to_hash("AWD_THROUGH_A_LENS"), 50);
+	globalStatSetInt(string_to_hash("AWD_SPINNER"), 50);
+	globalStatSetInt(string_to_hash("AWD_YOUMEANBOOBYTRAPS"), 50);
+	globalStatSetInt(string_to_hash("AWD_MASTER_BANDITO"), 50);
+	globalStatSetInt(string_to_hash("AWD_SITTING_DUCK"), 50);
+	globalStatSetInt(string_to_hash("AWD_CROWDPARTICIPATION"), 50);
+	globalStatSetInt(string_to_hash("AWD_KILL_OR_BE_KILLED"), 50);
+	globalStatSetInt(string_to_hash("AWD_MASSIVE_SHUNT"), 25);
+	globalStatSetInt(string_to_hash("AWD_YOURE_OUTTA_HERE"), 200);
+	globalStatSetInt(string_to_hash("AWD_WEVE_GOT_ONE"), 50);
+	globalStatSetInt(string_to_hash("AWD_ARENA_WAGEWORKER"), 20000000);
+	globalStatSetInt(string_to_hash("AWD_TIME_SERVED"), 1000);
+	globalStatSetInt(string_to_hash("AWD_TOP_SCORE"), 500000);
+	globalStatSetInt(string_to_hash("AWD_CAREER_WINNER"), 1000);
 }
 
 
-void hack::globalStatSetInt(int hash,int value)
+void hack::globalStatSetInt(unsigned int hash,int value)
 {
 	if (m_global.initPtr(m_hModule))
 	{
 		m_global.getStatHash();
-		DWORD resotreHash = m_global.m_dwStatHash;
+		unsigned int resotreHash = m_global.m_dwStatHash;
 		m_global.getStatValue();
 		DWORD resotreValue = m_global.m_dwStatValue;
+		m_global.getStatCall();
+		DWORD call = m_global.m_dwStatCall;
 
 		m_global.setStatHash(hash);
-		Sleep(100);
 		m_global.setStatValue(value);
-		Sleep(100);
 		m_global.setStatCall(-1);
-		Sleep(100);
+		Sleep(400);
 		m_global.setStatHash(resotreHash);
 		m_global.setStatValue(resotreValue);
 	}

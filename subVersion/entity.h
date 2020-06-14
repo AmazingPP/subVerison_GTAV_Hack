@@ -332,17 +332,18 @@ class global
 					m_dwpStatValue,
 					m_dwpStatCall;
 
-		DWORD		m_dwStatHash,
-					m_dwStatValue,
-					m_dwStatCall;
+		unsigned int	m_dwStatHash,
+						m_dwStatHashSet;
+		int			m_dwStatValue,
+						m_dwStatCall;
 			
 				global();
 				~global();
 		bool	initPtr(HMODULE base);
 		void	getStatHash();
-		void	setStatHash(DWORD value);
+		void	setStatHash(unsigned int value);
 		void	getStatValue();
-		void	setStatValue(DWORD value);
+		void	setStatValue(int value);
 		void	getStatCall();
 		void	setStatCall(int value);
 
