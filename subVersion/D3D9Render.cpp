@@ -91,6 +91,14 @@ bool	D3D9Render::render()
 		this->drawBoxBorder(0, 0, LAYOUT_ELEMENT_WIDTH, LAYOUT_ELEMENT_HEIGHT, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_BACKGROUND, LAYOUT_COLOR_BORDER);
 		this->drawText(m_szWindowTitle, 0, 0, LAYOUT_ELEMENT_WIDTH, LAYOUT_ELEMENT_HEIGHT, 2, LAYOUT_COLOR_TEXT, DT_CENTER | DT_VCENTER);
 
+		if (this->m_bMBShowing)
+		{
+			this->drawBoxBorder(LAYOUT_ELEMENT_WIDTH + 10, 0, LAYOUT_MB_WIDTH, LAYOUT_ELEMENT_HEIGHT, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_BACKGROUND, LAYOUT_COLOR_BORDER);
+			this->drawText(this->m_sTitle, LAYOUT_ELEMENT_WIDTH + 10, 0, LAYOUT_MB_WIDTH, LAYOUT_ELEMENT_HEIGHT, 2, LAYOUT_COLOR_TEXT, DT_CENTER | DT_VCENTER);
+			this->drawBoxBorder(LAYOUT_ELEMENT_WIDTH + 10, LAYOUT_ELEMENT_HEIGHT, LAYOUT_MB_WIDTH, LAYOUT_MB_HEIGHT, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_BACKGROUND, LAYOUT_COLOR_BORDER);
+			this->drawText(this->m_sDetail, LAYOUT_ELEMENT_WIDTH + 10, LAYOUT_ELEMENT_HEIGHT, LAYOUT_MB_WIDTH , LAYOUT_MB_HEIGHT, 0, LAYOUT_COLOR_TEXT, DT_CENTER | DT_VCENTER);
+		}
+
 		//prevent race conditions
 		while(!g_pSettings->lockFeatureCur())
 			Sleep(1);
@@ -207,11 +215,23 @@ bool	D3D9Render::getViewport()
 {
 	RECT rectWnd;
 	GetWindowRect(g_pMemMan->getWindow(), &rectWnd);
-	m_screen.w = LAYOUT_ELEMENT_WIDTH + LAYOUT_SCROLLBAR_WIDTH + LAYOUT_BORDER_SIZE;
+	m_screen.w = LAYOUT_ELEMENT_WIDTH * 2 + LAYOUT_SCROLLBAR_WIDTH + LAYOUT_BORDER_SIZE;
 	m_screen.h = LAYOUT_ELEMENT_HEIGHT * (MAX_MENU_FEATURES_DISPLAYED + 2); //300
-	m_screen.x = rectWnd.left	+ LAYOUT_PADDING_LEFT;
+	m_screen.x = rectWnd.left 	+ LAYOUT_PADDING_LEFT;
 	m_screen.y = rectWnd.top	+ LAYOUT_PADDING_TOP;
 	return 1;
+}
+
+void	D3D9Render::showMessageBox(std::string title,std::string detail)
+{
+	this->m_sTitle = title;
+	this->m_sDetail = detail;
+	std::thread t([this] {
+		m_bMBShowing = true;
+		Sleep(3000);
+		m_bMBShowing = false;
+	});
+	t.detach();
 }
 
 void	D3D9Render::drawBox(int x, int y, int w, int h, D3DCOLOR color)

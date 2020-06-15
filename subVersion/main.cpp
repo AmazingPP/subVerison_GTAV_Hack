@@ -212,21 +212,23 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeature(3, -1, "千年山", feat_teleport, tp_static, 489.979f, 5587.527f, 794.3f);
 
 	int tunable = g_pSettings->addFeature(4, -1, "可调参数 >>", feat_parent);
+	g_iFeature[FEATURE_T_ANTI_IDLE_KICK] = g_pSettings->addFeature(-1, tunable, "AFK反挂机踢出", feat_toggle, "AntiIdleKick");
+	g_iFeature[FEATURE_T_ORBITAL_CANNON] = g_pSettings->addFeature(-1, tunable, "天基炮无冷却", feat_toggle, "OrbitalCannon");
 	g_iFeature[FEATURE_T_RP_MP]			   = g_pSettings->addFeature(-1, tunable, "RP倍数", feat_slider,"RP", 1.f, 1000.f , (float)1.f / 9.f);
 	g_iFeature[FEATURE_T_AP_MP]			   = g_pSettings->addFeature(-1, tunable, "AP倍数", feat_slider, "AP", 1.f, 1000.f, (float)1.f / 9.f);
 	g_iFeature[FEATURE_T_MISSION_PAYOUT]   = g_pSettings->addFeature(-1, tunable, "最小任务金额", feat_slider, "MinMissionPayout", 0.f, 100000.f);
 	int olService = g_pSettings->addFeature(4, -1, "线上服务 >>", feat_parent);
 	addFeature(-1, olService, "角色属性全满", feat_btn, &hack::fillSkillLevels, -1.f);
-	addFeature(-1, olService, "补满零食和香烟", feat_btn, &hack::fillAllSnacks, -1.f);
-	//addFeature(-1, olService, "重新捏脸", feat_btn, &hack::fillAllSnacks, -1.f);
+	addFeature(-1, olService, "补满零食、防弹衣", feat_btn, &hack::fillAllSnacks, -1.f);
+	int casino = g_pSettings->addFeature(-1, olService, "赌场豪劫 >>", feat_parent);
+	addFeature(-1, casino, "清除冷却时间", feat_btn, &hack::casinoStat, 1.f);
 	int unlock = g_pSettings->addFeature(-1, olService, "解锁 >>", feat_parent);
 	addFeature(-1, unlock, "解锁改车配件", feat_btn, &hack::unlockLSC, -1.f);
 	addFeature(-1, unlock, "解锁武器涂装", feat_btn, &hack::unlockWeaponCamos, -1.f);
-	addFeature(-1, unlock, "解锁抢劫车辆", feat_btn, &hack::unlockHeistCars, -1.f);
-	addFeature(-1, unlock, "解锁所有奖章", feat_btn, &hack::unlockAllAwards, -1.f);
-	//addFeature(-1, unlock, "解锁所有纹身", feat_btn, &hack::unlockAllAwards, -1.f);
-	//addFeature(-1, unlock, "解锁所有发型", feat_btn, &hack::unlockAllAwards, -1.f);
-	//addFeature(-1, unlock, "解锁所有衣服", feat_btn, &hack::unlockAllAwards, -1.f);
+	addFeature(-1, unlock, "解锁抢劫车辆批发价", feat_btn, &hack::unlockHeistCars, -1.f);
+	addFeature(-1, unlock, "解锁奖章", feat_btn, &hack::unlockAllAwards, -1.f);
+	addFeature(-1, unlock, "解锁衣服", feat_btn, &hack::unlockClothes, -1.f);
+	g_iFeature[FEATURE_T_BUNKER_RESEARCH] = g_pSettings->addFeature(-1, unlock, "解锁所有地堡研究(临时)", feat_toggle, "BunkerResearch");
 
 
 	g_pSettings->setActiveCat(0);			//this needs to be called so we can fill the current feature buffer
@@ -469,6 +471,9 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->tunableRpMult(g_pSettings->getFeature(g_iFeature[FEATURE_T_RP_MP]));
 				g_pHack->tunableApMult(g_pSettings->getFeature(g_iFeature[FEATURE_T_AP_MP]));
 				g_pHack->tunableMissionPayout(g_pSettings->getFeature(g_iFeature[FEATURE_T_MISSION_PAYOUT]));
+				g_pHack->tunableOrbitalCannonCooldown(g_pSettings->getFeature(g_iFeature[FEATURE_T_ORBITAL_CANNON]));
+				g_pHack->tunableBunkerResearch(g_pSettings->getFeature(g_iFeature[FEATURE_T_BUNKER_RESEARCH]));
+				g_pHack->tunableAntiIdleKick(g_pSettings->getFeature(g_iFeature[FEATURE_T_ANTI_IDLE_KICK]));
 			}
 		}
 		Sleep(1);

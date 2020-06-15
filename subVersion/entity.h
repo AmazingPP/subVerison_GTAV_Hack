@@ -311,6 +311,12 @@ class tunable
 		float		m_fRpMult,
 					m_fApMult,
 					m_fMinMissionPayout;
+		DWORD		m_dwOrbitalCannonCooldown,
+					m_dwBunkerResearch,
+					m_dwAntiIdleKick1,
+					m_dwAntiIdleKick2,
+					m_dwAntiIdleKick3,
+					m_dwAntiIdleKick4;
 				tunable();
 				~tunable();
 		void	restoreTunable();
@@ -320,6 +326,18 @@ class tunable
 		void	setApMult(float value);
 		void	getMinMissionPayout();
 		void	setMinMissionPayout(float value);
+		void	getOrbitalCannonCooldown();
+		void	setOrbitalCannonCooldown(DWORD value);
+		void	getBunkerResearch();
+		void	setBunkerResearch(DWORD value);
+		void	getAntiIdleKick1();
+		void	setAntiIdleKick1(DWORD value);
+		void	getAntiIdleKick2();
+		void	setAntiIdleKick2(DWORD value);
+		void	getAntiIdleKick3();
+		void	setAntiIdleKick3(DWORD value);
+		void	getAntiIdleKick4();
+		void	setAntiIdleKick4(DWORD value);
 
 		DWORD_PTR	m_dwpTunableBase;
 };

@@ -32,6 +32,9 @@
 #define LAYOUT_ELEMENT_WIDTH	300
 #define LAYOUT_ELEMENT_HEIGHT	25
 
+#define LAYOUT_MB_WIDTH			300
+#define LAYOUT_MB_HEIGHT		100
+
 #define LAYOUT_SCROLLBAR_WIDTH	0x08
 #define LAYOUT_SCROLLBAR_HEIGHT	0x40
 
@@ -73,6 +76,7 @@ class D3D9Render
 		bool	createFont	(char *font, int size, bool bold, bool italic);
 		void	releaseFont	();
 		bool	getViewport	();
+		void	showMessageBox(std::string title, std::string detail);
 
 		void	drawBox			(int x, int y, int w, int h, D3DCOLOR color);
 		void	drawBoxInline	(int x, int y, int w, int h, int size, D3DCOLOR color);
@@ -87,6 +91,9 @@ class D3D9Render
 		LPD3DXFONT				m_pFont[FONT_BUFFER_SIZE];
 		int						m_nFont;
 		D3DPRESENT_PARAMETERS	m_d3dParam;				//d3d9 device params
+		bool					m_bMBShowing;
+		std::string				m_sTitle;
+		std::string				m_sDetail;
 };
 
 extern D3D9Render*	g_pD3D9Render;

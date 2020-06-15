@@ -926,6 +926,80 @@ void tunable::setMinMissionPayout(float value)
 	return;
 }
 
+void tunable::getOrbitalCannonCooldown()
+{
+	g_pMemMan->readMem<DWORD>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_ORBITAL_CANNON_COOLDOWN, &m_dwOrbitalCannonCooldown);
+	return;
+}
+
+void tunable::setOrbitalCannonCooldown(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_ORBITAL_CANNON_COOLDOWN, &value);
+	return;
+}
+
+void tunable::getBunkerResearch()
+{
+	g_pMemMan->readMem<DWORD>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_BUNKER_RESEARCH, &m_dwBunkerResearch);
+	return;
+}
+
+void tunable::setBunkerResearch(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_BUNKER_RESEARCH, &value);
+	return;
+}
+
+void tunable::getAntiIdleKick1()
+{
+	g_pMemMan->readMem<DWORD>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_ANTI_IDLE_KICK1, &m_dwAntiIdleKick1);
+	return;
+}
+
+void tunable::setAntiIdleKick1(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_ANTI_IDLE_KICK1, &value);
+	return;
+}
+
+void tunable::getAntiIdleKick2()
+{
+	g_pMemMan->readMem<DWORD>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_ANTI_IDLE_KICK2, &m_dwAntiIdleKick2);
+	return;
+}
+
+void tunable::setAntiIdleKick2(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_ANTI_IDLE_KICK2, &value);
+	return;
+}
+
+void tunable::getAntiIdleKick3()
+{
+	g_pMemMan->readMem<DWORD>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_ANTI_IDLE_KICK3, &m_dwAntiIdleKick3);
+	return;
+}
+
+void tunable::setAntiIdleKick3(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_ANTI_IDLE_KICK3, &value);
+	return;
+}
+
+void tunable::getAntiIdleKick4()
+{
+	g_pMemMan->readMem<DWORD>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_ANTI_IDLE_KICK4, &m_dwAntiIdleKick4);
+	return;
+}
+
+void tunable::setAntiIdleKick4(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR)m_dwpTunableBase + OFFSET_TUNABLE_ANTI_IDLE_KICK4, &value);
+	return;
+}
+
+
+
 /*
 	GLOBAL
 */

@@ -34,6 +34,7 @@
 #include <regex>
 #include <string>
 #include <map>
+#include <thread>
 
 #include <Dwmapi.h>
 #pragma comment(lib,"Dwmapi.lib")
@@ -105,7 +106,7 @@
 #define OFFSET_VEHICLE_HANDLING_ENGINE_DAMAGE_MP	0xFC			//fEngineDamageMult
 #define OFFSET_VEHICLE_BULLETPROOF_TIRES			0x923			//btBulletproofTires;  (btBulletproofTires & 0x20) ? true : false
 //#define OFFSET_VEHICLE_OPENABLE_DOORS				0xB30			//btOpenableDoors
-#define OFFSET_VEHICLE_GRAVITY						0xC1C			//fGravity
+#define OFFSET_VEHICLE_GRAVITY						0xC3C			//fGravity
 #define OFFSET_VEHICLE_BOOST						0x320			//fBoost
 #define OFFSET_VEHICLE_RECHARGE_SPEED				0x324			//fRocketRechargeSpeed
 #define OFFSET_VEHICLE_MISSLES						0x1280			//btVehicleMissles
@@ -241,6 +242,9 @@
 #define FEATURE_W_FORCE_ON_HELI		0x3B
 #define FEATURE_W_BULLET_EDIT		0x3C
 #define FEATURE_P_NPC_IGNORE		0x3D
+#define FEATURE_T_ORBITAL_CANNON	0x3E
+#define FEATURE_T_BUNKER_RESEARCH	0x3F
+#define FEATURE_T_ANTI_IDLE_KICK	0x40
 
 void	killProgram	();
 DWORD	strToVk(std::string str);

@@ -51,6 +51,7 @@ class hack : public trainer
 		tunable m_tunable;
 		global	m_global;
 		std::string m_mpId;
+		bool	m_bStating;
 		ImpactExplosionEnum m_explosion;
 
 		HMODULE	m_hModule;
@@ -77,11 +78,13 @@ class hack : public trainer
 		void	fillAmmo(float* arg);
 		void	fillSkillLevels(float* arg);
 		void	fillAllSnacks(float* arg);
+		void	casinoStat(float* arg);
 		void	unlockHeistCars(float* arg);
 		void	unlockLSC(float* arg);
 		void	unlockWeaponCamos(float* arg);
-		void	unlockWeapon(float* arg);
+		//void	unlockWeapon(float* arg);
 		void	unlockAllAwards(float* arg);
+		void	unlockClothes(float* arg);
 		void	waterProof(feat* feature);
 		void	undeadOffradar(feat* feature);
 		void	superPunch(feat* feature);
@@ -131,6 +134,9 @@ class hack : public trainer
 		void	tunableRpMult(feat* feature);
 		void	tunableApMult(feat* feature);
 		void	tunableMissionPayout(feat* feature);
+		void	tunableOrbitalCannonCooldown(feat* feature);
+		void	tunableBunkerResearch(feat* feature);
+		void	tunableAntiIdleKick(feat* feature);
 
 	private:
 		DWORD_PTR	m_dwpWorldBase,

@@ -170,6 +170,7 @@ BYTE hack::initPointers()
 		return INITPTR_INVALID_GLOBAL;
 	m_global.m_dwpGlobalBase = m_dwpGlobalBase;
 	m_mpId = "MP0_";
+	m_bStating = false;
 
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpWorldBase + OFFSET_PLAYER, &m_dwpPlayerBase);
 	if(m_dwpPlayerBase == 0)
@@ -396,219 +397,502 @@ void hack::fillAmmo(float* arg)
 
 void hack::fillSkillLevels(float* arg)
 {
-	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_STAM"), 100);
-	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_SHO"), 100);
-	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_STRN"), 100);
-	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_STL"), 100);
-	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_FLY"), 100);
-	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_DRIV"), 100);
-	globalStatSetInt(string_to_hash("SCRIPT_INCREASE_LUNG"), 100);
+	if (!m_bStating)
+	{
+		std::thread t([this] {
+			m_bStating = true;
+			globalStatSetInt(string_to_hash("SCRIPT_INCREASE_STAM"), 100);
+			globalStatSetInt(string_to_hash("SCRIPT_INCREASE_SHO"), 100);
+			globalStatSetInt(string_to_hash("SCRIPT_INCREASE_STRN"), 100);
+			globalStatSetInt(string_to_hash("SCRIPT_INCREASE_STL"), 100);
+			globalStatSetInt(string_to_hash("SCRIPT_INCREASE_FLY"), 100);
+			globalStatSetInt(string_to_hash("SCRIPT_INCREASE_DRIV"), 100);
+			globalStatSetInt(string_to_hash("SCRIPT_INCREASE_LUNG"), 100);
+			m_bStating = false;
+		});
+		t.detach();
+	}
 }
 
 void hack::fillAllSnacks(float* arg)
 {
-	globalStatSetInt(string_to_hash("NO_BOUGHT_YUM_SNACKS"), 9999);
-	globalStatSetInt(string_to_hash("NO_BOUGHT_HEALTH_SNACKS"), 9999);
-	globalStatSetInt(string_to_hash("NO_BOUGHT_EPIC_SNACKS"), 9999);
-	globalStatSetInt(string_to_hash("NUMBER_OF_ORANGE_BOUGHT"), 9999);
-	globalStatSetInt(string_to_hash("CIGARETTES_BOUGHT"), 9999);
+	if (!m_bStating)
+	{
+		m_bStating = true;
+		std::thread t([this] {
+			globalStatSetInt(string_to_hash("NO_BOUGHT_YUM_SNACKS"), 30);
+			globalStatSetInt(string_to_hash("NO_BOUGHT_HEALTH_SNACKS"), 15);
+			globalStatSetInt(string_to_hash("NO_BOUGHT_EPIC_SNACKS"), 5);
+			globalStatSetInt(string_to_hash("NUMBER_OF_ORANGE_BOUGHT"), 10);
+			globalStatSetInt(string_to_hash("NUMBER_OF_BOURGE_BOUGHT"), 10);
+			globalStatSetInt(string_to_hash("CIGARETTES_BOUGHT"), 20);
+			globalStatSetInt(string_to_hash("CHAR_ARMOUR_5_COUNT"), 10);
+			m_bStating = false;
+		});
+		t.detach();
+	}
+	else
+	{
+		g_pD3D9Render->showMessageBox("提示：", "正在处理上一个任务，请等待!");
+	}
+}
+
+void hack::casinoStat(float* arg)
+{
+	if (!m_bStating)
+	{
+		std::thread t([this] {
+			m_bStating = true;
+			globalStatSetInt(string_to_hash("H3_COMPLETEDPOSIX"), -1);
+			m_bStating = false;
+		});
+		t.detach();
+	}
+	else
+	{
+		g_pD3D9Render->showMessageBox("提示：", "正在处理上一个任务，请等待!");
+	}
 }
 
 void hack::unlockHeistCars(float* arg)
 {
-	globalStatSetInt(string_to_hash("CHAR_FM_VEHICLE_1_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_FM_VEHICLE_2_UNLCK"), -1);
+	if (!m_bStating)
+	{
+		std::thread t([this] {
+			m_bStating = true;
+			globalStatSetInt(string_to_hash("CHAR_FM_VEHICLE_1_UNLCK"), -1);
+			globalStatSetInt(string_to_hash("CHAR_FM_VEHICLE_2_UNLCK"), -1);
+			m_bStating = false;
+		});
+		t.detach();
+	}
+	else
+	{
+		g_pD3D9Render->showMessageBox("提示：", "正在处理上一个任务，请等待!");
+	}
 }
 
 void hack::unlockLSC(float* arg)
 {
-	globalStatSetInt(string_to_hash("RACES_WON"), 50);
-	globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_1_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_2_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_3_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_4_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_5_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_6_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_7_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("NUMBER_SLIPSTREAMS_IN_RACE"), 110);
-	globalStatSetInt(string_to_hash("NUMBER_TURBO_STARTS_IN_RACE"), 90);
-	globalStatSetInt(string_to_hash("USJS_FOUND"), 50);
-	globalStatSetInt(string_to_hash("USJS_COMPLETED"), 50);
-	globalStatSetInt(string_to_hash("TIMES_RACE_BEST_LAP","MPPLY_"), 101);
-	globalStatSetInt(string_to_hash("AWD_FMRALLYWONDRIVE"), 2);
-	globalStatSetInt(string_to_hash("AWD_FMWINSEARACE"), 2);
-	globalStatSetInt(string_to_hash("AWD_FMWINAIRRACE"), 2);
-	globalStatSetInt(string_to_hash("AWD_FM_RACES_FASTEST_LAP"), 101);
+	if (!m_bStating)
+	{
+		std::thread t([this] {
+			m_bStating = true;
+			globalStatSetInt(string_to_hash("RACES_WON"), 50);
+			globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_1_UNLCK"), -1);
+			globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_2_UNLCK"), -1);
+			globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_3_UNLCK"), -1);
+			globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_4_UNLCK"), -1);
+			globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_5_UNLCK"), -1);
+			globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_6_UNLCK"), -1);
+			globalStatSetInt(string_to_hash("CHAR_FM_CARMOD_7_UNLCK"), -1);
+			globalStatSetInt(string_to_hash("NUMBER_SLIPSTREAMS_IN_RACE"), 110);
+			globalStatSetInt(string_to_hash("NUMBER_TURBO_STARTS_IN_RACE"), 90);
+			globalStatSetInt(string_to_hash("USJS_FOUND"), 50);
+			globalStatSetInt(string_to_hash("USJS_COMPLETED"), 50);
+			globalStatSetInt(string_to_hash("TIMES_RACE_BEST_LAP", "MPPLY_"), 101);
+			globalStatSetInt(string_to_hash("AWD_FMRALLYWONDRIVE"), 2);
+			globalStatSetInt(string_to_hash("AWD_FMWINSEARACE"), 2);
+			globalStatSetInt(string_to_hash("AWD_FMWINAIRRACE"), 2);
+			globalStatSetInt(string_to_hash("AWD_FM_RACES_FASTEST_LAP"), 101);
+			m_bStating = false;
+		});
+		t.detach();
+	}
+	else
+	{
+		g_pD3D9Render->showMessageBox("提示：", "正在处理上一个任务，请等待!");
+	}
 }
 
 void hack::unlockWeaponCamos(float* arg)
 {
-	globalStatSetInt(string_to_hash("PISTOL_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("CMBTPISTOL_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("PISTOL50_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("APPISTOL_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("MICROSMG_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("SMG_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("ASLTSMG_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("ASLTRIFLE_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("CRBNRIFLE_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("ADVRIFLE_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("MG_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("CMBTMG_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("ASLTMG_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("PUMP_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("SAWNOFF_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("BULLPUP_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("ASLTSHTGN_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("SNIPERRFL_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("HVYSNIPER_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("GRNLAUNCH_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("RPG_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("MINIGUNS_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("GRENADE_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("SMKGRENADE_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("STKYBMB_ENEMY_KILLS"), 600);
-	globalStatSetInt(string_to_hash("MOLOTOV_ENEMY_KILLS"), 600);
+	if (!m_bStating)
+	{
+		std::thread t([this] {
+			m_bStating = true;
+			globalStatSetInt(string_to_hash("PISTOL_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("CMBTPISTOL_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("PISTOL50_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("APPISTOL_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("MICROSMG_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("SMG_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("ASLTSMG_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("ASLTRIFLE_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("CRBNRIFLE_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("ADVRIFLE_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("MG_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("CMBTMG_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("ASLTMG_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("PUMP_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("SAWNOFF_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("BULLPUP_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("ASLTSHTGN_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("SNIPERRFL_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("HVYSNIPER_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("GRNLAUNCH_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("RPG_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("MINIGUNS_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("GRENADE_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("SMKGRENADE_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("STKYBMB_ENEMY_KILLS"), 600);
+			globalStatSetInt(string_to_hash("MOLOTOV_ENEMY_KILLS"), 600);
+			m_bStating = false;
+		});
+		t.detach();
+	}
+	else
+	{
+		g_pD3D9Render->showMessageBox("提示：", "正在处理上一个任务，请等待!");
+	}
 }
 
-void hack::unlockWeapon(float* arg)
-{
-	globalStatSetInt(string_to_hash("CHAR_WEAP_UNLOCKED"), -1);
-	globalStatSetInt(string_to_hash("CHAR_WEAP_UNLOCKED2"), -1);
-	globalStatSetInt(string_to_hash("CHAR_WEAP_ADDON_1_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_WEAP_ADDON_2_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_WEAP_ADDON_3_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_WEAP_ADDON_4_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_UNLOCKED"), -1);
-	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_UNLOCKED2"), -1);
-	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_1_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_2_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_3_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_4_UNLCK"), -1);
-	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_5_UNLCK"), -1);
-}
+//void hack::unlockWeapon(float* arg)
+//{
+//	globalStatSetInt(string_to_hash("CHAR_WEAP_UNLOCKED"), -1);
+//	globalStatSetInt(string_to_hash("CHAR_WEAP_UNLOCKED2"), -1);
+//	globalStatSetInt(string_to_hash("CHAR_WEAP_ADDON_1_UNLCK"), -1);
+//	globalStatSetInt(string_to_hash("CHAR_WEAP_ADDON_2_UNLCK"), -1);
+//	globalStatSetInt(string_to_hash("CHAR_WEAP_ADDON_3_UNLCK"), -1);
+//	globalStatSetInt(string_to_hash("CHAR_WEAP_ADDON_4_UNLCK"), -1);
+//	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_UNLOCKED"), -1);
+//	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_UNLOCKED2"), -1);
+//	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_1_UNLCK"), -1);
+//	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_2_UNLCK"), -1);
+//	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_3_UNLCK"), -1);
+//	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_4_UNLCK"), -1);
+//	globalStatSetInt(string_to_hash("CHAR_FM_WEAP_ADDON_5_UNLCK"), -1);
+//}
 
 void hack::unlockAllAwards(float* arg)
 {
-	globalStatSetInt(string_to_hash("AWD_100_KILLS_PISTOL"), 500);
-	globalStatSetInt(string_to_hash("AWD_100_KILLS_SNIPER"), 500);
-	globalStatSetInt(string_to_hash("AWD_50_KILLS_GRENADES"), 500);
-	globalStatSetInt(string_to_hash("AWD_100_KILLS_SHOTGUN"), 500);
-	globalStatSetInt(string_to_hash("AWD_100_KILLS_SMG"), 500);
-	globalStatSetInt(string_to_hash("AWD_50_KILLS_ROCKETLAUNCH"), 500);
-	globalStatSetInt(string_to_hash("AWD_25_KILLS_STICKYBOMBS"), 500);
-	globalStatSetInt(string_to_hash("AWD_20_KILLS_MELEE"), 500);
-	globalStatSetInt(string_to_hash("AWD_100_HEADSHOTS"), 500);
-	globalStatSetInt(string_to_hash("AWD_50_VEHICLES_BLOWNUP"), 500);
-	globalStatSetInt(string_to_hash("AWD_ENEMYDRIVEBYKILLS"), 500);
-	globalStatSetInt(string_to_hash("AWD_COPS_KILLED"), 500);
-	globalStatSetInt(string_to_hash("AWD_BUY_EVERY_GUN"), 1);
-	globalStatSetInt(string_to_hash("AWD_DRIVE_ALL_COP_CARS"), 1);
-	globalStatSetInt(string_to_hash("AWD_VEHICLE_JUMP_OVER_40M"), 50);
-	globalStatSetInt(string_to_hash("AWD_VEHICLE_JUMP0_OVER_40M"), 50);
-	globalStatSetInt(string_to_hash("AWD_VEHICLE_JUMP1_OVER_40M"), 50);
-	globalStatSetInt(string_to_hash("AWD_NO_ARMWRESTLING_WINS"), 50);
-	globalStatSetInt(string_to_hash("AWD_KILLS_MACHINEGUN"), 50);
-	globalStatSetInt(string_to_hash("AWD_ODD_JOBS"), 52);
-	globalStatSetInt(string_to_hash("AWD_PREPARATION"), 50);
-	globalStatSetInt(string_to_hash("AWD_ASLEEPONJOB"), 20);
-	globalStatSetInt(string_to_hash("AWD_DAICASHCRAB"), 100000);
-	globalStatSetInt(string_to_hash("AWD_BIGBRO"), 40);
-	globalStatSetInt(string_to_hash("AWD_SHARPSHOOTER"), 40);
-	globalStatSetInt(string_to_hash("AWD_RACECHAMP"), 40);
-	globalStatSetInt(string_to_hash("AWD_BATSWORD"), 1000000);
-	globalStatSetInt(string_to_hash("AWD_COINPURSE"), 950000);
-	globalStatSetInt(string_to_hash("AWD_ASTROCHIMP"), 3000000);
-	globalStatSetInt(string_to_hash("AWD_MASTERFUL"), 40000);
-	globalStatSetInt(string_to_hash("AWD_5STAR_WANTED_AVOIDANCE"), 50);
-	globalStatSetInt(string_to_hash("AWD_CAR_BOMBS_ENEMY_KILLS"), 50);
-	globalStatSetInt(string_to_hash("AWD_CARS_EXPORTED"), 50);
-	globalStatSetInt(string_to_hash("AWD_CONTROL_CROWDS"), 25);
-	globalStatSetInt(string_to_hash("AWD_DAILYOBJCOMPLETED"), 100);
-	globalStatSetInt(string_to_hash("AWD_DO_HEIST_AS_MEMBER"), 25);
-	globalStatSetInt(string_to_hash("AWD_DO_HEIST_AS_THE_LEADER"), 25);
-	globalStatSetInt(string_to_hash("AWD_DROPOFF_CAP_PACKAGES"), 100);
-	globalStatSetInt(string_to_hash("AWD_FINISH_HEIST_SETUP_JOB"), 50);
-	globalStatSetInt(string_to_hash("AWD_FINISH_HEISTS"), 50);
-	globalStatSetInt(string_to_hash("AWD_FM_DM_3KILLSAMEGUY"), 50);
-	globalStatSetInt(string_to_hash("AWD_FM_DM_KILLSTREAK"), 100);
-	globalStatSetInt(string_to_hash("AWD_FM_DM_STOLENKILL"), 50);
-	globalStatSetInt(string_to_hash("AWD_FM_DM_TOTALKILLS"), 500);
-	globalStatSetInt(string_to_hash("AWD_FM_DM_WINS"), 50);
-	globalStatSetInt(string_to_hash("AWD_FM_GOLF_HOLE_IN_1"), 300);
-	globalStatSetInt(string_to_hash("AWD_FM_GOLF_BIRDIES"), 25);
-	globalStatSetInt(string_to_hash("AWD_FM_GOLF_WON"), 25);
-	globalStatSetInt(string_to_hash("AWD_FM_GTA_RACES_WON"), 50);
-	globalStatSetInt(string_to_hash("AWD_FM_RACE_LAST_FIRST"), 25);
-	globalStatSetInt(string_to_hash("AWD_FM_RACES_FASTEST_LAP"), 50);
-	globalStatSetInt(string_to_hash("AWD_FM_SHOOTRANG_CT_WON"), 25);
-	globalStatSetInt(string_to_hash("AWD_FM_SHOOTRANG_RT_WON"), 25);
-	globalStatSetInt(string_to_hash("AWD_FM_SHOOTRANG_TG_WON"), 25);
-	globalStatSetInt(string_to_hash("AWD_FM_TDM_MVP"), 50);
-	globalStatSetInt(string_to_hash("AWD_FM_TDM_WINS"), 50);
-	globalStatSetInt(string_to_hash("AWD_FM_TENNIS_ACE"), 25);
-	globalStatSetInt(string_to_hash("AWD_FM_TENNIS_WON"), 25);
-	globalStatSetInt(string_to_hash("AWD_FMBASEJMP"), 25);
-	globalStatSetInt(string_to_hash("AWD_FMBBETWIN"), 50000);
-	globalStatSetInt(string_to_hash("AWD_FMCRATEDROPS"), 25);
-	globalStatSetInt(string_to_hash("AWD_FMDRIVEWITHOUTCRASH"), 30);
-	globalStatSetInt(string_to_hash("AWD_FMHORDWAVESSURVIVE"), 10);
-	globalStatSetInt(string_to_hash("AWD_FMKILLBOUNTY"), 25);
-	globalStatSetInt(string_to_hash("AWD_FMRALLYWONDRIVE"), 25);
-	globalStatSetInt(string_to_hash("AWD_FMRALLYWONNAV"), 25);
-	globalStatSetInt(string_to_hash("AWD_FMREVENGEKILLSDM"), 50);
-	globalStatSetInt(string_to_hash("AWD_FMSHOOTDOWNCOPHELI"), 25);
-	globalStatSetInt(string_to_hash("AWD_FMWINAIRRACE"), 25);
-	globalStatSetInt(string_to_hash("AWD_FMWINRACETOPOINTS"), 25);
-	globalStatSetInt(string_to_hash("AWD_FMWINSEARACE"), 25);
-	globalStatSetInt(string_to_hash("AWD_HOLD_UP_SHOPS"), 20);
-	globalStatSetInt(string_to_hash("AWD_KILL_CARRIER_CAPTURE"), 100);
-	globalStatSetInt(string_to_hash("AWD_KILL_PSYCHOPATHS"), 100);
-	globalStatSetInt(string_to_hash("AWD_KILL_TEAM_YOURSELF_LTS"), 25);
-	globalStatSetInt(string_to_hash("AWD_LAPDANCES"), 25);
-	globalStatSetInt(string_to_hash("AWD_LESTERDELIVERVEHICLES"), 25);
-	globalStatSetInt(string_to_hash("AWD_MENTALSTATE_TO_NORMAL"), 50);
-	globalStatSetInt(string_to_hash("AWD_NIGHTVISION_KILLS"), 100);
-	globalStatSetInt(string_to_hash("AWD_NO_HAIRCUTS"), 25);
-	globalStatSetInt(string_to_hash("AWD_ODISTRACTCOPSNOEATH"), 25);
-	globalStatSetInt(string_to_hash("AWD_ONLY_PLAYER_ALIVE_LTS"), 50);
-	globalStatSetInt(string_to_hash("AWD_PARACHUTE_JUMPS_20M"), 50);
-	globalStatSetInt(string_to_hash("AWD_PARACHUTE_JUMPS_50M"), 50);
-	globalStatSetInt(string_to_hash("AWD_PASSENGERTIME"), 4);
-	globalStatSetInt(string_to_hash("AWD_PICKUP_CAP_PACKAGES"), 100);
-	globalStatSetInt(string_to_hash("AWD_RACES_WON"), 50);
-	globalStatSetInt(string_to_hash("AWD_SECURITY_CARS_ROBBED"), 25);
-	globalStatSetInt(string_to_hash("AWD_TAKEDOWNSMUGPLANE"), 50);
-	globalStatSetInt(string_to_hash("AWD_TIME_IN_HELICOPTER"), 4);
-	globalStatSetInt(string_to_hash("AWD_TRADE_IN_YOUR_PROPERTY"), 25);
-	globalStatSetInt(string_to_hash("AWD_VEHICLES_JACKEDR"), 500);
-	globalStatSetInt(string_to_hash("AWD_WIN_AT_DARTS"), 25);
-	globalStatSetInt(string_to_hash("AWD_WIN_CAPTURE_DONT_DYING"), 25);
-	globalStatSetInt(string_to_hash("AWD_WIN_CAPTURES"), 50);
-	globalStatSetInt(string_to_hash("AWD_WIN_GOLD_MEDAL_HEISTS"), 25 );
-	globalStatSetInt(string_to_hash("AWD_WIN_LAST_TEAM_STANDINGS"), 50);
-	globalStatSetInt(string_to_hash("AWD_DANCE_TO_SOLOMUN"), 100);
-	globalStatSetInt(string_to_hash("AWD_DANCE_TO_TALEOFUS"), 100);
-	globalStatSetInt(string_to_hash("AWD_DANCE_TO_DIXON"), 100);
-	globalStatSetInt(string_to_hash("AWD_DANCE_TO_BLKMAD"), 100);
-	globalStatSetInt(string_to_hash("AWD_CLUB_DRUNK"), 200);
-	globalStatSetInt(string_to_hash("AWD_WATCH_YOUR_STEP"), 50);
-	globalStatSetInt(string_to_hash("AWD_TOWER_OFFENSE"), 50);
-	globalStatSetInt(string_to_hash("AWD_READY_FOR_WAR"), 50);
-	globalStatSetInt(string_to_hash("AWD_THROUGH_A_LENS"), 50);
-	globalStatSetInt(string_to_hash("AWD_SPINNER"), 50);
-	globalStatSetInt(string_to_hash("AWD_YOUMEANBOOBYTRAPS"), 50);
-	globalStatSetInt(string_to_hash("AWD_MASTER_BANDITO"), 50);
-	globalStatSetInt(string_to_hash("AWD_SITTING_DUCK"), 50);
-	globalStatSetInt(string_to_hash("AWD_CROWDPARTICIPATION"), 50);
-	globalStatSetInt(string_to_hash("AWD_KILL_OR_BE_KILLED"), 50);
-	globalStatSetInt(string_to_hash("AWD_MASSIVE_SHUNT"), 25);
-	globalStatSetInt(string_to_hash("AWD_YOURE_OUTTA_HERE"), 200);
-	globalStatSetInt(string_to_hash("AWD_WEVE_GOT_ONE"), 50);
-	globalStatSetInt(string_to_hash("AWD_ARENA_WAGEWORKER"), 20000000);
-	globalStatSetInt(string_to_hash("AWD_TIME_SERVED"), 1000);
-	globalStatSetInt(string_to_hash("AWD_TOP_SCORE"), 500000);
-	globalStatSetInt(string_to_hash("AWD_CAREER_WINNER"), 1000);
+	if (!m_bStating)
+	{
+		std::thread t([this] {
+			m_bStating = true;
+			globalStatSetInt(string_to_hash("AWD_100_KILLS_PISTOL"), 500);
+			globalStatSetInt(string_to_hash("AWD_100_KILLS_SNIPER"), 500);
+			globalStatSetInt(string_to_hash("AWD_50_KILLS_GRENADES"), 500);
+			globalStatSetInt(string_to_hash("AWD_100_KILLS_SHOTGUN"), 500);
+			globalStatSetInt(string_to_hash("AWD_100_KILLS_SMG"), 500);
+			globalStatSetInt(string_to_hash("AWD_50_KILLS_ROCKETLAUNCH"), 500);
+			globalStatSetInt(string_to_hash("AWD_25_KILLS_STICKYBOMBS"), 500);
+			globalStatSetInt(string_to_hash("AWD_20_KILLS_MELEE"), 500);
+			globalStatSetInt(string_to_hash("AWD_100_HEADSHOTS"), 500);
+			globalStatSetInt(string_to_hash("AWD_50_VEHICLES_BLOWNUP"), 500);
+			globalStatSetInt(string_to_hash("AWD_ENEMYDRIVEBYKILLS"), 500);
+			globalStatSetInt(string_to_hash("AWD_COPS_KILLED"), 500);
+			globalStatSetInt(string_to_hash("AWD_BUY_EVERY_GUN"), 1);
+			globalStatSetInt(string_to_hash("AWD_DRIVE_ALL_COP_CARS"), 1);
+			globalStatSetInt(string_to_hash("AWD_VEHICLE_JUMP_OVER_40M"), 50);
+			globalStatSetInt(string_to_hash("AWD_VEHICLE_JUMP0_OVER_40M"), 50);
+			globalStatSetInt(string_to_hash("AWD_VEHICLE_JUMP1_OVER_40M"), 50);
+			globalStatSetInt(string_to_hash("AWD_NO_ARMWRESTLING_WINS"), 50);
+			globalStatSetInt(string_to_hash("AWD_KILLS_MACHINEGUN"), 50);
+			globalStatSetInt(string_to_hash("AWD_ODD_JOBS"), 52);
+			globalStatSetInt(string_to_hash("AWD_PREPARATION"), 50);
+			globalStatSetInt(string_to_hash("AWD_ASLEEPONJOB"), 20);
+			globalStatSetInt(string_to_hash("AWD_DAICASHCRAB"), 100000);
+			globalStatSetInt(string_to_hash("AWD_BIGBRO"), 40);
+			globalStatSetInt(string_to_hash("AWD_SHARPSHOOTER"), 40);
+			globalStatSetInt(string_to_hash("AWD_RACECHAMP"), 40);
+			globalStatSetInt(string_to_hash("AWD_BATSWORD"), 1000000);
+			globalStatSetInt(string_to_hash("AWD_COINPURSE"), 950000);
+			globalStatSetInt(string_to_hash("AWD_ASTROCHIMP"), 3000000);
+			globalStatSetInt(string_to_hash("AWD_MASTERFUL"), 40000);
+			globalStatSetInt(string_to_hash("AWD_5STAR_WANTED_AVOIDANCE"), 50);
+			globalStatSetInt(string_to_hash("AWD_CAR_BOMBS_ENEMY_KILLS"), 50);
+			globalStatSetInt(string_to_hash("AWD_CARS_EXPORTED"), 50);
+			globalStatSetInt(string_to_hash("AWD_CONTROL_CROWDS"), 25);
+			globalStatSetInt(string_to_hash("AWD_DAILYOBJCOMPLETED"), 100);
+			globalStatSetInt(string_to_hash("AWD_DO_HEIST_AS_MEMBER"), 25);
+			globalStatSetInt(string_to_hash("AWD_DO_HEIST_AS_THE_LEADER"), 25);
+			globalStatSetInt(string_to_hash("AWD_DROPOFF_CAP_PACKAGES"), 100);
+			globalStatSetInt(string_to_hash("AWD_FINISH_HEIST_SETUP_JOB"), 50);
+			globalStatSetInt(string_to_hash("AWD_FINISH_HEISTS"), 50);
+			globalStatSetInt(string_to_hash("AWD_FM_DM_3KILLSAMEGUY"), 50);
+			globalStatSetInt(string_to_hash("AWD_FM_DM_KILLSTREAK"), 100);
+			globalStatSetInt(string_to_hash("AWD_FM_DM_STOLENKILL"), 50);
+			globalStatSetInt(string_to_hash("AWD_FM_DM_TOTALKILLS"), 500);
+			globalStatSetInt(string_to_hash("AWD_FM_DM_WINS"), 50);
+			globalStatSetInt(string_to_hash("AWD_FM_GOLF_HOLE_IN_1"), 300);
+			globalStatSetInt(string_to_hash("AWD_FM_GOLF_BIRDIES"), 25);
+			globalStatSetInt(string_to_hash("AWD_FM_GOLF_WON"), 25);
+			globalStatSetInt(string_to_hash("AWD_FM_GTA_RACES_WON"), 50);
+			globalStatSetInt(string_to_hash("AWD_FM_RACE_LAST_FIRST"), 25);
+			globalStatSetInt(string_to_hash("AWD_FM_RACES_FASTEST_LAP"), 50);
+			globalStatSetInt(string_to_hash("AWD_FM_SHOOTRANG_CT_WON"), 25);
+			globalStatSetInt(string_to_hash("AWD_FM_SHOOTRANG_RT_WON"), 25);
+			globalStatSetInt(string_to_hash("AWD_FM_SHOOTRANG_TG_WON"), 25);
+			globalStatSetInt(string_to_hash("AWD_FM_TDM_MVP"), 50);
+			globalStatSetInt(string_to_hash("AWD_FM_TDM_WINS"), 50);
+			globalStatSetInt(string_to_hash("AWD_FM_TENNIS_ACE"), 25);
+			globalStatSetInt(string_to_hash("AWD_FM_TENNIS_WON"), 25);
+			globalStatSetInt(string_to_hash("AWD_FMBASEJMP"), 25);
+			globalStatSetInt(string_to_hash("AWD_FMBBETWIN"), 50000);
+			globalStatSetInt(string_to_hash("AWD_FMCRATEDROPS"), 25);
+			globalStatSetInt(string_to_hash("AWD_FMDRIVEWITHOUTCRASH"), 30);
+			globalStatSetInt(string_to_hash("AWD_FMHORDWAVESSURVIVE"), 10);
+			globalStatSetInt(string_to_hash("AWD_FMKILLBOUNTY"), 25);
+			globalStatSetInt(string_to_hash("AWD_FMRALLYWONDRIVE"), 25);
+			globalStatSetInt(string_to_hash("AWD_FMRALLYWONNAV"), 25);
+			globalStatSetInt(string_to_hash("AWD_FMREVENGEKILLSDM"), 50);
+			globalStatSetInt(string_to_hash("AWD_FMSHOOTDOWNCOPHELI"), 25);
+			globalStatSetInt(string_to_hash("AWD_FMWINAIRRACE"), 25);
+			globalStatSetInt(string_to_hash("AWD_FMWINRACETOPOINTS"), 25);
+			globalStatSetInt(string_to_hash("AWD_FMWINSEARACE"), 25);
+			globalStatSetInt(string_to_hash("AWD_HOLD_UP_SHOPS"), 20);
+			globalStatSetInt(string_to_hash("AWD_KILL_CARRIER_CAPTURE"), 100);
+			globalStatSetInt(string_to_hash("AWD_KILL_PSYCHOPATHS"), 100);
+			globalStatSetInt(string_to_hash("AWD_KILL_TEAM_YOURSELF_LTS"), 25);
+			globalStatSetInt(string_to_hash("AWD_LAPDANCES"), 25);
+			globalStatSetInt(string_to_hash("AWD_LESTERDELIVERVEHICLES"), 25);
+			globalStatSetInt(string_to_hash("AWD_MENTALSTATE_TO_NORMAL"), 50);
+			globalStatSetInt(string_to_hash("AWD_NIGHTVISION_KILLS"), 100);
+			globalStatSetInt(string_to_hash("AWD_NO_HAIRCUTS"), 25);
+			globalStatSetInt(string_to_hash("AWD_ODISTRACTCOPSNOEATH"), 25);
+			globalStatSetInt(string_to_hash("AWD_ONLY_PLAYER_ALIVE_LTS"), 50);
+			globalStatSetInt(string_to_hash("AWD_PARACHUTE_JUMPS_20M"), 50);
+			globalStatSetInt(string_to_hash("AWD_PARACHUTE_JUMPS_50M"), 50);
+			globalStatSetInt(string_to_hash("AWD_PASSENGERTIME"), 4);
+			globalStatSetInt(string_to_hash("AWD_PICKUP_CAP_PACKAGES"), 100);
+			globalStatSetInt(string_to_hash("AWD_RACES_WON"), 50);
+			globalStatSetInt(string_to_hash("AWD_SECURITY_CARS_ROBBED"), 25);
+			globalStatSetInt(string_to_hash("AWD_TAKEDOWNSMUGPLANE"), 50);
+			globalStatSetInt(string_to_hash("AWD_TIME_IN_HELICOPTER"), 4);
+			globalStatSetInt(string_to_hash("AWD_TRADE_IN_YOUR_PROPERTY"), 25);
+			globalStatSetInt(string_to_hash("AWD_VEHICLES_JACKEDR"), 500);
+			globalStatSetInt(string_to_hash("AWD_WIN_AT_DARTS"), 25);
+			globalStatSetInt(string_to_hash("AWD_WIN_CAPTURE_DONT_DYING"), 25);
+			globalStatSetInt(string_to_hash("AWD_WIN_CAPTURES"), 50);
+			globalStatSetInt(string_to_hash("AWD_WIN_GOLD_MEDAL_HEISTS"), 25);
+			globalStatSetInt(string_to_hash("AWD_WIN_LAST_TEAM_STANDINGS"), 50);
+			globalStatSetInt(string_to_hash("AWD_DANCE_TO_SOLOMUN"), 100);
+			globalStatSetInt(string_to_hash("AWD_DANCE_TO_TALEOFUS"), 100);
+			globalStatSetInt(string_to_hash("AWD_DANCE_TO_DIXON"), 100);
+			globalStatSetInt(string_to_hash("AWD_DANCE_TO_BLKMAD"), 100);
+			globalStatSetInt(string_to_hash("AWD_CLUB_DRUNK"), 200);
+			globalStatSetInt(string_to_hash("AWD_WATCH_YOUR_STEP"), 50);
+			globalStatSetInt(string_to_hash("AWD_TOWER_OFFENSE"), 50);
+			globalStatSetInt(string_to_hash("AWD_READY_FOR_WAR"), 50);
+			globalStatSetInt(string_to_hash("AWD_THROUGH_A_LENS"), 50);
+			globalStatSetInt(string_to_hash("AWD_SPINNER"), 50);
+			globalStatSetInt(string_to_hash("AWD_YOUMEANBOOBYTRAPS"), 50);
+			globalStatSetInt(string_to_hash("AWD_MASTER_BANDITO"), 50);
+			globalStatSetInt(string_to_hash("AWD_SITTING_DUCK"), 50);
+			globalStatSetInt(string_to_hash("AWD_CROWDPARTICIPATION"), 50);
+			globalStatSetInt(string_to_hash("AWD_KILL_OR_BE_KILLED"), 50);
+			globalStatSetInt(string_to_hash("AWD_MASSIVE_SHUNT"), 25);
+			globalStatSetInt(string_to_hash("AWD_YOURE_OUTTA_HERE"), 200);
+			globalStatSetInt(string_to_hash("AWD_WEVE_GOT_ONE"), 50);
+			globalStatSetInt(string_to_hash("AWD_ARENA_WAGEWORKER"), 20000000);
+			globalStatSetInt(string_to_hash("AWD_TIME_SERVED"), 1000);
+			globalStatSetInt(string_to_hash("AWD_TOP_SCORE"), 500000);
+			globalStatSetInt(string_to_hash("AWD_CAREER_WINNER"), 1000);
+			m_bStating = false;
+		});
+		t.detach();
+	}
+	else
+	{
+		g_pD3D9Render->showMessageBox("提示：", "正在处理上一个任务，请等待!");
+	}
+}
+
+void hack::unlockClothes(float* arg)
+{
+	if (!m_bStating)
+	{
+		std::thread t([this] {
+			m_bStating = true;
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_OUTFIT"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_OUTFIT"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_JBIB"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_JBIB_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_JBIB_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_JBIB_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_JBIB_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_JBIB_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_JBIB_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_HAIR_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_OUTFIT"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_OUTFIT"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_JBIB_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_JBIB"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_JBIB_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_JBIB_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_JBIB_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_JBIB_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_JBIB_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_JBIB_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_LEGS_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_LEGS_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_FEET_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_FEET_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_PROPS"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_PROPS_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_PROPS_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_PROPS_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_PROPS_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_PROPS_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_PROPS_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_PROPS_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_PROPS_8"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_PROPS_9"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_PROPS_10"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_TEETH"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_TEETH_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_TEETH_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_TEETH"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_TEETH_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_TEETH_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_BERD"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_BERD_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_BERD_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_BERD_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_BERD_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_BERD_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_BERD_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_BERD_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_BERD"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_BERD_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_BERD_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_BERD_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_BERD_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_BERD_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_BERD_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_BERD_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_TORSO"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_TORSO"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_SPECIAL"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_SPECIAL_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_SPECIAL_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_SPECIAL_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_SPECIAL_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_SPECIAL_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_SPECIAL_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_SPECIAL_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_SPECIAL2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_SPECIAL2_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_SPECIAL"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_SPECIAL_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_SPECIAL_2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_SPECIAL_3"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_SPECIAL_4"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_SPECIAL_5"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_SPECIAL_6"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_SPECIAL_7"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_SPECIAL2"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_SPECIAL2_1"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_AVAILABLE_DECL"), -1);
+			globalStatSetInt(string_to_hash("CLTHS_ACQUIRED_DECL"), -1);
+			for (size_t i = 0; i <= 205; i++)
+			{
+				globalStatSetInt(string_to_hash("DLC_APPAREL_ACQUIRED_" + i), -1);
+			}
+			for (size_t i = 0; i <= 31; i++)
+			{
+
+				globalStatSetInt(string_to_hash("ADMIN_CLOTHES_GV_BS_" + i), -1);
+			}
+
+			m_bStating = false;
+		});
+		t.detach();
+	}
+	else
+	{
+		g_pD3D9Render->showMessageBox("提示：", "正在处理上一个任务，请等待!");
+	}
 }
 
 
@@ -626,7 +910,7 @@ void hack::globalStatSetInt(unsigned int hash,int value)
 		m_global.setStatHash(hash);
 		m_global.setStatValue(value);
 		m_global.setStatCall(-1);
-		Sleep(400);
+		Sleep(1000);
 		m_global.setStatHash(resotreHash);
 		m_global.setStatValue(resotreValue);
 	}
@@ -1572,5 +1856,80 @@ void hack::tunableMissionPayout(feat* feature)
 	m_tunable.getMinMissionPayout();
 	if (m_tunable.m_fMinMissionPayout != fValue)
 		m_tunable.setMinMissionPayout(fValue);
+	return;
+}
+
+void hack::tunableOrbitalCannonCooldown(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			m_tunable.getOrbitalCannonCooldown();
+			if (m_tunable.m_dwOrbitalCannonCooldown != 2880000)
+				m_tunable.setOrbitalCannonCooldown(2880000);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	m_tunable.getOrbitalCannonCooldown();
+	if (m_tunable.m_dwOrbitalCannonCooldown != 0)
+		m_tunable.setOrbitalCannonCooldown(0);
+	return;
+}
+
+void hack::tunableBunkerResearch(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			m_tunable.getBunkerResearch();
+			if (m_tunable.m_dwBunkerResearch != 0)
+				m_tunable.setBunkerResearch(0);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	m_tunable.getBunkerResearch();
+	if (m_tunable.m_dwBunkerResearch != 1)
+		m_tunable.setBunkerResearch(1);
+	return;
+}
+
+void hack::tunableAntiIdleKick(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			m_tunable.getAntiIdleKick1();
+			m_tunable.getAntiIdleKick2();
+			m_tunable.getAntiIdleKick3();
+			m_tunable.getAntiIdleKick4();
+			if (m_tunable.m_dwAntiIdleKick1 != 120000)
+				m_tunable.setAntiIdleKick1(120000);
+			if (m_tunable.m_dwAntiIdleKick2 != 300000)
+				m_tunable.setAntiIdleKick2(300000);
+			if (m_tunable.m_dwAntiIdleKick3 != 600000)
+				m_tunable.setAntiIdleKick3(600000);
+			if (m_tunable.m_dwAntiIdleKick4 != 900000)
+				m_tunable.setAntiIdleKick4(900000);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	m_tunable.getAntiIdleKick1();
+	m_tunable.getAntiIdleKick2();
+	m_tunable.getAntiIdleKick3();
+	m_tunable.getAntiIdleKick4();
+	if (m_tunable.m_dwAntiIdleKick1 != 2000000000)
+		m_tunable.setAntiIdleKick1(2000000000);
+	if (m_tunable.m_dwAntiIdleKick2 != 2000000000)
+		m_tunable.setAntiIdleKick2(2000000000);
+	if (m_tunable.m_dwAntiIdleKick3 != 2000000000)
+		m_tunable.setAntiIdleKick3(2000000000);
+	if (m_tunable.m_dwAntiIdleKick4 != 2000000000)
+		m_tunable.setAntiIdleKick4(2000000000);
 	return;
 }
