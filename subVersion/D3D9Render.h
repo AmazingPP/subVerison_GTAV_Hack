@@ -67,6 +67,9 @@ class D3D9Render
 		} m_screen;
 
 		std::string		m_szWindowTitle;
+		bool			m_bMBShowing;
+		std::string		m_sTitle;
+		std::string		m_sDetail;
 
 				D3D9Render	();
 				~D3D9Render	();
@@ -91,9 +94,6 @@ class D3D9Render
 		LPD3DXFONT				m_pFont[FONT_BUFFER_SIZE];
 		int						m_nFont;
 		D3DPRESENT_PARAMETERS	m_d3dParam;				//d3d9 device params
-		bool					m_bMBShowing;
-		std::string				m_sTitle;
-		std::string				m_sDetail;
 };
 
 extern D3D9Render*	g_pD3D9Render;

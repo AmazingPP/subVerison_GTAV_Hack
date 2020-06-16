@@ -35,6 +35,7 @@
 #include <string>
 #include <map>
 #include <thread>
+#include <deque>
 
 #include <Dwmapi.h>
 #pragma comment(lib,"Dwmapi.lib")

@@ -113,7 +113,26 @@ class vehicle : public entity
 		float	m_fBoost,
 				m_fRocketRechargeSpeed,
 				m_fGravity;
-		BYTE	m_btBulletproofTires;
+		BYTE	m_btBulletproofTires,
+				m_btEngineManagementSystem,
+				m_btBrakes,
+				m_btTransmission,
+				m_btSuspension,
+				m_btArmor,
+				m_btTurboTuning,
+				m_btNeonLightRed,
+				m_btNeonLightGreen,
+				m_btNeonLightBlue,
+				m_btNeonLightLeft,
+				m_btNeonLightRight,
+				m_btNeonLightFront,
+				m_btNeonLightBack,
+				m_btTyreSmoke,
+				m_btTyreSmokeRed,
+				m_btTyreSmokeGreen,
+				m_btTyreSmokeBlue,
+				m_btLimoWindows;
+
 
 		struct vehicleHandling
 		{
@@ -132,10 +151,6 @@ class vehicle : public entity
 						m_fWeaponDamageMult,
 						m_fDeformationDamageMult,
 						m_fEngineDamageMult;
-		};
-		struct vehicleCustom
-		{
-			DWORD_PTR	m_dwCustom = 0;
 		};
 
 		vehicleHandling	m_handlingRestore,
@@ -167,6 +182,42 @@ class vehicle : public entity
 		void	setRocketRechargeSpeed(float value);
 		void	getBulletproofTires();
 		void	setBulletproofTires(BYTE value);
+		void	getEngineManagementSystem();
+		void	setEngineManagementSystem(BYTE value);
+		void	getBrakes();
+		void	setBrakes(BYTE value);
+		void	getTransmission();
+		void	setTransmission(BYTE value);
+		void	getSuspension();
+		void	setSuspension(BYTE value);
+		void	getArmor();
+		void	setArmor(BYTE value);
+		void	getTurboTuning();
+		void	setTurboTuning(BYTE value);
+		void	getNeonLightRed();
+		void	setNeonLightRed(BYTE value);
+		void	getNeonLightGreen();
+		void	setNeonLightGreen(BYTE value);
+		void	getNeonLightBlue();
+		void	setNeonLightBlue(BYTE value);
+		void	getNeonLightLeft();
+		void	setNeonLightLeft(BYTE value);
+		void	getNeonLightRight();
+		void	setNeonLightRight(BYTE value);
+		void	getNeonLightFront();
+		void	setNeonLightFront(BYTE value);
+		void	getNeonLightBack();
+		void	setNeonLightBack(BYTE value);
+		void	getTyreSmoke();
+		void	setTyreSmoke(BYTE value);
+		void	getTyreSmokeRed();
+		void	setTyreSmokeRed(BYTE value);
+		void	getTyreSmokeGreen();
+		void	setTyreSmokeGreen(BYTE value);
+		void	getTyreSmokeBlue();
+		void	setTyreSmokeBlue(BYTE value);
+		void	getLimoWindows();
+		void	setLimoWindows(BYTE value);
 		void	getDeformationDamageMult();
 		void	setDeformationDamageMult(float value);
 		void	getUpShift();

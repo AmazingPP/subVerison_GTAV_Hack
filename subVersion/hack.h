@@ -51,7 +51,7 @@ class hack : public trainer
 		tunable m_tunable;
 		global	m_global;
 		std::string m_mpId;
-		bool	m_bStating;
+		std::deque<std::pair<unsigned int,int>> m_dStat;
 		ImpactExplosionEnum m_explosion;
 
 		HMODULE	m_hModule;
@@ -70,6 +70,7 @@ class hack : public trainer
 		void	notWanted();
 		void	killNpc();
 		void	fillAmmo();
+		void    consumeStatQueue();
 		void	setImpactExplosion(float* arg);
 		void	fillAllAmmo(float* arg);
 		void	healVehicle(float* arg);
@@ -150,10 +151,11 @@ class hack : public trainer
 					m_dwpTunableBase,
 					m_dwpGlobalBase,
 					m_dwpPlayerListBase;
+		bool		m_bInit;
 
 		void	getWaypoint();
 		void	getObjective();
-		void	globalStatSetInt(unsigned int hash, int value);
+		void	dStatPushBack(unsigned int hash, int value);
 
 		unsigned int string_to_hash(std::string input,std::string pre = "MP0_")
 		{

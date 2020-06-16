@@ -475,6 +475,11 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->tunableBunkerResearch(g_pSettings->getFeature(g_iFeature[FEATURE_T_BUNKER_RESEARCH]));
 				g_pHack->tunableAntiIdleKick(g_pSettings->getFeature(g_iFeature[FEATURE_T_ANTI_IDLE_KICK]));
 			}
+
+			if (!(btInit & INITPTR_INVALID_GLOBAL))
+			{
+				g_pHack->consumeStatQueue();
+			}
 		}
 		Sleep(1);
 	}
