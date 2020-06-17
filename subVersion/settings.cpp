@@ -322,6 +322,35 @@ int		settings::addFeature(int cat, int parent, std::string name, featType type, 
 	return id;
 }
 
+int settings::updataFeature(int id, int cat, int parent, std::string name, featType type)
+{
+	if (id >= MAX_MENU_FEATURES ||																//buffer overflow
+		(parent < 0 && m_pFeatureCat[cat] == nullptr) ||												//invalid cat
+		(cat < 0 && (m_pFeature[parent] == nullptr || m_pFeature[parent]->m_type != feat_parent)) ||	//invalid parent
+		(cat < 0 && parent < 0) || (cat > 0 && parent > 0))												//both cat and parent were provided
+		return -1;
+	m_pFeature[id]->m_iId = id;
+	m_pFeature[id]->m_iCat = cat;
+	m_pFeature[id]->m_iParent = parent;
+	m_pFeature[id]->m_type = type;
+	m_pFeature[id]->m_szName = name;
+	return id;
+}
+
+int settings::updataFeature(int id, int cat, int parent, std::string name, featType type, teleType tpType, float x, float y, float z)
+{
+	if (tpType == tp_saved)
+		return -1;
+	int ret = this->updataFeature(id, cat, parent, name, type);
+	if (ret < 0)
+		return ret;
+	dynamic_cast<featTeleport*>(m_pFeature[ret])->m_tpType = tpType;
+	dynamic_cast<featTeleport*>(m_pFeature[ret])->m_v3Pos.x = x;
+	dynamic_cast<featTeleport*>(m_pFeature[ret])->m_v3Pos.y = y;
+	dynamic_cast<featTeleport*>(m_pFeature[ret])->m_v3Pos.z = z;
+	return ret;
+}
+
 int		settings::getFeatureCategoryCount()
 {
 	return m_nFeatureCat;

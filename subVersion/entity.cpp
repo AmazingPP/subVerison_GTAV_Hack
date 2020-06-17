@@ -18,6 +18,7 @@
 */
 
 #include "stdafx.h"
+#include "entity.h"
 
 /*
 	ENTITY
@@ -461,6 +462,190 @@ void vehicle::setBulletproofTires(BYTE value)
 {
 	g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_BULLETPROOF_TIRES, &value);
 	return;
+}
+
+void vehicle::getEngineManagementSystem()
+{
+}
+
+void vehicle::setEngineManagementSystem(BYTE value)
+{
+}
+
+void vehicle::getBrakes()
+{
+}
+
+void vehicle::setBrakes(BYTE value)
+{
+}
+
+void vehicle::getTransmission()
+{
+}
+
+void vehicle::setTransmission(BYTE value)
+{
+}
+
+void vehicle::getSuspension()
+{
+}
+
+void vehicle::setSuspension(BYTE value)
+{
+}
+
+void vehicle::getArmor()
+{
+}
+
+void vehicle::setArmor(BYTE value)
+{
+}
+
+void vehicle::getTurboTuning()
+{
+}
+
+void vehicle::setTurboTuning(BYTE value)
+{
+}
+
+void vehicle::getNeonLightRed()
+{
+}
+
+void vehicle::setNeonLightRed(BYTE value)
+{
+}
+
+void vehicle::getNeonLightGreen()
+{
+}
+
+void vehicle::setNeonLightGreen(BYTE value)
+{
+}
+
+void vehicle::getNeonLightBlue()
+{
+}
+
+void vehicle::setNeonLightBlue(BYTE value)
+{
+}
+
+void vehicle::getNeonLightLeft()
+{
+}
+
+void vehicle::setNeonLightLeft(BYTE value)
+{
+}
+
+void vehicle::getNeonLightRight()
+{
+}
+
+void vehicle::setNeonLightRight(BYTE value)
+{
+}
+
+void vehicle::getNeonLightFront()
+{
+}
+
+void vehicle::setNeonLightFront(BYTE value)
+{
+}
+
+void vehicle::getNeonLightBack()
+{
+}
+
+void vehicle::setNeonLightBack(BYTE value)
+{
+}
+
+void vehicle::getTyreSmoke()
+{
+}
+
+void vehicle::setTyreSmoke(BYTE value)
+{
+}
+
+void vehicle::getTyreSmokeRed()
+{
+}
+
+void vehicle::setTyreSmokeRed(BYTE value)
+{
+}
+
+void vehicle::getTyreSmokeGreen()
+{
+}
+
+void vehicle::setTyreSmokeGreen(BYTE value)
+{
+}
+
+void vehicle::getTyreSmokeBlue()
+{
+}
+
+void vehicle::setTyreSmokeBlue(BYTE value)
+{
+}
+
+void vehicle::getLimoWindows()
+{
+}
+
+void vehicle::setLimoWindows(BYTE value)
+{
+}
+
+void vehicle::getVehicleMissles()
+{
+}
+
+void vehicle::setVehicleMissles(BYTE value)
+{
+}
+
+void vehicle::getAircraftBombs()
+{
+}
+
+void vehicle::setAircraftBombs(BYTE value)
+{
+}
+
+void vehicle::getAircraftCountermeasures()
+{
+}
+
+void vehicle::setAircraftCountermeasures(BYTE value)
+{
+}
+
+void vehicle::getOppressorMK2Misseles()
+{
+}
+
+void vehicle::setOppressorMK2Misseles(BYTE value)
+{
+}
+
+void vehicle::getTampaMissles()
+{
+}
+
+void vehicle::setTampaMissles(BYTE value)
+{
 }
 
 void vehicle::getDeformationDamageMult()
@@ -1017,16 +1202,31 @@ bool global::initPtr(HMODULE base)
 	m_dwpStatCall = globalHandle(1373500, base) + 0x2398;
 	m_dwpStatHash = globalHandle(1384095, base) + 0x20;
 	m_dwpStatValue = globalHandle(939452, base) + 0xACB0;
+	m_dwpMoneyObject = globalHandle(2507706, base);
+	m_dwpMoneyVal = globalHandle(2507701, base);
+	m_dwpMoneyPosX = globalHandle(2507703, base);
+	m_dwpMoneyPosY = globalHandle(2507704, base);
+	m_dwpMoneyPosZ = globalHandle(2507705, base);
 
-	return m_dwpStatCall != 0 || m_dwpStatHash != 0 || m_dwpStatValue != 0;
+	return m_dwpStatCall != 0 || m_dwpStatHash != 0 || m_dwpStatValue != 0 
+		|| m_dwpMoneyObject!= 0 || m_dwpMoneyVal != 0 || m_dwpMoneyPosX != 0
+		|| m_dwpMoneyPosY != 0 || m_dwpMoneyPosZ != 0 ;
 }
 
-DWORD_PTR global::globalHandle(int value, HMODULE base)
+bool global::findMoneyPtr(HMODULE base)
+{
+	float buffer;
+	DWORD_PTR dwpTemp = globalHandle(2507700, base);
+	g_pMemMan->readMem<float>(dwpTemp, &buffer);
+	m_dwpMoneyCall = globalHandle(84 * (DWORD)buffer + 4263878, base);
+	return true;
+}
+
+DWORD_PTR global::globalHandle(int atIndex, HMODULE base)
 {
 	DWORD_PTR dwpBuffer;
-	int v1 = value;
-	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)base + ADDRESS_GLOBAL + 8 * ((value >> 18) & 0x3Fu), &dwpBuffer);
-	return 8 * (v1 & 0x3FFFFu) + dwpBuffer;
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)base + ADDRESS_GLOBAL + 8 * ((atIndex >> 0x12) & 0x3F), &dwpBuffer);
+	return 8 * (atIndex & 0x3FFFF) + dwpBuffer;
 }
 
 void global::getStatHash()
@@ -1062,5 +1262,77 @@ void global::getStatCall()
 void global::setStatCall(int value)
 {
 	g_pMemMan->writeMem<int>(m_dwpStatCall, &value);
+	return;
+}
+
+void global::getMoneyObject()
+{
+	g_pMemMan->readMem<BYTE>(m_dwpMoneyObject, &m_btMoneyObject);
+	return;
+}
+
+void global::setMoneyObject(BYTE value)
+{
+	g_pMemMan->writeMem<BYTE>(m_dwpMoneyObject, &value);
+	return;
+}
+
+void global::getMoneyVal()
+{
+	g_pMemMan->readMem<int>(m_dwpMoneyVal, &m_dwMoneyVal);
+	return;
+}
+
+void global::setMoneyVal(int value)
+{
+	g_pMemMan->writeMem<int>(m_dwpMoneyVal, &value);
+	return;
+}
+
+void global::getMoneyPosX()
+{
+	g_pMemMan->readMem<float>(m_dwpMoneyPosX, &m_fMoneyPosX);
+	return;
+}
+
+void global::setMoneyPosX(float value)
+{
+	g_pMemMan->writeMem<float>(m_dwpMoneyPosX, &value);
+	return;
+}
+
+void global::getMoneyPosY()
+{
+	g_pMemMan->readMem<float>(m_dwpMoneyPosY, &m_fMoneyPosY);
+	return;
+}
+
+void global::setMoneyPosY(float value)
+{
+	g_pMemMan->writeMem<float>(m_dwpMoneyPosY, &value);
+	return;
+}
+
+void global::getMoneyPosZ()
+{
+	g_pMemMan->readMem<float>(m_dwpMoneyPosZ, &m_fMoneyPosZ);
+	return;
+}
+
+void global::setMoneyPosZ(float value)
+{
+	g_pMemMan->writeMem<float>(m_dwpMoneyPosZ, &value);
+	return;
+}
+
+void global::getMoneyCall()
+{
+	g_pMemMan->readMem<BYTE>(m_dwpMoneyCall, &m_btMoneyCall);
+	return;
+}
+
+void global::setMoneyCall(BYTE value)
+{
+	g_pMemMan->writeMem<BYTE>(m_dwpMoneyCall, &value);
 	return;
 }

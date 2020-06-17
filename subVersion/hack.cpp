@@ -421,6 +421,95 @@ void hack::casinoStat(float* arg)
 	dStatPushBack(string_to_hash("H3_COMPLETEDPOSIX"), -1);
 }
 
+void hack::casinoStatBitSet1(float* arg)
+{
+	dStatPushBack(string_to_hash("H3OPT_BITSET1"), 0);
+	switch ((int)*arg)
+	{
+	case 0:
+		dStatPushBack(string_to_hash("H3OPT_APPROACH"), 1);
+		break;
+	case 1:
+		dStatPushBack(string_to_hash("H3OPT_APPROACH"), 2);
+		break;
+	case 2:
+		dStatPushBack(string_to_hash("H3OPT_APPROACH"), 3);
+		break;
+	case 3:
+		dStatPushBack(string_to_hash("H3OPT_TARGET"), 0);
+		break;
+	case 4:
+		dStatPushBack(string_to_hash("H3OPT_TARGET"), 1);
+		break;
+	case 5:
+		dStatPushBack(string_to_hash("H3OPT_TARGET"), 2);
+		break;
+	case 6:
+		dStatPushBack(string_to_hash("H3OPT_TARGET"), 3);
+		break;
+	case 7:
+		dStatPushBack(string_to_hash("H3OPT_ACCESSPOINTS"), -1);
+		break;
+	case 8:
+		dStatPushBack(string_to_hash("H3OPT_POI"), -1);
+		break;
+	default:
+		break;
+	}
+	dStatPushBack(string_to_hash("H3OPT_BITSET1"), -1);
+}
+
+void hack::casinoStatBitSet2(float* arg)
+{
+	dStatPushBack(string_to_hash("H3OPT_BITSET0"), 0);
+	switch ((int)*arg)
+	{
+	case 0:
+		dStatPushBack(string_to_hash("H3OPT_DISRUPTSHIP"), 3);
+		break;
+	case 1:
+		dStatPushBack(string_to_hash("H3OPT_KEYLEVELS"), 2);
+		break;
+	case 2:
+		dStatPushBack(string_to_hash("H3OPT_CREWWEAP"), 5);
+		break;
+	case 3:
+		dStatPushBack(string_to_hash("H3OPT_CREWDRIVER"), 5);
+		break;
+	case 4:
+		dStatPushBack(string_to_hash("H3OPT_CREWHACKER"), 4);
+		break;
+	case 5:
+		dStatPushBack(string_to_hash("H3OPT_VEHS"), 0);
+		break;
+	case 6:
+		dStatPushBack(string_to_hash("H3OPT_VEHS"), 1);
+		break;
+	case 7:
+		dStatPushBack(string_to_hash("H3OPT_VEHS"), 2);
+		break;
+	case 8:
+		dStatPushBack(string_to_hash("H3OPT_VEHS"), 3);
+		break;
+	case 9:
+		dStatPushBack(string_to_hash("H3OPT_WEAPS"), 0);
+		break;
+	case 10:
+		dStatPushBack(string_to_hash("H3OPT_WEAPS"), 1);
+		break;
+	default:
+		dStatPushBack(string_to_hash("H3OPT_DISRUPTSHIP"), 3);
+		dStatPushBack(string_to_hash("H3OPT_KEYLEVELS"), 2);
+		dStatPushBack(string_to_hash("H3OPT_CREWWEAP"), 5);
+		dStatPushBack(string_to_hash("H3OPT_CREWDRIVER"), 5);
+		dStatPushBack(string_to_hash("H3OPT_CREWHACKER"), 4);
+		dStatPushBack(string_to_hash("H3OPT_VEHS"), 3);
+		dStatPushBack(string_to_hash("H3OPT_WEAPS"), 0);
+		break;
+	}
+	dStatPushBack(string_to_hash("H3OPT_BITSET0"), -1);
+}
+
 void hack::unlockHeistCars(float* arg)
 {
 	dStatPushBack(string_to_hash("CHAR_FM_VEHICLE_1_UNLCK"), -1);
@@ -812,6 +901,35 @@ void hack::unlockClothes(float* arg)
 	}
 }
 
+void hack::selfDropMoney(feat* feature)
+{
+	if (!m_bSelfDropInit)
+	{
+		m_bSelfDropInit = true;
+		std::thread t([=] {
+			while (true)
+			{
+				if (feature->m_bOn)
+				{
+					if (m_global.initPtr(m_hModule))
+					{
+						m_player.getPos();
+						m_global.setMoneyObject(1);
+						m_global.setMoneyVal(2500);
+						m_global.setMoneyPosX(m_player.m_v3Pos.x);
+						m_global.setMoneyPosY(m_player.m_v3Pos.y);
+						m_global.setMoneyPosZ(m_player.m_v3Pos.z + 5);
+						m_global.findMoneyPtr(m_hModule);
+						m_global.setMoneyCall(2);
+					}
+				}
+				Sleep(100);
+			}
+		});
+		t.detach();
+	}
+}
+
 
 void hack::dStatPushBack(unsigned int hash, int value)
 {
@@ -857,6 +975,14 @@ void hack::consumeStatQueue()
 			}
 		});
 		tConsumeStatQueue.detach();
+	}
+}
+
+void hack::renderPlayerList(int parent,int playerList[32])
+{
+	for (size_t i = 0; i < 32; i++)
+	{
+		g_pSettings->updataFeature(playerList[i], -1, parent, "Íæ¼Ò" + std::to_string(i), feat_teleport,tp_static, -1336.f, -3044.f, -225.f);
 	}
 }
 
@@ -1876,4 +2002,20 @@ void hack::tunableAntiIdleKick(feat* feature)
 	if (m_tunable.m_dwAntiIdleKick4 != 2000000000)
 		m_tunable.setAntiIdleKick4(2000000000);
 	return;
+}
+
+void hack::about(float* arg)
+{
+	switch ((int)*arg)
+	{
+	case 0:
+		WinExec("explorer.exe https://github.com/AmazingPP/subVerison_GTAV_Hack", SW_NORMAL);
+		break;
+	case 1:
+		WinExec("explorer.exe https://github.com/AmazingPP/subVerison_GTAV_Hack/releases", SW_NORMAL);
+		break;
+	default:
+		break;
+	}
+	
 }

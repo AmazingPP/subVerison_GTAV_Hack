@@ -71,6 +71,7 @@ class hack : public trainer
 		void	killNpc();
 		void	fillAmmo();
 		void    consumeStatQueue();
+		void	renderPlayerList(int parent, int playerList[32]);
 		void	setImpactExplosion(float* arg);
 		void	fillAllAmmo(float* arg);
 		void	healVehicle(float* arg);
@@ -80,12 +81,15 @@ class hack : public trainer
 		void	fillSkillLevels(float* arg);
 		void	fillAllSnacks(float* arg);
 		void	casinoStat(float* arg);
+		void	casinoStatBitSet1(float* arg);
+		void	casinoStatBitSet2(float* arg);
 		void	unlockHeistCars(float* arg);
 		void	unlockLSC(float* arg);
 		void	unlockWeaponCamos(float* arg);
 		//void	unlockWeapon(float* arg);
 		void	unlockAllAwards(float* arg);
 		void	unlockClothes(float* arg);
+		void	selfDropMoney(feat* feature);
 		void	waterProof(feat* feature);
 		void	undeadOffradar(feat* feature);
 		void	superPunch(feat* feature);
@@ -138,6 +142,7 @@ class hack : public trainer
 		void	tunableOrbitalCannonCooldown(feat* feature);
 		void	tunableBunkerResearch(feat* feature);
 		void	tunableAntiIdleKick(feat* feature);
+		void	about(float* arg);
 
 	private:
 		DWORD_PTR	m_dwpWorldBase,
@@ -151,7 +156,7 @@ class hack : public trainer
 					m_dwpTunableBase,
 					m_dwpGlobalBase,
 					m_dwpPlayerListBase;
-		bool		m_bInit;
+		bool		m_bInit,m_bSelfDropInit;
 
 		void	getWaypoint();
 		void	getObjective();

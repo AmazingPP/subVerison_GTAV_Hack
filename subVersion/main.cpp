@@ -28,6 +28,7 @@ D3D9Render*	g_pD3D9Render;
 std::map<int, CallbackProxy<hack, float>*>* g_pCBMap;
 int			g_iFeature[MAX_MENU_FEATURES]	= {};
 int			g_iIndex;
+int			g_iFeaturePlayerList[32];
 
 bool		g_bKillSwitch	= false;
 bool		g_bKillRender	= false;
@@ -74,7 +75,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 
 	//LPCSTR	szWindowTitleTarget	= "Untitled - Notepad";
 	LPCSTR	szWindowTitleTarget	= "Grand Theft Auto V";
-	LPCSTR	szWindowTitle		= "subVersion mAsk°重制版";
+	LPCSTR	szWindowTitle		= "subVersion mAsk°重制版 v1.2.0";
 	g_pMemMan->setWindowName(szWindowTitleTarget);
 	g_pD3D9Render->m_szWindowTitle = szWindowTitle;
 
@@ -180,6 +181,11 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 
 	g_pSettings->addFeature(3, -1, "导航点", feat_teleport, tp_waypoint);
 	g_pSettings->addFeature(3, -1, "目标点", feat_teleport, tp_objective);
+	//g_iFeature[FEATURE_P_PLAYER_LIST] = g_pSettings->addFeature(3, -1, "玩家列表 >>", feat_parent);
+	//for (size_t i = 0; i < sizeof(g_iFeaturePlayerList)/sizeof(int); i++)
+	//{
+	//	g_iFeaturePlayerList[i] = g_pSettings->addFeature(-1, g_iFeature[FEATURE_P_PLAYER_LIST], "", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
+	//}
 
 	int interior = g_pSettings->addFeature(3, -1, "室内 >>", feat_parent);
 	g_pSettings->addFeature(-1, interior, "FIB大楼楼顶", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
@@ -218,10 +224,38 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_T_AP_MP]			   = g_pSettings->addFeature(-1, tunable, "AP倍数", feat_slider, "AP", 1.f, 1000.f, (float)1.f / 9.f);
 	g_iFeature[FEATURE_T_MISSION_PAYOUT]   = g_pSettings->addFeature(-1, tunable, "最小任务金额", feat_slider, "MinMissionPayout", 0.f, 100000.f);
 	int olService = g_pSettings->addFeature(4, -1, "线上服务 >>", feat_parent);
+	g_iFeature[FEATURE_P_MONERY_DROP] = g_pSettings->addFeature(-1, olService, "钱袋刷钱", feat_toggle, "moneyDrop");
 	addFeature(-1, olService, "角色属性全满", feat_btn, &hack::fillSkillLevels, -1.f);
 	addFeature(-1, olService, "补满零食、防弹衣", feat_btn, &hack::fillAllSnacks, -1.f);
 	int casino = g_pSettings->addFeature(-1, olService, "赌场豪劫 >>", feat_parent);
 	addFeature(-1, casino, "清除冷却时间", feat_btn, &hack::casinoStat, 1.f);
+	int bitSet1 = g_pSettings->addFeature(-1, casino, "第一块计划板 >>", feat_parent);
+	addFeature(-1, bitSet1, "解锁所有探查点", feat_btn, &hack::casinoStatBitSet1, 7.f);
+	addFeature(-1, bitSet1, "解锁所有兴趣点", feat_btn, &hack::casinoStatBitSet1, 8.f);
+	int approach = g_pSettings->addFeature(-1, bitSet1, "抢劫方式 >>", feat_parent);
+	addFeature(-1, approach, "潜行匿踪", feat_btn, &hack::casinoStatBitSet1, 0.f);
+	addFeature(-1, approach, "兵不厌诈", feat_btn, &hack::casinoStatBitSet1, 1.f);
+	addFeature(-1, approach, "气势汹汹", feat_btn, &hack::casinoStatBitSet1, 2.f);
+	int target = g_pSettings->addFeature(-1, bitSet1, "抢劫物品 >>", feat_parent);
+	addFeature(-1, target, "现金", feat_btn, &hack::casinoStatBitSet1, 3.f);
+	addFeature(-1, target, "黄金", feat_btn, &hack::casinoStatBitSet1, 4.f);
+	addFeature(-1, target, "艺术品", feat_btn, &hack::casinoStatBitSet1, 5.f);
+	addFeature(-1, target, "钻石", feat_btn, &hack::casinoStatBitSet1, 6.f);
+	int bitSet2 = g_pSettings->addFeature(-1, casino, "第二块计划板 >>", feat_parent);
+	addFeature(-1, bitSet2, "一键解锁、最高等级", feat_btn, &hack::casinoStatBitSet2, 11.f);
+	addFeature(-1, bitSet2, "削弱敌人装备", feat_btn, &hack::casinoStatBitSet2, 0.f);
+	addFeature(-1, bitSet2, "钥匙卡最高级", feat_btn, &hack::casinoStatBitSet2, 1.f);
+	addFeature(-1, bitSet2, "最高级抢手", feat_btn, &hack::casinoStatBitSet2, 2.f);
+	addFeature(-1, bitSet2, "最高级司机", feat_btn, &hack::casinoStatBitSet2, 3.f);
+	addFeature(-1, bitSet2, "最高级黑客", feat_btn, &hack::casinoStatBitSet2, 4.f);
+	int vehs = g_pSettings->addFeature(-1, bitSet2, "逃亡载具 >>", feat_parent);
+	addFeature(-1, vehs, "0", feat_btn, &hack::casinoStatBitSet2, 5.f);
+	addFeature(-1, vehs, "1", feat_btn, &hack::casinoStatBitSet2, 6.f);
+	addFeature(-1, vehs, "2", feat_btn, &hack::casinoStatBitSet2, 7.f);
+	addFeature(-1, vehs, "3", feat_btn, &hack::casinoStatBitSet2, 8.f);
+	int weaps = g_pSettings->addFeature(-1, bitSet2, "武器 >>", feat_parent);
+	addFeature(-1, weaps, "0", feat_btn, &hack::casinoStatBitSet2, 9.f);
+	addFeature(-1, weaps, "1", feat_btn, &hack::casinoStatBitSet2, 10.f);
 	int unlock = g_pSettings->addFeature(-1, olService, "解锁 >>", feat_parent);
 	addFeature(-1, unlock, "解锁改车配件", feat_btn, &hack::unlockLSC, -1.f);
 	addFeature(-1, unlock, "解锁武器涂装", feat_btn, &hack::unlockWeaponCamos, -1.f);
@@ -229,6 +263,8 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	addFeature(-1, unlock, "解锁奖章", feat_btn, &hack::unlockAllAwards, -1.f);
 	addFeature(-1, unlock, "解锁衣服", feat_btn, &hack::unlockClothes, -1.f);
 	g_iFeature[FEATURE_T_BUNKER_RESEARCH] = g_pSettings->addFeature(-1, unlock, "解锁所有地堡研究(临时)", feat_toggle, "BunkerResearch");
+	addFeature(4, -1, "GitHub - 关于", feat_btn, &hack::about, 0.f);
+	addFeature(4, -1, "检查更新", feat_btn, &hack::about, 1.f);
 
 
 	g_pSettings->setActiveCat(0);			//this needs to be called so we can fill the current feature buffer
@@ -478,8 +514,11 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 
 			if (!(btInit & INITPTR_INVALID_GLOBAL))
 			{
+				g_pHack->selfDropMoney(g_pSettings->getFeature(g_iFeature[FEATURE_P_MONERY_DROP]));
 				g_pHack->consumeStatQueue();
 			}
+
+			//g_pHack->renderPlayerList(g_iFeature[FEATURE_P_PLAYER_LIST], g_iFeaturePlayerList);
 		}
 		Sleep(1);
 	}

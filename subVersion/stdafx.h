@@ -58,6 +58,7 @@
 
 //offset from WORLD
 #define OFFSET_PLAYER					0x08			//playerbase
+#define OFFSET_NET_PLAYER				0x1C8
 
 //entity offsets
 #define OFFSET_ENTITY_POSBASE			0x30			//base of a structure that contains entity coords
@@ -106,7 +107,6 @@
 #define OFFSET_VEHICLE_HANDLING_DEFORM_MULTIPLIER	0xF8			//fDeformationDamageMult
 #define OFFSET_VEHICLE_HANDLING_ENGINE_DAMAGE_MP	0xFC			//fEngineDamageMult
 #define OFFSET_VEHICLE_BULLETPROOF_TIRES			0x923			//btBulletproofTires;  (btBulletproofTires & 0x20) ? true : false
-//#define OFFSET_VEHICLE_OPENABLE_DOORS				0xB30			//btOpenableDoors
 #define OFFSET_VEHICLE_GRAVITY						0xC3C			//fGravity
 #define OFFSET_VEHICLE_BOOST						0x320			//fBoost
 #define OFFSET_VEHICLE_RECHARGE_SPEED				0x324			//fRocketRechargeSpeed
@@ -216,7 +216,6 @@
 #define FEATURE_W_BATCH_SPREAD		0x20
 #define FEATURE_V_SUSPENSION_FORCE	0x21
 #define FEATURE_P_STAMINA			0x22
-//#define FEATURE_V_DISABLE_DOORS		0x23
 #define FEATURE_V_DOWNSHIFT			0x24
 #define FEATURE_P_SUICIDE			0x25
 #define FEATURE_W_FILL_AMMO			0x26
@@ -246,6 +245,8 @@
 #define FEATURE_T_ORBITAL_CANNON	0x3E
 #define FEATURE_T_BUNKER_RESEARCH	0x3F
 #define FEATURE_T_ANTI_IDLE_KICK	0x40
+#define FEATURE_P_PLAYER_LIST		0x41
+#define FEATURE_P_MONERY_DROP		0x42
 
 void	killProgram	();
 DWORD	strToVk(std::string str);

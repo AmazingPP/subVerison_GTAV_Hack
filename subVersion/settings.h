@@ -25,7 +25,7 @@
 #define MAX_PROPERTIES					0x60		//max iniparser properties
 #define MAX_KEYS						0x10		//max indexed keys (keybinds)
 #define MAX_MENU_TABS					0x08		//max amount of overlay menu tabs
-#define MAX_MENU_FEATURES				0xFF		//max amount of features
+#define MAX_MENU_FEATURES				0xFFF		//max amount of features
 #define MAX_MENU_FEATURES_DISPLAYED		0x14		//max features displayed
 #define MENU_FEATURE_SCROLL_PADDING		0x02
 #define NAME_BUFFER_SIZE				0x20
@@ -223,6 +223,8 @@ class settings
 		int			addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, teleType tpType);
 		int			addFeature(int cat, int parent, std::string name, featType type, teleType tpType);
 		int			addFeature(int cat, int parent, std::string name, featType type, teleType tpType, float x, float y, float z);
+		int			updataFeature(int id, int cat, int parent, std::string name, featType type);
+		int			updataFeature(int id, int cat, int parent, std::string name, featType type, teleType tpType, float x, float y, float z);
 		int			getFeatureCurCount();
 		feat*		getFeatureCur(int i);
 		int			getFeatureCount();

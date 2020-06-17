@@ -132,6 +132,7 @@ bool	D3D9Render::render()
 		for(int i = 0, j = g_pSettings->getDisplayOffset(); i < n && i < MAX_MENU_FEATURES_DISPLAYED; i++, j++)
 		{
 			feat*	feature	= g_pSettings->getFeatureCur(j);
+
 			int		x	= 8,
 					y	= LAYOUT_ELEMENT_HEIGHT * (i + 2);
 

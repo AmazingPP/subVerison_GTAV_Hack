@@ -131,7 +131,12 @@ class vehicle : public entity
 				m_btTyreSmokeRed,
 				m_btTyreSmokeGreen,
 				m_btTyreSmokeBlue,
-				m_btLimoWindows;
+				m_btLimoWindows,
+				m_btVehicleMissles,
+				m_btAircraftBombs,
+				m_btAircraftCountermeasures,
+				m_btOppressorMK2Misseles,
+				m_btTampaMissles;
 
 
 		struct vehicleHandling
@@ -218,6 +223,16 @@ class vehicle : public entity
 		void	setTyreSmokeBlue(BYTE value);
 		void	getLimoWindows();
 		void	setLimoWindows(BYTE value);
+		void	getVehicleMissles();
+		void	setVehicleMissles(BYTE value);
+		void	getAircraftBombs();
+		void	setAircraftBombs(BYTE value);
+		void	getAircraftCountermeasures();
+		void	setAircraftCountermeasures(BYTE value);
+		void	getOppressorMK2Misseles();
+		void	setOppressorMK2Misseles(BYTE value);
+		void	getTampaMissles();
+		void	setTampaMissles(BYTE value);
 		void	getDeformationDamageMult();
 		void	setDeformationDamageMult(float value);
 		void	getUpShift();
@@ -399,22 +414,47 @@ class global
 	public:
 		DWORD_PTR	m_dwpStatHash,
 					m_dwpStatValue,
-					m_dwpStatCall;
+					m_dwpStatCall,
+					m_dwpMoneyObject,
+					m_dwpMoneyVal,
+					m_dwpMoneyPosX,
+					m_dwpMoneyPosY,
+					m_dwpMoneyPosZ,
+					m_dwpMoneyCall;
 
 		unsigned int	m_dwStatHash,
 						m_dwStatHashSet;
-		int			m_dwStatValue,
-						m_dwStatCall;
+		int				m_dwStatValue,
+						m_dwStatCall,
+						m_dwMoneyVal;
+		float			m_fMoneyPosX,
+						m_fMoneyPosY,
+						m_fMoneyPosZ;
+		BYTE			m_btMoneyObject,
+						m_btMoneyCall;
 			
 				global();
 				~global();
 		bool	initPtr(HMODULE base);
+		bool	findMoneyPtr(HMODULE base);
 		void	getStatHash();
 		void	setStatHash(unsigned int value);
 		void	getStatValue();
 		void	setStatValue(int value);
 		void	getStatCall();
 		void	setStatCall(int value);
+		void	getMoneyObject();
+		void	setMoneyObject(BYTE value);
+		void	getMoneyVal();
+		void	setMoneyVal(int value);
+		void	getMoneyPosX();
+		void	setMoneyPosX(float value);
+		void	getMoneyPosY();
+		void	setMoneyPosY(float value);
+		void	getMoneyPosZ();
+		void	setMoneyPosZ(float value);
+		void	getMoneyCall();
+		void	setMoneyCall(BYTE value);
 
 		DWORD_PTR	m_dwpGlobalBase;
 private:
