@@ -98,6 +98,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_P_SUICIDE]			= addFeature(0, -1, "自杀", feat_btn, &hack::suicide, -1.f);
 	g_iFeature[FEATURE_P_WANTED]			= g_pSettings->addFeature(0, -1, "通缉等级", feat_slider, "wanted", 0.f, 5.f, .2f);
 	g_iFeature[FEATURE_P_NEVERWANTED]		= g_pSettings->addFeature(0, -1, "永不通缉", feat_toggle, "neverWanted");
+	addFeature(0, -1, "杀死所有NPC", feat_btn, &hack::killAllNpc, -1.f);
 	g_iFeature[FEATURE_P_ANTINPC]			= g_pSettings->addFeature(0, -1, "反NPC", feat_toggle, "antiNpc");
 	g_iFeature[FEATURE_P_NPC_IGNORE]		= g_pSettings->addFeature(0, -1, "NPC无视玩家", feat_toggle, "npcIgnore");
 	g_iFeature[FEATURE_P_RUNSPD]			= g_pSettings->addFeature(0, -1, "奔跑速度", feat_slider, "runSpd", 1.f, 5.f);
@@ -225,11 +226,11 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	int olService = g_pSettings->addFeature(4, -1, "线上 >>", feat_parent);
 	addFeature(-1, olService, "坐进个人载具", feat_btn, &hack::intoPV, -1.f);
 	g_iFeature[FEATURE_P_MONERY_DROP] = g_pSettings->addFeature(-1, olService, "钱袋刷钱", feat_toggle, "moneyDrop");
-	g_iFeature[FEATURE_P_PLAYER_LIST] = g_pSettings->addFeature(3, -1, "玩家列表 >>", feat_parent);
-	for (size_t i = 0; i < sizeof(g_iFeaturePlayerList)/sizeof(g_iFeaturePlayerList[0]); i++)
-	{
-		g_iFeaturePlayerList[i] = g_pSettings->addFeature(-1, g_iFeature[FEATURE_P_PLAYER_LIST],"线上 >>", feat_parent);
-	}
+	//g_iFeature[FEATURE_P_PLAYER_LIST] = g_pSettings->addFeature(3, -1, "玩家列表 >>", feat_parent);
+	//for (size_t i = 0; i < sizeof(g_iFeaturePlayerList)/sizeof(g_iFeaturePlayerList[0]); i++)
+	//{
+	//	g_iFeaturePlayerList[i] = g_pSettings->addFeature(-1, g_iFeature[FEATURE_P_PLAYER_LIST],"线上 >>", feat_parent);
+	//}
 	int vehSpawn = g_pSettings->addFeature(-1, olService, "刷车 >>", feat_parent);
 	for (size_t i = 0; i < vehiclePreview.size(); i++)
 	{

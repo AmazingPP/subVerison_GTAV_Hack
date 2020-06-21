@@ -523,13 +523,14 @@ class global
 };
 
 
-class ReplayInterface
+class replayInterface
 {
 public:
-		entity	*g_pPed[256];
+		entity	*g_pPedList[256];
+		DWORD	dw_curPedNum;
 
-				ReplayInterface();
-				~ReplayInterface();
+				replayInterface();
+				~replayInterface();
 		void	initPeds();
 
 

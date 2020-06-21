@@ -29,6 +29,7 @@
 #define INITPTR_INVALID_TUNABLE 1 << 4
 #define INITPTR_INVALID_GLOBAL  1 << 5
 #define INITPTR_INVALID_PLAYER_LIST 1 << 6
+#define INITPTR_INVALID_REPLAY_INTERFACE 1 << 7
 class trainer
 {
 	public:
@@ -50,6 +51,7 @@ class hack : public trainer
 		weapon	m_weapon;
 		tunable m_tunable;
 		global	m_global;
+		replayInterface	m_replayInterface;
 		std::string m_mpId;
 		std::deque<std::pair<unsigned int,int>> m_dStat;
 		ImpactExplosionEnum m_explosion;
@@ -71,6 +73,7 @@ class hack : public trainer
 		void	killNpc();
 		void	fillAmmo();
 		void    consumeStatQueue();
+		void	killAllNpc(float* arg);
 		void	renderPlayerList(int parent, int playerList[32]);
 		void	setImpactExplosion(float* arg);
 		void	fillAllAmmo(float* arg);
@@ -159,7 +162,8 @@ class hack : public trainer
 					m_dwpWeaponBase,
 					m_dwpTunableBase,
 					m_dwpGlobalBase,
-					m_dwpPlayerListBase;
+					m_dwpPlayerListBase,
+					m_dwpReplayInterfaceBase;
 		bool		m_bInit,m_bSelfDropInit;
 
 		void	getWaypoint();

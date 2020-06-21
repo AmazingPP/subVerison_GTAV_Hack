@@ -171,6 +171,13 @@ BYTE hack::initPointers()
 	m_global.m_dwpGlobalBase = m_dwpGlobalBase;
 	m_mpId = "MP0_";
 
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_hModule + ADDRESS_REPLAY_INTERFACE, &m_dwpReplayInterfaceBase);
+	if (m_dwpReplayInterfaceBase == 0)
+		return INITPTR_INVALID_REPLAY_INTERFACE;
+	m_replayInterface.m_dwpPedInterface = m_dwpReplayInterfaceBase;
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpReplayInterfaceBase + OFFSET_REPLAY_PED_INTERFACE, &m_replayInterface.m_dwpPedInterface);
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_replayInterface.m_dwpPedInterface + OFFSET_PED_INTERFACE_PED_LIST, &m_replayInterface.m_dwpPedList);
+
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpWorldBase + OFFSET_PLAYER, &m_dwpPlayerBase);
 	if (m_dwpPlayerBase == 0)
 		return INITPTR_INVALID_PLAYER;
@@ -1073,6 +1080,21 @@ void hack::consumeStatQueue()
 			}
 		});
 		tConsumeStatQueue.detach();
+	}
+}
+
+void hack::killAllNpc(float* arg)
+{
+	m_replayInterface.initPeds();
+	for (size_t i = 0; i < m_replayInterface.dw_curPedNum; i++)
+	{
+		if (i == 10)
+			continue;
+		m_replayInterface.g_pPedList[i]->getHealth();
+		if (m_replayInterface.g_pPedList[i]->m_cmHp.cur > 0)
+		{
+			m_replayInterface.g_pPedList[i]->setHealth(0);
+		}
 	}
 }
 

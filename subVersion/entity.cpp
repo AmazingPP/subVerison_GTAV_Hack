@@ -1559,14 +1559,28 @@ void global::setSecondaryColor(BYTE value)
 	return;
 }
 
-ReplayInterface::ReplayInterface()
+replayInterface::replayInterface()
 {
 }
 
-ReplayInterface::~ReplayInterface()
+replayInterface::~replayInterface()
 {
 }
 
-void ReplayInterface::initPeds()
+void replayInterface::initPeds()
 {
+	for (size_t i = 0; i < dw_curPedNum; i++)
+	{
+		delete g_pPedList[i];
+		g_pPedList[i] = nullptr;
+	}
+	dw_curPedNum = 256;
+	//g_pMemMan->readMem<DWORD>((DWORD_PTR)m_dwpPedInterface + OFFSET_PED_INTERFACE_CUR_PEDS, &dw_curPedNum);
+
+	for (size_t i = 0; i < dw_curPedNum; i++)
+	{
+		g_pPedList[i] = new entity();
+		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpPedList + i * 0x10, &g_pPedList[i]->m_dwpBase);
+		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)g_pPedList[i]->m_dwpBase + OFFSET_ENTITY_POSBASE, &g_pPedList[i]->m_dwpPosBase);
+	}
 }
