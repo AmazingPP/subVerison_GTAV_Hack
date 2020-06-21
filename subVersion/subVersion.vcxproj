@@ -38,6 +38,7 @@
     <ClInclude Include="settings.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="vector.h" />
+    <ClInclude Include="VehiclePreview.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="mask.ico" />

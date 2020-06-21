@@ -89,6 +89,10 @@ class hack : public trainer
 		//void	unlockWeapon(float* arg);
 		void	unlockAllAwards(float* arg);
 		void	unlockClothes(float* arg);
+		void	intoPV(float* arg);
+		void	loadSession(float* arg);
+		void	forwardTeleport(float* arg);
+		void	spawnVehicle(float* arg);
 		void	selfDropMoney(feat* feature);
 		void	waterProof(feat* feature);
 		void	undeadOffradar(feat* feature);

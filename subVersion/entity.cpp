@@ -42,6 +42,30 @@ void entity::setPos(v3 dest)
 	return;
 }
 
+void entity::getCos()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_dwpPosBase + OFFSET_ENTITY_POSBASE_COS, &m_fCos);
+	return;
+}
+
+void entity::setCos(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_dwpPosBase + OFFSET_ENTITY_POSBASE_COS, &value);
+	return;
+}
+
+void entity::getSin()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR)m_dwpPosBase + OFFSET_ENTITY_POSBASE_SIN, &m_fSin);
+	return;
+}
+
+void entity::setSin(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR)m_dwpPosBase + OFFSET_ENTITY_POSBASE_SIN, &value);
+	return;
+}
+
 void entity::getGod()
 {
 	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_GOD, &m_btGod);
@@ -1197,32 +1221,73 @@ global::~global()
 {
 }
 
-bool global::initPtr(HMODULE base)
+bool global::initStatPtr(HMODULE base)
 {
-	m_dwpStatCall = globalHandle(1373500, base) + 0x2398;
-	m_dwpStatHash = globalHandle(1384095, base) + 0x20;
-	m_dwpStatValue = globalHandle(939452, base) + 0xACB0;
-	m_dwpMoneyObject = globalHandle(2507706, base);
-	m_dwpMoneyVal = globalHandle(2507701, base);
-	m_dwpMoneyPosX = globalHandle(2507703, base);
-	m_dwpMoneyPosY = globalHandle(2507704, base);
-	m_dwpMoneyPosZ = globalHandle(2507705, base);
+	m_dwpStatCall = getGlobal(1373500, base) + 0x2398;
+	m_dwpStatHash = getGlobal(1384095, base) + 0x20;
+	m_dwpStatValue = getGlobal(939452, base) + 0xACB0;
 
-	return m_dwpStatCall != 0 || m_dwpStatHash != 0 || m_dwpStatValue != 0 
-		|| m_dwpMoneyObject!= 0 || m_dwpMoneyVal != 0 || m_dwpMoneyPosX != 0
-		|| m_dwpMoneyPosY != 0 || m_dwpMoneyPosZ != 0 ;
+
+	return m_dwpStatCall != 0 || m_dwpStatHash != 0 || m_dwpStatValue != 0;
 }
+
+bool global::initMoneyPtr(HMODULE base)
+{
+	m_dwpMoneyObject = getGlobal(2507706, base);
+	m_dwpMoneyVal = getGlobal(2507701, base);
+	m_dwpMoneyPosX = getGlobal(2507703, base);
+	m_dwpMoneyPosY = getGlobal(2507704, base);
+	m_dwpMoneyPosZ = getGlobal(2507705, base);
+
+	return  m_dwpMoneyObject != 0 || m_dwpMoneyVal != 0 || m_dwpMoneyPosX != 0
+		|| m_dwpMoneyPosY != 0 || m_dwpMoneyPosZ != 0;
+}
+
+bool global::initSessionPtr(HMODULE base)
+{
+	m_dwpSessionID = getGlobal(1312832, base);
+	m_dwpSessionTransition = getGlobal(1312424, base);
+
+	return  m_dwpSessionID != 0 || m_dwpSessionTransition != 0;
+}
+
+bool global::initIntoPVPtr(HMODULE base)
+{
+	m_dwpIntoPersonalVehicle = getGlobal(2409284 + 8, base);
+
+	return  m_dwpIntoPersonalVehicle != 0 ;
+}
+
+bool global::initVehiclePtr(HMODULE base)
+{
+	m_dwpVehicleSpawn1 = getGlobal(2459034 + 2, base);
+	m_dwpVehicleSpawn2 = getGlobal(2459034 + 5, base);
+	m_dwpVehicleHash = getGlobal(2459034 + 27 + 66, base);
+	m_dwpVehicleKickPrevent1 = getGlobal(2459034 + 121, base);
+	m_dwpVehicleKickPrevent2 = getGlobal(2459034 + 122, base);
+	m_dwpVehicleX = getGlobal(2459034 + 7 + 0, base);
+	m_dwpVehicleY = getGlobal(2459034 + 7 + 1, base);
+	m_dwpVehicleZ = getGlobal(2459034 + 7 + 2, base);
+	m_dwpPrimaryColor = getGlobal(2459034 + 27 + 5, base);
+	m_dwpSecondaryColor = getGlobal(2459034 + 27 + 6, base);
+
+	return m_dwpVehicleSpawn1 != 0 ||m_dwpVehicleSpawn2 != 0 ||m_dwpVehicleHash != 0 ||
+		m_dwpVehicleKickPrevent1 != 0 ||m_dwpVehicleKickPrevent2 != 0 ||
+		m_dwpVehicleX != 0 ||m_dwpVehicleY != 0 ||
+		m_dwpVehicleZ != 0 ||m_dwpPrimaryColor != 0 ||m_dwpSecondaryColor;
+}
+
 
 bool global::findMoneyPtr(HMODULE base)
 {
 	float buffer;
-	DWORD_PTR dwpTemp = globalHandle(2507700, base);
+	DWORD_PTR dwpTemp = getGlobal(2507700, base);
 	g_pMemMan->readMem<float>(dwpTemp, &buffer);
-	m_dwpMoneyCall = globalHandle(84 * (DWORD)buffer + 4263878, base);
+	m_dwpMoneyCall = getGlobal(84 * (DWORD)buffer + 4263878, base);
 	return true;
 }
 
-DWORD_PTR global::globalHandle(int atIndex, HMODULE base)
+DWORD_PTR global::getGlobal(int atIndex, HMODULE base)
 {
 	DWORD_PTR dwpBuffer;
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)base + ADDRESS_GLOBAL + 8 * ((atIndex >> 0x12) & 0x3F), &dwpBuffer);
@@ -1335,4 +1400,173 @@ void global::setMoneyCall(BYTE value)
 {
 	g_pMemMan->writeMem<BYTE>(m_dwpMoneyCall, &value);
 	return;
+}
+
+void global::getSessionTransition()
+{
+	g_pMemMan->readMem<int>(m_dwpSessionTransition, &m_dwSessionTransition);
+	return;
+}
+
+void global::setSessionTransition(int value)
+{
+	g_pMemMan->writeMem<int>(m_dwpSessionTransition, &value);
+	return;
+}
+
+void global::getSessionID()
+{
+	g_pMemMan->readMem<int>(m_dwpSessionID, &m_dwSessionID);
+	return;
+}
+
+void global::setSessionID(int value)
+{
+	g_pMemMan->writeMem<int>(m_dwpSessionID, &value);
+	return;
+}
+
+void global::getIntoPersonalVehicle()
+{
+	g_pMemMan->readMem<int>(m_dwpIntoPersonalVehicle, &m_dwIntoPersonalVehicle);
+	return;
+}
+
+void global::setIntoPersonalVehicle(int value)
+{
+	g_pMemMan->writeMem<int>(m_dwpIntoPersonalVehicle, &value);
+	return;
+}
+
+void global::getVehicleSpawn1()
+{
+	g_pMemMan->readMem<int>(m_dwpVehicleSpawn1, &m_dwVehicleSpawn1);
+	return;
+}
+
+void global::setVehicleSpawn1(int value)
+{
+	g_pMemMan->writeMem<int>(m_dwpVehicleSpawn1, &value);
+	return;
+}
+
+void global::getVehicleSpawn2()
+{
+	g_pMemMan->readMem<int>(m_dwpVehicleSpawn2, &m_dwVehicleSpawn2);
+	return;
+}
+
+void global::setVehicleSpawn2(int value)
+{
+	g_pMemMan->writeMem<int>(m_dwpVehicleSpawn2, &value);
+	return;
+}
+
+void global::getVehicleHash()
+{
+	g_pMemMan->readMem<unsigned int>(m_dwpVehicleHash, &m_dwVehicleHash);
+	return;
+}
+
+void global::setVehicleHash(unsigned int value)
+{
+	g_pMemMan->writeMem<unsigned int>(m_dwpVehicleHash, &value);
+	return;
+
+}
+
+void global::getVehicleKickPrevent1()
+{
+	g_pMemMan->readMem<int>(m_dwpVehicleKickPrevent1, &m_dwVehicleKickPrevent1);
+	return;
+}
+
+void global::setVehicleKickPrevent1(int value)
+{
+	g_pMemMan->writeMem<int>(m_dwpVehicleKickPrevent1, &value);
+	return;
+}
+
+void global::getVehicleKickPrevent2()
+{
+	g_pMemMan->readMem<int>(m_dwpVehicleKickPrevent2, &m_dwVehicleKickPrevent2);
+	return;
+}
+
+void global::setVehicleKickPrevent2(int value)
+{
+	g_pMemMan->writeMem<int>(m_dwpVehicleKickPrevent2, &value);
+	return;
+}
+
+void global::getVehiclePosX()
+{
+	g_pMemMan->readMem<float>(m_dwpVehicleX, &m_fVehicleX);
+	return;
+}
+
+void global::setVehiclePosX(float value)
+{
+	g_pMemMan->writeMem<float>(m_dwpVehicleX, &value);
+	return;
+}
+
+void global::getVehiclePosY()
+{
+	g_pMemMan->readMem<float>(m_dwpVehicleY, &m_fVehicleY);
+	return;
+}
+
+void global::setVehiclePosY(float value)
+{
+	g_pMemMan->writeMem<float>(m_dwpVehicleY, &value);
+	return;
+}
+
+void global::getVehiclePosZ()
+{
+	g_pMemMan->readMem<float>(m_dwpVehicleZ, &m_fVehicleZ);
+	return;
+}
+
+void global::setVehiclePosZ(float value)
+{
+	g_pMemMan->writeMem<float>(m_dwpVehicleZ, &value);
+	return;
+}
+
+void global::getPrimaryColor()
+{
+	g_pMemMan->readMem<BYTE>(m_dwpPrimaryColor, &m_btPrimaryColor);
+	return;
+}
+
+void global::setPrimaryColor(BYTE value)
+{
+	g_pMemMan->writeMem<BYTE>(m_dwpPrimaryColor, &value);
+	return;
+}
+
+void global::getSecondaryColor()
+{
+	g_pMemMan->readMem<BYTE>(m_dwpSecondaryColor, &m_btSecondaryColor);
+	return;
+}
+
+void global::setSecondaryColor(BYTE value)
+{
+	g_pMemMan->writeMem<BYTE>(m_dwpSecondaryColor, &value);
+	return;
+}
+
+ReplayInterface::ReplayInterface()
+{
+}
+
+ReplayInterface::~ReplayInterface()
+{
+}
+
+void ReplayInterface::initPeds()
+{
 }

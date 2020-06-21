@@ -31,12 +31,17 @@ class entity
 	public:
 		curmax	m_cmHp;
 		v3		m_v3Pos;
+		float	m_fCos,m_fSin;
 		BYTE	m_btGod;
 
 						entity();
 						~entity();
 		virtual void	getPos();
 		virtual void	setPos(v3 dest);
+		virtual void	getCos();
+		virtual void	setCos(float value);
+		virtual void	getSin();
+		virtual void	setSin(float value);
 		virtual void	getHealth();
 		virtual void	setHealth(float hp);
 		virtual void	getGod();
@@ -420,22 +425,52 @@ class global
 					m_dwpMoneyPosX,
 					m_dwpMoneyPosY,
 					m_dwpMoneyPosZ,
-					m_dwpMoneyCall;
+					m_dwpMoneyCall,
+					m_dwpSessionTransition,
+					m_dwpSessionID,
+					m_dwpIntoPersonalVehicle,
+					m_dwpVehicleSpawn1,
+					m_dwpVehicleSpawn2,
+					m_dwpVehicleHash,
+					m_dwpVehicleKickPrevent1,
+					m_dwpVehicleKickPrevent2,
+					m_dwpVehicleX,
+					m_dwpVehicleY,
+					m_dwpVehicleZ,
+					m_dwpPrimaryColor,
+					m_dwpSecondaryColor;
 
 		unsigned int	m_dwStatHash,
+						m_dwVehicleHash,
 						m_dwStatHashSet;
 		int				m_dwStatValue,
 						m_dwStatCall,
-						m_dwMoneyVal;
+						m_dwMoneyVal,
+						m_dwSessionTransition,
+						m_dwSessionID,
+						m_dwIntoPersonalVehicle,
+						m_dwVehicleSpawn1,
+						m_dwVehicleSpawn2,
+						m_dwVehicleKickPrevent1,
+						m_dwVehicleKickPrevent2;
 		float			m_fMoneyPosX,
 						m_fMoneyPosY,
-						m_fMoneyPosZ;
+						m_fMoneyPosZ,
+						m_fVehicleX,
+						m_fVehicleY,
+						m_fVehicleZ;
 		BYTE			m_btMoneyObject,
-						m_btMoneyCall;
+						m_btMoneyCall,
+						m_btPrimaryColor,
+						m_btSecondaryColor;
 			
 				global();
 				~global();
-		bool	initPtr(HMODULE base);
+		bool	initStatPtr(HMODULE base);
+		bool	initMoneyPtr(HMODULE base);
+		bool	initSessionPtr(HMODULE base);
+		bool	initIntoPVPtr(HMODULE base);
+		bool	initVehiclePtr(HMODULE base);
 		bool	findMoneyPtr(HMODULE base);
 		void	getStatHash();
 		void	setStatHash(unsigned int value);
@@ -455,9 +490,51 @@ class global
 		void	setMoneyPosZ(float value);
 		void	getMoneyCall();
 		void	setMoneyCall(BYTE value);
+		void	getSessionTransition();
+		void	setSessionTransition(int value);
+		void	getSessionID();
+		void	setSessionID(int value);
+		void	getIntoPersonalVehicle();
+		void	setIntoPersonalVehicle(int value);
+		void	getVehicleSpawn1();
+		void	setVehicleSpawn1(int value);
+		void	getVehicleSpawn2();
+		void	setVehicleSpawn2(int value);
+		void	getVehicleHash();
+		void	setVehicleHash(unsigned int value);
+		void	getVehicleKickPrevent1();
+		void	setVehicleKickPrevent1(int value);
+		void	getVehicleKickPrevent2();
+		void	setVehicleKickPrevent2(int value);
+		void	getVehiclePosX();
+		void	setVehiclePosX(float value);
+		void	getVehiclePosY();
+		void	setVehiclePosY(float value);
+		void	getVehiclePosZ();
+		void	setVehiclePosZ(float value);
+		void	getPrimaryColor();
+		void	setPrimaryColor(BYTE value);
+		void	getSecondaryColor();
+		void	setSecondaryColor(BYTE value);
+
+		DWORD_PTR getGlobal(int value, HMODULE base);
 
 		DWORD_PTR	m_dwpGlobalBase;
-private:
-		DWORD_PTR globalHandle(int value, HMODULE base);
+};
+
+
+class ReplayInterface
+{
+public:
+		entity	*g_pPed[256];
+
+				ReplayInterface();
+				~ReplayInterface();
+		void	initPeds();
+
+
+	DWORD_PTR	m_dwpReplayInterfaceBase,
+				m_dwpPedInterface,
+				m_dwpPedList;
 };
 #endif

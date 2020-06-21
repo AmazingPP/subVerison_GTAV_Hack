@@ -36,6 +36,7 @@
 #include <map>
 #include <thread>
 #include <deque>
+#include <cmath>
 
 #include <Dwmapi.h>
 #pragma comment(lib,"Dwmapi.lib")
@@ -54,6 +55,7 @@
 #include "entity.h"
 #include "hack.h"
 #include "CallbackProxy.h"
+#include "VehiclePreview.h"
 
 
 //offset from WORLD
@@ -62,6 +64,8 @@
 
 //entity offsets
 #define OFFSET_ENTITY_POSBASE			0x30			//base of a structure that contains entity coords
+#define	OFFSET_ENTITY_POSBASE_COS		0x20
+#define	OFFSET_ENTITY_POSBASE_SIN		0x30
 #define OFFSET_ENTITY_POSBASE_POS		0x50			//vector3
 #define OFFSET_ENTITY_POS				0x90			//vector3
 #define OFFSET_ENTITY_GOD				0x189			//godmode; on = 1, off = 0; byte
@@ -179,6 +183,11 @@
 
 #define OFFSET_ATTACKER_DISTANCE		0x18			//changed to 0x18, from 0x10
 
+//replay interface offsets
+#define OFFSET_REPLAY_PED_INTERFACE			0x18
+#define OFFSET_PED_INTERFACE_PED_LIST		0x100
+#define OFFSET_PED_INTERFACE_CUR_PEDS		0x110
+
 
 //feature indexing
 #define FEATURE_P_GOD				0x00
@@ -267,4 +276,5 @@ extern long		ADDRESS_TUNABLE;
 extern long		ADDRESS_WEAPON;
 extern long		ADDRESS_GLOBAL;				//4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11
 extern long		ADDRESS_PLAYER_LIST;		//48 8B 0D ? ? ? ? E8 ? ? ? ? 48 8B C8 E8 ? ? ? ? 48 8B CF
+extern long		ADDRESS_REPLAY_INTERFACE;	//48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D ? ? ? ?
 #endif

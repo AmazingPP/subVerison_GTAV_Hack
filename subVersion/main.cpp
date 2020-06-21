@@ -29,6 +29,11 @@ std::map<int, CallbackProxy<hack, float>*>* g_pCBMap;
 int			g_iFeature[MAX_MENU_FEATURES]	= {};
 int			g_iIndex;
 int			g_iFeaturePlayerList[32];
+std::pair<int, std::string> tbl_SessionMItems[] = {
+	{-1,"离开线上"},{0,"公共战局"},{1,"创建公共战局"},{12,"加入帮会伙伴"},
+	{2,"私人帮会战局"},{3,"帮会战局"},{9,"加入好友"},{6,"私人好友战局"},
+	{10,"单人战局"},{11,"仅限邀请战局"}
+};
 
 bool		g_bKillSwitch	= false;
 bool		g_bKillRender	= false;
@@ -43,6 +48,7 @@ long		ADDRESS_TUNABLE		= 0;
 long		ADDRESS_WEAPON		= 0;
 long		ADDRESS_GLOBAL		= 0;
 long		ADDRESS_PLAYER_LIST = 0;
+long		ADDRESS_REPLAY_INTERFACE = 0;
 //fuction prototypes
 LRESULT	__stdcall	WindowProc(	HWND	hWnd,
 								UINT	message,
@@ -181,11 +187,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 
 	g_pSettings->addFeature(3, -1, "导航点", feat_teleport, tp_waypoint);
 	g_pSettings->addFeature(3, -1, "目标点", feat_teleport, tp_objective);
-	//g_iFeature[FEATURE_P_PLAYER_LIST] = g_pSettings->addFeature(3, -1, "玩家列表 >>", feat_parent);
-	//for (size_t i = 0; i < sizeof(g_iFeaturePlayerList)/sizeof(int); i++)
-	//{
-	//	g_iFeaturePlayerList[i] = g_pSettings->addFeature(-1, g_iFeature[FEATURE_P_PLAYER_LIST], "", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
-	//}
+	addFeature(3, -1, "向前", feat_btn, &hack::forwardTeleport, 5.f);
 
 	int interior = g_pSettings->addFeature(3, -1, "室内 >>", feat_parent);
 	g_pSettings->addFeature(-1, interior, "FIB大楼楼顶", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
@@ -217,17 +219,35 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeature(3, -1, "桑迪海岸机场", feat_teleport, tp_static, 1747.f, 3273.f, -225.f);//41.35f);
 	g_pSettings->addFeature(3, -1, "千年山", feat_teleport, tp_static, 489.979f, 5587.527f, 794.3f);
 
-	int tunable = g_pSettings->addFeature(4, -1, "可调参数 >>", feat_parent);
+	int session = g_pSettings->addFeature(4, -1, "战局 >>", feat_parent);
+	for (size_t i = 0; i < sizeof(tbl_SessionMItems)/sizeof(tbl_SessionMItems[0]); i++)
+		addFeature(-1, session, tbl_SessionMItems[i].second, feat_btn, &hack::loadSession, tbl_SessionMItems[i].first);
+	int olService = g_pSettings->addFeature(4, -1, "线上 >>", feat_parent);
+	addFeature(-1, olService, "坐进个人载具", feat_btn, &hack::intoPV, -1.f);
+	g_iFeature[FEATURE_P_MONERY_DROP] = g_pSettings->addFeature(-1, olService, "钱袋刷钱", feat_toggle, "moneyDrop");
+	g_iFeature[FEATURE_P_PLAYER_LIST] = g_pSettings->addFeature(3, -1, "玩家列表 >>", feat_parent);
+	for (size_t i = 0; i < sizeof(g_iFeaturePlayerList)/sizeof(g_iFeaturePlayerList[0]); i++)
+	{
+		g_iFeaturePlayerList[i] = g_pSettings->addFeature(-1, g_iFeature[FEATURE_P_PLAYER_LIST],"线上 >>", feat_parent);
+	}
+	int vehSpawn = g_pSettings->addFeature(-1, olService, "刷车 >>", feat_parent);
+	for (size_t i = 0; i < vehiclePreview.size(); i++)
+	{
+		int temp = g_pSettings->addFeature(-1, vehSpawn, vehiclePreview[i].first, feat_parent);
+		for (size_t j = 0; j < vehiclePreview[i].second.size(); j++)
+			addFeature(-1, temp, vehiclePreview[i].second[j].VName, feat_btn, &hack::spawnVehicle, i * 1000 + j);
+	}
+
+	int tunable = g_pSettings->addFeature(-1, olService, "可调参数 >>", feat_parent);
 	g_iFeature[FEATURE_T_ANTI_IDLE_KICK] = g_pSettings->addFeature(-1, tunable, "AFK反挂机踢出", feat_toggle, "AntiIdleKick");
 	g_iFeature[FEATURE_T_ORBITAL_CANNON] = g_pSettings->addFeature(-1, tunable, "天基炮无冷却", feat_toggle, "OrbitalCannon");
 	g_iFeature[FEATURE_T_RP_MP]			   = g_pSettings->addFeature(-1, tunable, "RP倍数", feat_slider,"RP", 1.f, 1000.f , (float)1.f / 9.f);
 	g_iFeature[FEATURE_T_AP_MP]			   = g_pSettings->addFeature(-1, tunable, "AP倍数", feat_slider, "AP", 1.f, 1000.f, (float)1.f / 9.f);
 	g_iFeature[FEATURE_T_MISSION_PAYOUT]   = g_pSettings->addFeature(-1, tunable, "最小任务金额", feat_slider, "MinMissionPayout", 0.f, 100000.f);
-	int olService = g_pSettings->addFeature(4, -1, "线上服务 >>", feat_parent);
-	g_iFeature[FEATURE_P_MONERY_DROP] = g_pSettings->addFeature(-1, olService, "钱袋刷钱", feat_toggle, "moneyDrop");
-	addFeature(-1, olService, "角色属性全满", feat_btn, &hack::fillSkillLevels, -1.f);
-	addFeature(-1, olService, "补满零食、防弹衣", feat_btn, &hack::fillAllSnacks, -1.f);
-	int casino = g_pSettings->addFeature(-1, olService, "赌场豪劫 >>", feat_parent);
+	int recovery = g_pSettings->addFeature(-1, olService, "解锁&恢复 >>", feat_parent);
+	addFeature(-1, recovery, "角色属性全满", feat_btn, &hack::fillSkillLevels, -1.f);
+	addFeature(-1, recovery, "补满零食、防弹衣", feat_btn, &hack::fillAllSnacks, -1.f);
+	int casino = g_pSettings->addFeature(-1, recovery, "赌场豪劫 >>", feat_parent);
 	addFeature(-1, casino, "清除冷却时间", feat_btn, &hack::casinoStat, 1.f);
 	int bitSet1 = g_pSettings->addFeature(-1, casino, "第一块计划板 >>", feat_parent);
 	addFeature(-1, bitSet1, "解锁所有探查点", feat_btn, &hack::casinoStatBitSet1, 7.f);
@@ -256,7 +276,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	int weaps = g_pSettings->addFeature(-1, bitSet2, "武器 >>", feat_parent);
 	addFeature(-1, weaps, "0", feat_btn, &hack::casinoStatBitSet2, 9.f);
 	addFeature(-1, weaps, "1", feat_btn, &hack::casinoStatBitSet2, 10.f);
-	int unlock = g_pSettings->addFeature(-1, olService, "解锁 >>", feat_parent);
+	int unlock = g_pSettings->addFeature(-1, recovery, "解锁 >>", feat_parent);
 	addFeature(-1, unlock, "解锁改车配件", feat_btn, &hack::unlockLSC, -1.f);
 	addFeature(-1, unlock, "解锁武器涂装", feat_btn, &hack::unlockWeaponCamos, -1.f);
 	addFeature(-1, unlock, "解锁抢劫车辆批发价", feat_btn, &hack::unlockHeistCars, -1.f);

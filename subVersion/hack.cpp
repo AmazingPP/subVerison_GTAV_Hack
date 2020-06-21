@@ -514,6 +514,10 @@ void hack::unlockHeistCars(float* arg)
 {
 	dStatPushBack(string_to_hash("CHAR_FM_VEHICLE_1_UNLCK"), -1);
 	dStatPushBack(string_to_hash("CHAR_FM_VEHICLE_2_UNLCK"), -1);
+	for (size_t i = 1; i <= 7; i++)
+	{
+		dStatPushBack(string_to_hash("CHAR_FM_CARMOD_"+ std::to_string(i) +"_UNLCK"), -1);
+	}
 }
 
 void hack::unlockLSC(float* arg)
@@ -892,12 +896,106 @@ void hack::unlockClothes(float* arg)
 	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_DECL"), -1);
 	for (size_t i = 0; i <= 205; i++)
 	{
-		dStatPushBack(string_to_hash("DLC_APPAREL_ACQUIRED_" + i), -1);
+		dStatPushBack(string_to_hash("DLC_APPAREL_ACQUIRED_" + std::to_string(i)), -1);
 	}
 	for (size_t i = 0; i <= 31; i++)
 	{
 
-		dStatPushBack(string_to_hash("ADMIN_CLOTHES_GV_BS_" + i), -1);
+		dStatPushBack(string_to_hash("ADMIN_CLOTHES_GV_BS_" + std::to_string(i)), -1);
+	}
+}
+
+void hack::intoPV(float* arg)
+{
+	if (m_global.initIntoPVPtr(m_hModule))
+	{
+		m_global.setIntoPersonalVehicle(1);
+		Sleep(500);
+		m_global.getIntoPersonalVehicle();
+		if (m_global.m_dwIntoPersonalVehicle == 1)
+		{
+			m_global.setIntoPersonalVehicle(0);
+		}
+	}
+}
+
+void hack::loadSession(float* arg)
+{
+	if (m_global.initSessionPtr(m_hModule))
+	{
+		m_global.setSessionID((int)*arg);
+		m_global.setSessionTransition(1);
+		Sleep(400);
+		m_global.setSessionTransition(0);
+	}
+}
+
+void hack::forwardTeleport(float* arg)
+{
+	m_player.getPos();
+	v3 v3Pos = m_player.m_v3Pos;
+	m_player.getCos();
+	m_player.getSin();
+	float fAngle = m_player.m_fCos;
+	float fAngle2 = m_player.m_fSin;
+	v3Pos.x +=*arg * fAngle2;
+	v3Pos.y +=*arg * fAngle;
+	teleport(v3Pos);
+}
+
+void hack::spawnVehicle(float* arg)
+{
+	if (m_global.initVehiclePtr(m_hModule))
+	{
+		int vehTypeIndex = (int)*arg / 1000;
+		int vehIndex = (int)*arg % 1000;
+		m_player.getPos();
+		v3 v3Pos = m_player.m_v3Pos;
+		m_player.getCos();
+		m_player.getSin();
+		float fAngle = m_player.m_fCos;
+		float fAngle2 = m_player.m_fSin;
+		v3Pos.x += 6 * fAngle2;
+		v3Pos.y += 6 * fAngle;
+
+		m_global.setVehicleHash(joaat(vehiclePreview[vehTypeIndex].second[vehIndex].VCode));
+		m_global.setVehicleKickPrevent1(2);
+		m_global.setVehicleKickPrevent2(14);
+		m_global.setSecondaryColor(-1);
+		m_global.setPrimaryColor(-1);
+		m_global.setVehiclePosX(v3Pos.x);
+		m_global.setVehiclePosY(v3Pos.y);
+		m_global.setVehiclePosZ(-255);
+		if (true)
+		{
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 10, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 11, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 12, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 13, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 14, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 15, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 16, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 17, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 18, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 19, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 20, m_hModule), 1);
+
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 21, m_hModule), 4);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 22, m_hModule), 3);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 23, m_hModule), 3);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 24, m_hModule), 57);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 25, m_hModule), 4);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 26, m_hModule), 5);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 28, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 30, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 32, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 65, m_hModule), 1);
+
+			g_pMemMan->writeMem<int>(m_global.getGlobal(2459034 + 27 + 77, m_hModule), 0xF0400200);
+		}
+
+		m_global.setVehicleSpawn2(1);
+		m_global.setVehicleSpawn1(1);
 	}
 }
 
@@ -911,11 +1009,11 @@ void hack::selfDropMoney(feat* feature)
 			{
 				if (feature->m_bOn)
 				{
-					if (m_global.initPtr(m_hModule))
+					if (m_global.initMoneyPtr(m_hModule))
 					{
 						m_player.getPos();
 						m_global.setMoneyObject(1);
-						m_global.setMoneyVal(2500);
+						m_global.setMoneyVal(2000);
 						m_global.setMoneyPosX(m_player.m_v3Pos.x);
 						m_global.setMoneyPosY(m_player.m_v3Pos.y);
 						m_global.setMoneyPosZ(m_player.m_v3Pos.z + 5);
@@ -949,7 +1047,7 @@ void hack::consumeStatQueue()
 					g_pD3D9Render->m_bMBShowing = true;
 					g_pD3D9Render->m_sTitle = "正在处理队列";
 					g_pD3D9Render->m_sDetail = "剩余" + std::to_string(m_dStat.size()) + "个待处理";
-					if (m_global.initPtr(m_hModule))
+					if (m_global.initStatPtr(m_hModule))
 					{
 						m_global.getStatHash();
 						unsigned int resotreHash = m_global.m_dwStatHash;
