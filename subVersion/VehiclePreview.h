@@ -1,7 +1,7 @@
 #pragma once
 #include<vector>
 
-static struct VehiclePreview {
+struct VehiclePreview {
 	char* VName;
 	char* VCode;
 	char* TexDict;

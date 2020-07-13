@@ -98,7 +98,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_P_SUICIDE]			= addFeature(0, -1, "自杀", feat_btn, &hack::suicide, -1.f);
 	g_iFeature[FEATURE_P_WANTED]			= g_pSettings->addFeature(0, -1, "通缉等级", feat_slider, "wanted", 0.f, 5.f, .2f);
 	g_iFeature[FEATURE_P_NEVERWANTED]		= g_pSettings->addFeature(0, -1, "永不通缉", feat_toggle, "neverWanted");
-	addFeature(0, -1, "杀死所有NPC", feat_btn, &hack::killAllNpc, -1.f);
+	//addFeature(0, -1, "杀死所有NPC", feat_btn, &hack::killAllNpc, -1.f);
 	g_iFeature[FEATURE_P_ANTINPC]			= g_pSettings->addFeature(0, -1, "反NPC", feat_toggle, "antiNpc");
 	g_iFeature[FEATURE_P_NPC_IGNORE]		= g_pSettings->addFeature(0, -1, "NPC无视玩家", feat_toggle, "npcIgnore");
 	g_iFeature[FEATURE_P_RUNSPD]			= g_pSettings->addFeature(0, -1, "奔跑速度", feat_slider, "runSpd", 1.f, 5.f);
