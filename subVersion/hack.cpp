@@ -196,10 +196,10 @@ BYTE hack::initPointers()
 		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpVehicleBase + OFFSET_VEHICLE_HANDLING, &m_vehicle.m_handlingCur.m_dwpHandling);
 	}
 
-	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_hModule + ADDRESS_WEAPON, &m_dwpWeaponBase);
+	//g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_hModule + ADDRESS_WEAPON, &m_dwpWeaponBase);
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpPlayerBase + OFFSET_WEAPON_MANAGER, &m_dwpWeaponManager);
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpWeaponManager + OFFSET_WEAPON_CURRENT, &m_dwpWeaponCur);
-	if (m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0 || m_dwpWeaponBase == 0)
+	if (m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0 )// || m_dwpWeaponBase == 0
 		r |= INITPTR_INVALID_WEAPON;
 	else
 	{
@@ -975,28 +975,28 @@ void hack::spawnVehicle(float* arg)
 		m_global.setVehiclePosZ(-255);
 		if (true)
 		{
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 10, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 11, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 12, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 13, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 14, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 15, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 16, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 17, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 18, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 19, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 20, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 10, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 11, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 12, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 13, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 14, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 15, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 16, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 17, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 18, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 19, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 20, m_hModule), 1);
 
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 21, m_hModule), 4);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 22, m_hModule), 3);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 23, m_hModule), 3);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 24, m_hModule), 57);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 25, m_hModule), 4);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 26, m_hModule), 5);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 28, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 30, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 32, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(2459034 + 27 + 65, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 21, m_hModule), 4);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 22, m_hModule), 3);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 23, m_hModule), 3);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 24, m_hModule), 57);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 25, m_hModule), 4);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 26, m_hModule), 5);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 28, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 30, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 32, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 65, m_hModule), 1);
 
 			g_pMemMan->writeMem<int>(m_global.getGlobal(2459034 + 27 + 77, m_hModule), 0xF0400200);
 		}
@@ -1747,24 +1747,6 @@ void hack::vehicleUpShift(feat* feature)
 	return;
 }
 
-void hack::batchSpread(feat* feature)
-{
-	if (!feature->m_bOn)
-	{
-		if (!feature->m_bRestored)
-		{
-			if (m_weapon.m_weapDataCur.m_fBatchSpread != m_weapon.m_weapDataRestore.m_fBatchSpread)
-				m_weapon.setBatchSpread(m_weapon.m_weapDataRestore.m_fBatchSpread);
-			feature->m_bRestored = true;
-		}
-		return;
-	}
-	float fValue = static_cast<featSlider*>(feature)->m_fValue;
-	if (m_weapon.m_weapDataCur.m_fBatchSpread != fValue)
-		m_weapon.setBatchSpread(fValue);
-	return;
-}
-
 void hack::vehicleSuspensionForce(feat* feature)
 {
 	if (!feature->m_bOn)
@@ -1782,29 +1764,6 @@ void hack::vehicleSuspensionForce(feat* feature)
 		m_vehicle.setSuspensionForce(fValue);
 	return;
 }
-/*
-void hack::vehicleDisableDoors(feat* feature)
-{
-	if(!feature->m_bOn)
-	{
-		if(!feature->m_bRestored)
-		{
-			m_vehicle.getOpenableDoors();
-			if(m_vehicle.m_btOpenableDoors[0] != m_vehicle.m_btOpenableDoors[1])
-				m_vehicle.setOpenableDoors(m_vehicle.m_btOpenableDoors[1]);
-			feature->m_bRestored = true;
-		}
-		return;
-	}
-	m_vehicle.getOpenableDoors();
-	if(m_vehicle.m_btOpenableDoors[0] != 0)
-	{
-		m_vehicle.m_btOpenableDoors[1]	= m_vehicle.m_btOpenableDoors[0];
-		if(m_vehicle.m_btOpenableDoors[0] > 1)		//crash protection
-			m_vehicle.setOpenableDoors(0);
-	}
-	return;
-}*/
 
 void	hack::vehicleDownShift(feat* feature)
 {
@@ -1885,15 +1844,15 @@ void hack::boost(feat* feature)
 		if (!feature->m_bRestored)
 		{
 			m_vehicle.getBoost();
-			if (m_vehicle.m_fBoost != 1)
-				m_vehicle.setBoost(1);
+			if (m_vehicle.m_fBoost != 1.25)
+				m_vehicle.setBoost(1.25);
 			feature->m_bRestored = true;
 		}
 		return;
 	}
 	m_vehicle.getBoost();
-	if (m_vehicle.m_fBoost != 1)
-		m_vehicle.setBoost(1);
+	if (m_vehicle.m_fBoost != 1.25)
+		m_vehicle.setBoost(1.25);
 	return;
 }
 

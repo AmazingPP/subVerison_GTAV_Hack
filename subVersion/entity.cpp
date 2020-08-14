@@ -849,7 +849,6 @@ bool weapon::loadWeapon()
 	this->getImpactType();
 	this->getImpactExplosion();
 	this->getMuzzleVelocity();
-	this->getBatchSpread();
 	if(m_weapDataCur.m_dwHash != m_weapDataRestore.m_dwHash)
 	{
 		if(m_weapDataRestore.m_dwpWeapon != 0)
@@ -876,7 +875,6 @@ void weapon::restoreWeapon()
 	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_IMPACT_TYPE, &m_weapDataRestore.m_dwImpactType);
 	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_IMPACT_EXPLOSION, &m_weapDataRestore.m_dwImpactExplosion);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_MUZZLE_VELOCITY, &m_weapDataRestore.m_fMuzzleVelocity);
-	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_BATCH_SPREAD, &m_weapDataRestore.m_fBatchSpread);
 	return;
 }
 
@@ -1066,19 +1064,6 @@ void weapon::setMuzzleVelocity(float value)
 	return;
 }
 
-void weapon::getBatchSpread()
-{
-	g_pMemMan->readMem<float>((DWORD_PTR) m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_BATCH_SPREAD, &m_weapDataCur.m_fBatchSpread);
-	return;
-}
-
-void weapon::setBatchSpread(float value)
-{
-	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_BATCH_SPREAD, &value);
-	return;
-}
-
-
 /*
 	TUNABLE
 */
@@ -1223,8 +1208,8 @@ global::~global()
 
 bool global::initStatPtr(HMODULE base)
 {
-	m_dwpStatCall = getGlobal(1373500, base) + 0x2398;
-	m_dwpStatHash = getGlobal(1384095, base) + 0x20;
+	m_dwpStatCall = getGlobal(1377170, base) + 0x2398;
+	m_dwpStatHash = getGlobal(1387876, base) + 0x20;
 	m_dwpStatValue = getGlobal(939452, base) + 0xACB0;
 
 
@@ -1233,11 +1218,11 @@ bool global::initStatPtr(HMODULE base)
 
 bool global::initMoneyPtr(HMODULE base)
 {
-	m_dwpMoneyObject = getGlobal(2507706, base);
-	m_dwpMoneyVal = getGlobal(2507701, base);
-	m_dwpMoneyPosX = getGlobal(2507703, base);
-	m_dwpMoneyPosY = getGlobal(2507704, base);
-	m_dwpMoneyPosZ = getGlobal(2507705, base);
+	m_dwpMoneyObject = getGlobal(2513253, base);
+	m_dwpMoneyVal = getGlobal(2513247 + 1, base);
+	m_dwpMoneyPosX = getGlobal(2513247 + 3, base);
+	m_dwpMoneyPosY = getGlobal(2513247 + 4, base);
+	m_dwpMoneyPosZ = getGlobal(2513247 + 5, base);
 
 	return  m_dwpMoneyObject != 0 || m_dwpMoneyVal != 0 || m_dwpMoneyPosX != 0
 		|| m_dwpMoneyPosY != 0 || m_dwpMoneyPosZ != 0;
@@ -1245,31 +1230,31 @@ bool global::initMoneyPtr(HMODULE base)
 
 bool global::initSessionPtr(HMODULE base)
 {
-	m_dwpSessionID = getGlobal(1312832, base);
-	m_dwpSessionTransition = getGlobal(1312424, base);
+	m_dwpSessionID = getGlobal(1312836, base);
+	m_dwpSessionTransition = getGlobal(1312425, base);
 
 	return  m_dwpSessionID != 0 || m_dwpSessionTransition != 0;
 }
 
 bool global::initIntoPVPtr(HMODULE base)
 {
-	m_dwpIntoPersonalVehicle = getGlobal(2409284 + 8, base);
+	m_dwpIntoPersonalVehicle = getGlobal(2409287 + 8, base);
 
 	return  m_dwpIntoPersonalVehicle != 0 ;
 }
 
 bool global::initVehiclePtr(HMODULE base)
 {
-	m_dwpVehicleSpawn1 = getGlobal(2459034 + 2, base);
-	m_dwpVehicleSpawn2 = getGlobal(2459034 + 5, base);
-	m_dwpVehicleHash = getGlobal(2459034 + 27 + 66, base);
-	m_dwpVehicleKickPrevent1 = getGlobal(2459034 + 121, base);
-	m_dwpVehicleKickPrevent2 = getGlobal(2459034 + 122, base);
-	m_dwpVehicleX = getGlobal(2459034 + 7 + 0, base);
-	m_dwpVehicleY = getGlobal(2459034 + 7 + 1, base);
-	m_dwpVehicleZ = getGlobal(2459034 + 7 + 2, base);
-	m_dwpPrimaryColor = getGlobal(2459034 + 27 + 5, base);
-	m_dwpSecondaryColor = getGlobal(2459034 + 27 + 6, base);
+	m_dwpVehicleSpawn1 = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 2, base);
+	m_dwpVehicleSpawn2 = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 5, base);
+	m_dwpVehicleHash = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 66, base);
+	m_dwpVehicleKickPrevent1 = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 121, base);
+	m_dwpVehicleKickPrevent2 = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 122, base);
+	m_dwpVehicleX = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 7 + 0, base);
+	m_dwpVehicleY = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 7 + 1, base);
+	m_dwpVehicleZ = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 7 + 2, base);
+	m_dwpPrimaryColor = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 5, base);
+	m_dwpSecondaryColor = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 6, base);
 
 	return m_dwpVehicleSpawn1 != 0 ||m_dwpVehicleSpawn2 != 0 ||m_dwpVehicleHash != 0 ||
 		m_dwpVehicleKickPrevent1 != 0 ||m_dwpVehicleKickPrevent2 != 0 ||
@@ -1281,9 +1266,9 @@ bool global::initVehiclePtr(HMODULE base)
 bool global::findMoneyPtr(HMODULE base)
 {
 	float buffer;
-	DWORD_PTR dwpTemp = getGlobal(2507700, base);
+	DWORD_PTR dwpTemp = getGlobal(2513247, base);
 	g_pMemMan->readMem<float>(dwpTemp, &buffer);
-	m_dwpMoneyCall = getGlobal(84 * (DWORD)buffer + 4263878, base);
+	m_dwpMoneyCall = getGlobal(85 * (DWORD)buffer + 4263954 + 69, base);
 	return true;
 }
 
