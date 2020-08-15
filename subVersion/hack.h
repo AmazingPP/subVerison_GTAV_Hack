@@ -131,7 +131,6 @@ class hack : public trainer
 		void	muzzleVelocity(feat* feature);
 		void	vehicleDeformation(feat* feature);
 		void	vehicleUpShift(feat* feature);
-		void	batchSpread(feat* feature);
 		void	vehicleSuspensionForce(feat* feature);
 		void	vehicleDownShift(feat* feature);
 		void	vehicleMass(feat* feature);

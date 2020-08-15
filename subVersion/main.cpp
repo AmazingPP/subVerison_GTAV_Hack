@@ -101,8 +101,8 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	//addFeature(0, -1, "杀死所有NPC", feat_btn, &hack::killAllNpc, -1.f);
 	g_iFeature[FEATURE_P_ANTINPC]			= g_pSettings->addFeature(0, -1, "反NPC", feat_toggle, "antiNpc");
 	g_iFeature[FEATURE_P_NPC_IGNORE]		= g_pSettings->addFeature(0, -1, "NPC无视玩家", feat_toggle, "npcIgnore");
-	g_iFeature[FEATURE_P_RUNSPD]			= g_pSettings->addFeature(0, -1, "奔跑速度", feat_slider, "runSpd", 1.f, 5.f);
-	g_iFeature[FEATURE_P_SWIMSPD]			= g_pSettings->addFeature(0, -1, "游泳速度", feat_slider, "swimSpd", 1.f, 5.f);
+	//g_iFeature[FEATURE_P_RUNSPD]			= g_pSettings->addFeature(0, -1, "奔跑速度", feat_slider, "runSpd", 1.f, 5.f);
+	//g_iFeature[FEATURE_P_SWIMSPD]			= g_pSettings->addFeature(0, -1, "游泳速度", feat_slider, "swimSpd", 1.f, 5.f);
 	g_iFeature[FEATURE_P_SUPER_PUNCH]		= g_pSettings->addFeature(0, -1, "近战击退倍数", feat_slider, "superPunch", 0.f, 1000.f, (float)1.f / 10.f);
 	g_iFeature[FEATURE_P_SUPERJUMP]			= g_pSettings->addFeature(0, -1, "超级跳跃", feat_toggle, "superJump");
 	g_iFeature[FEATURE_P_EXPLOSIVEMELEE]	= g_pSettings->addFeature(0, -1, "爆炸近战", feat_toggle, "explMelee");
@@ -111,7 +111,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_P_WATER_PROOF]		= g_pSettings->addFeature(0, -1, "水下行走", feat_toggle, "waterProof");
 	g_iFeature[FEATURE_P_STAMINA]			= g_pSettings->addFeature(0, -1, "无限耐力", feat_toggle, "infStam");
 
-	g_iFeature[FEATURE_W_FILL_ALL_AMMO]		= addFeature(1, -1, "补满所有武器弹药", feat_btn, &hack::fillAllAmmo, -1.f);
+	//g_iFeature[FEATURE_W_FILL_ALL_AMMO]		= addFeature(1, -1, "补满所有武器弹药", feat_btn, &hack::fillAllAmmo, -1.f);
 	g_iFeature[FEATURE_W_FILL_AMMO]			= addFeature(1, -1, "补满当前武器弹药", feat_btn, &hack::fillAmmo, -1.f);
 	g_iFeature[FEATURE_W_SPREAD]			= g_pSettings->addFeature(1, -1, "无扩散", feat_toggle, "noSpread");	
 	g_iFeature[FEATURE_W_RECOIL]			= g_pSettings->addFeature(1, -1, "无后座", feat_toggle, "noRecoil");	
@@ -159,7 +159,6 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_W_EXPLOSIVEAMMO]		= g_pSettings->addFeature(1, -1, "爆炸子弹", feat_toggle, "explAmmo");
 	g_iFeature[FEATURE_W_FIREAMMO]			= g_pSettings->addFeature(1, -1, "燃烧子弹", feat_toggle, "fireAmmo");
 	g_iFeature[FEATURE_W_BULLET_BATCH]		= g_pSettings->addFeature(1, -1, "批量子弹", feat_slider, "bulletBatch", 1.f, 10.f, (float) 1.f / 9.f);
-	g_iFeature[FEATURE_W_BATCH_SPREAD]		= g_pSettings->addFeature(1, -1, "批量传播", feat_slider, "batchSpread", 0.f, 0.12f);
 	g_iFeature[FEATURE_W_MUZZLE_VELOCITY]	= g_pSettings->addFeature(1, -1, "初速", feat_slider, "muzzleVelo", 1.f, 10.f);
 
 	g_iFeature[FEATURE_V_TRUEGOD]			= g_pSettings->addFeature(2, -1, "无敌", feat_toggle, "vehTrueGodMode");
@@ -517,7 +516,6 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->weaponForceOnVehicle(g_pSettings->getFeature(g_iFeature[FEATURE_W_FORCE_ON_VEHICLE]));
 				g_pHack->weaponForceOnHeli(g_pSettings->getFeature(g_iFeature[FEATURE_W_FORCE_ON_HELI]));
 				g_pHack->bulletBatch(g_pSettings->getFeature(g_iFeature[FEATURE_W_BULLET_BATCH]));
-				g_pHack->batchSpread(g_pSettings->getFeature(g_iFeature[FEATURE_W_BATCH_SPREAD]));
 				g_pHack->muzzleVelocity(g_pSettings->getFeature(g_iFeature[FEATURE_W_MUZZLE_VELOCITY]));
 				g_pHack->infAmmo(g_pSettings->getFeature(g_iFeature[FEATURE_W_AMMO]));
 				g_pHack->noReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_NORELOAD]));

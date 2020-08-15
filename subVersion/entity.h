@@ -323,8 +323,7 @@ class weapon
 						m_fPenetration,
 						m_fForceOnPed,
 						m_fForceOnVehicle,
-						m_fForceOnHeli,
-						m_fBatchSpread;
+						m_fForceOnHeli;
 		};
 
 		weaponData	m_weapDataRestore,//the original values will be stored here.
@@ -369,8 +368,6 @@ class weapon
 		void	setImpactExplosion(DWORD  value);
 		void	getMuzzleVelocity();
 		void	setMuzzleVelocity(float value);
-		void	getBatchSpread();
-		void	setBatchSpread(float value);
 
 		DWORD_PTR	m_dwpAmmoInfo,
 					m_dwpCurAmmoBase;
