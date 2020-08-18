@@ -189,7 +189,7 @@ void settings::menuBack()
 
 
 
-int	settings::addFeatureCategory(std::string name)
+int	settings::addFeatureCategory(std::wstring name)
 {
 	if(m_nFeatureCat >= MAX_MENU_TABS)		//prevent buffer overflow
 		return -1;
@@ -200,7 +200,7 @@ int	settings::addFeatureCategory(std::string name)
 	return m_nFeatureCat - 1;
 }
 
-int		settings::addFeature(int cat, int parent, std::string name, featType type)
+int		settings::addFeature(int cat, int parent, std::wstring name, featType type)
 {
 	if(	m_nFeature >= MAX_MENU_FEATURES ||																//buffer overflow
 		(parent < 0 && m_pFeatureCat[cat] == nullptr) ||												//invalid cat
@@ -234,7 +234,7 @@ int		settings::addFeature(int cat, int parent, std::string name, featType type)
 	return m_nFeature - 1;
 }
 
-int		settings::addFeature(int cat, int parent, std::string name, featType type, int index, float arg)
+int		settings::addFeature(int cat, int parent, std::wstring name, featType type, int index, float arg)
 {
 	int id = this->addFeature(cat, parent, name, type);
 	if (id < 0)
@@ -245,7 +245,7 @@ int		settings::addFeature(int cat, int parent, std::string name, featType type, 
 	return id;
 }
 
-int		settings::addFeature(int cat, int parent, std::string name, featType type, std::string iniKey)
+int		settings::addFeature(int cat, int parent, std::wstring name, featType type, std::string iniKey)
 {
 	int id = this->addFeature(cat, parent, name, type);
 	if(id < 0)
@@ -256,7 +256,7 @@ int		settings::addFeature(int cat, int parent, std::string name, featType type, 
 	return id;
 }
 
-int		settings::addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, float min, float max)
+int		settings::addFeature(int cat, int parent, std::wstring name, featType type, std::string iniKey, float min, float max)
 {
 	int id = this->addFeature(cat, parent, name, type, iniKey);
 	if(id < 0)
@@ -274,7 +274,7 @@ int		settings::addFeature(int cat, int parent, std::string name, featType type, 
 	return id;
 }
 
-int		settings::addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, float min, float max, float mod)
+int		settings::addFeature(int cat, int parent, std::wstring name, featType type, std::string iniKey, float min, float max, float mod)
 {
 	int id = this->addFeature(cat, parent, name, type, iniKey, min, max);
 	if(id < 0)
@@ -283,7 +283,7 @@ int		settings::addFeature(int cat, int parent, std::string name, featType type, 
 	return id;
 }
 
-int		settings::addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, teleType tpType)
+int		settings::addFeature(int cat, int parent, std::wstring name, featType type, std::string iniKey, teleType tpType)
 {
 	if(tpType != tp_saved)
 		return -1;
@@ -293,12 +293,12 @@ int		settings::addFeature(int cat, int parent, std::string name, featType type, 
 	dynamic_cast<featTeleport*>(m_pFeature[id])->m_tpType		= tpType;
 	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.x		= m_iniParser.getValue<float>(iniKey + "_x", "Teleport");
 	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.y		= m_iniParser.getValue<float>(iniKey + "_y", "Teleport");
-	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.z		= -225.f;
-	dynamic_cast<featTeleport*>(m_pFeature[id])->m_szName		+= " | " + m_iniParser.getValue<std::string>(iniKey + "_name", "Teleport");
+	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.z		= m_iniParser.getValue<float>(iniKey + "_z", "Teleport");
+	dynamic_cast<featTeleport*>(m_pFeature[id])->m_szName		+= L" | " + StringToWString(m_iniParser.getValue<std::string>(iniKey + "_name", "Teleport"));
 	return id;
 }
 
-int		settings::addFeature(int cat, int parent, std::string name, featType type, teleType tpType)
+int		settings::addFeature(int cat, int parent, std::wstring name, featType type, teleType tpType)
 {
 	if(tpType == tp_saved)
 		return -1;
@@ -309,7 +309,7 @@ int		settings::addFeature(int cat, int parent, std::string name, featType type, 
 	return id;
 }
 
-int		settings::addFeature(int cat, int parent, std::string name, featType type, teleType tpType, float x, float y, float z)
+int		settings::addFeature(int cat, int parent, std::wstring name, featType type, teleType tpType, float x, float y, float z)
 {
 	if(tpType == tp_saved)
 		return -1;
@@ -322,7 +322,7 @@ int		settings::addFeature(int cat, int parent, std::string name, featType type, 
 	return id;
 }
 
-int settings::updataFeature(int id, int cat, int parent, std::string name, featType type)
+int settings::updataFeature(int id, int cat, int parent, std::wstring name, featType type)
 {
 	if (id >= MAX_MENU_FEATURES ||																//buffer overflow
 		(parent < 0 && m_pFeatureCat[cat] == nullptr) ||												//invalid cat
@@ -337,7 +337,7 @@ int settings::updataFeature(int id, int cat, int parent, std::string name, featT
 	return id;
 }
 
-int settings::updataFeature(int id, int cat, int parent, std::string name, featType type, teleType tpType, float x, float y, float z)
+int settings::updataFeature(int id, int cat, int parent, std::wstring name, featType type, teleType tpType, float x, float y, float z)
 {
 	if (tpType == tp_saved)
 		return -1;
@@ -472,7 +472,7 @@ void	feat::toggle()
 	if(m_bOn)
 		m_bRestored = false;
 	if(m_szIniKey != "")
-		g_pSettings->m_iniParser.setValue<bool>((std::string) m_szIniKey, (int) m_bOn, "FeatureToggle");
+		g_pSettings->m_iniParser.setValue<bool>(m_szIniKey, (int) m_bOn, "FeatureToggle");
 	return;
 }
 
@@ -497,7 +497,7 @@ void	featSlider::inc()
 		m_fValue = v;
 	else
 		m_fValue = m_fMax;
-	g_pSettings->m_iniParser.setValue<float>((std::string) m_szIniKey, m_fValue, "FeatureValue");
+	g_pSettings->m_iniParser.setValue<float>(m_szIniKey, m_fValue, "FeatureValue");
 	return;
 }
 
@@ -508,7 +508,7 @@ void	featSlider::dec()
 		m_fValue = v;
 	else
 		m_fValue = m_fMin;
-	g_pSettings->m_iniParser.setValue<float>((std::string) m_szIniKey, m_fValue, "FeatureValue");
+	g_pSettings->m_iniParser.setValue<float>(m_szIniKey, m_fValue, "FeatureValue");
 	return;
 }
 
@@ -563,8 +563,14 @@ void iniParser::read()
 {
 	std::ifstream file;
 	file.open(m_szFile, std::ios::in);
-	if(!file.is_open())
+	if (!file.is_open())
+	{
+		MessageBoxW(nullptr, L"未找到settings.ini配置文件，请将压缩包中所有文件解压到同一目录!", L"subVersion加载失败", MB_OK | MB_ICONERROR);
+		g_bKillAttach = true;
+		killProgram();
 		return;
+	}
+
 
 	std::string szLine;
 	int			iSection = -1;

@@ -66,10 +66,10 @@ class D3D9Render
 					y = 0;		//screen height
 		} m_screen;
 
-		std::string		m_szWindowTitle;
+		std::wstring		m_szWindowTitle;
 		bool			m_bMBShowing;
-		std::string		m_sTitle;
-		std::string		m_sDetail;
+		std::wstring		m_sTitle;
+		std::wstring		m_sDetail;
 
 				D3D9Render	();
 				~D3D9Render	();
@@ -79,13 +79,13 @@ class D3D9Render
 		bool	createFont	(char *font, int size, bool bold, bool italic);
 		void	releaseFont	();
 		bool	getViewport	();
-		void	showMessageBox(std::string title, std::string detail);
+		void	showMessageBox(std::wstring title, std::wstring detail);
 
 		void	drawBox			(int x, int y, int w, int h, D3DCOLOR color);
 		void	drawBoxInline	(int x, int y, int w, int h, int size, D3DCOLOR color);
 		void	drawBoxBorder	(int x, int y, int w, int h, int borderSize, D3DCOLOR color, D3DCOLOR borderColor);
-		void	drawText		(std::string str, int x, int y, int font, D3DCOLOR color);
-		void	drawText		(std::string str, int x, int y, int w, int h, int font, D3DCOLOR color, DWORD flags = NULL);
+		void	drawText		(std::wstring str, int x, int y, int font, D3DCOLOR color);
+		void	drawText		(std::wstring str, int x, int y, int w, int h, int font, D3DCOLOR color, DWORD flags = NULL);
 	protected:
 
 		LPDIRECT3D9				m_pD3d;			// the pointer to Direct3D interface

@@ -56,7 +56,7 @@ class featCat
 		int			m_iId,
 					m_iActiveFeatureRet = 0,
 					m_iDisplayOffsetRet = 0;
-		std::string	m_szName;
+		std::wstring	m_szName;
 };
 
 enum featType	{ feat_btn, feat_toggle, feat_slider, feat_teleport, feat_parent };
@@ -69,7 +69,7 @@ class feat
 					m_iCat,
 					m_iParent;
 		featType	m_type;
-		std::string	m_szName;
+		std::wstring	m_szName;
 		std::string	m_szIniKey;
 		bool		m_bOn		= false,
 					m_bRestored	= true;
@@ -208,23 +208,23 @@ class settings
 		void		menuTabLeft();	//prev tab
 		void		menuTabRight();	//next tab
 
-		int			addFeatureCategory(std::string name);
+		int			addFeatureCategory(std::wstring name);
 		int			getFeatureCategoryCount();
 		featCat*	getFeatureCategory(int id);
 		int			setActiveCat(int);
 		int			getActiveCat();
 		bool		fillFeatureCurBuffer(int i, BYTE flags);
 
-		int			addFeature(int cat, int parent, std::string name, featType type);
-		int			addFeature(int cat, int parent, std::string name, featType type, std::string iniKey);
-		int			addFeature(int cat, int parent, std::string name, featType type, int index,float arg);
-		int			addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, float min, float max);
-		int			addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, float min, float max, float mod);
-		int			addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, teleType tpType);
-		int			addFeature(int cat, int parent, std::string name, featType type, teleType tpType);
-		int			addFeature(int cat, int parent, std::string name, featType type, teleType tpType, float x, float y, float z);
-		int			updataFeature(int id, int cat, int parent, std::string name, featType type);
-		int			updataFeature(int id, int cat, int parent, std::string name, featType type, teleType tpType, float x, float y, float z);
+		int			addFeature(int cat, int parent, std::wstring name, featType type);
+		int			addFeature(int cat, int parent, std::wstring name, featType type, std::string iniKey);
+		int			addFeature(int cat, int parent, std::wstring name, featType type, int index,float arg);
+		int			addFeature(int cat, int parent, std::wstring name, featType type, std::string iniKey, float min, float max);
+		int			addFeature(int cat, int parent, std::wstring name, featType type, std::string iniKey, float min, float max, float mod);
+		int			addFeature(int cat, int parent, std::wstring name, featType type, std::string iniKey, teleType tpType);
+		int			addFeature(int cat, int parent, std::wstring name, featType type, teleType tpType);
+		int			addFeature(int cat, int parent, std::wstring name, featType type, teleType tpType, float x, float y, float z);
+		int			updataFeature(int id, int cat, int parent, std::wstring name, featType type);
+		int			updataFeature(int id, int cat, int parent, std::wstring name, featType type, teleType tpType, float x, float y, float z);
 		int			getFeatureCurCount();
 		feat*		getFeatureCur(int i);
 		int			getFeatureCount();

@@ -223,7 +223,7 @@ bool	D3D9Render::getViewport()
 	return 1;
 }
 
-void	D3D9Render::showMessageBox(std::string title,std::string detail)
+void	D3D9Render::showMessageBox(std::wstring title,std::wstring detail)
 {
 	this->m_sTitle = title;
 	this->m_sDetail = detail;
@@ -276,23 +276,23 @@ void	D3D9Render::drawBoxBorder(int x, int y, int w, int h, int borderSize, D3DCO
 	this->drawBox(x + borderSize, y + borderSize, w - (borderSize * 2), h - (borderSize * 2), color);
 }
 
-void	D3D9Render::drawText(std::string str, int x, int y, int font, D3DCOLOR color)
+void	D3D9Render::drawText(std::wstring str, int x, int y, int font, D3DCOLOR color)
 {
-	LPCSTR	pszStr	= str.c_str();
+	LPCWSTR	pszStr	= str.c_str();
 	RECT	pos;
 	pos.left	= x;
 	pos.top		= y;
-	m_pFont[font]->DrawTextA(nullptr, pszStr, (int) strlen(pszStr), &pos, DT_NOCLIP, color);
+	m_pFont[font]->DrawTextW(nullptr, pszStr, (int) lstrlenW(pszStr), &pos, DT_NOCLIP, color);
 }
 
 //void	drawText		(std::string str, float x, float y, float w, float h, int font, D3DCOLOR color, DWORD flags = NULL)
-void	D3D9Render::drawText(std::string str, int x, int y, int w, int h, int font, D3DCOLOR color, DWORD flags)
+void	D3D9Render::drawText(std::wstring str, int x, int y, int w, int h, int font, D3DCOLOR color, DWORD flags)
 {
-	LPCSTR	pszStr	= str.c_str();
+	LPCWSTR	pszStr	= str.c_str();
 	RECT	pos;
 	pos.left	= x;
 	pos.right	= x + w;
 	pos.top		= y;
 	pos.bottom	= y + h;
-	m_pFont[font]->DrawTextA(nullptr, pszStr, (int) strlen(pszStr), &pos, flags | DT_NOCLIP, color);
+	m_pFont[font]->DrawTextW(nullptr, pszStr, (int) lstrlenW(pszStr), &pos, flags | DT_NOCLIP, color);
 }

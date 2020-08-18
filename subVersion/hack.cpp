@@ -52,7 +52,9 @@ bool	trainer::checkKeyState(int key)
 */
 
 
-hack::hack() {}
+hack::hack() {
+	m_explosion = ImpactExplosionEnum::DefaultBullets;
+}
 
 hack::~hack() {}
 
@@ -135,8 +137,10 @@ void hack::checkKeys()
 		m_player.getPos();
 		tp->m_v3Pos.x = m_player.m_v3Pos.x;
 		tp->m_v3Pos.y = m_player.m_v3Pos.y;
+		tp->m_v3Pos.z = m_player.m_v3Pos.z;
 		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_x", m_player.m_v3Pos.x, "Teleport");
 		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_y", m_player.m_v3Pos.y, "Teleport");
+		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_z", m_player.m_v3Pos.y, "Teleport");
 		return;
 	}
 	if (checkKeyState(g_pSettings->m_iKeys[keyMenuSelect]))
@@ -1052,8 +1056,8 @@ void hack::consumeStatQueue()
 				if (!m_dStat.empty())
 				{
 					g_pD3D9Render->m_bMBShowing = true;
-					g_pD3D9Render->m_sTitle = "正在处理队列";
-					g_pD3D9Render->m_sDetail = "剩余" + std::to_string(m_dStat.size()) + "个待处理";
+					g_pD3D9Render->m_sTitle = L"正在处理队列";
+					g_pD3D9Render->m_sDetail = L"剩余" + std::to_wstring(m_dStat.size()) + L"个待处理";
 					if (m_global.initStatPtr(m_hModule))
 					{
 						m_global.getStatHash();
@@ -1102,7 +1106,7 @@ void hack::renderPlayerList(int parent,int playerList[32])
 {
 	for (size_t i = 0; i < 32; i++)
 	{
-		g_pSettings->updataFeature(playerList[i], -1, parent, "玩家" + std::to_string(i), feat_teleport,tp_static, -1336.f, -3044.f, -225.f);
+		g_pSettings->updataFeature(playerList[i], -1, parent, L"玩家" + std::to_wstring(i), feat_teleport,tp_static, -1336.f, -3044.f, -225.f);
 	}
 }
 
@@ -1343,9 +1347,9 @@ void hack::weaponBulletEdit(feat* feature)
 		}
 		return;
 	}
-	if (m_weapon.m_weapDataCur.m_dwImpactType != 0 && m_weapon.m_weapDataCur.m_dwImpactType != ImpactTypeEnum::Fists)
+	if (m_weapon.m_weapDataCur.m_dwImpactType != ImpactTypeEnum::Explosives)
 		m_weapon.setImpactType(ImpactTypeEnum::Explosives);
-	if (m_weapon.m_weapDataCur.m_dwImpactType != 0 && m_explosion != 0)
+	if (m_weapon.m_weapDataCur.m_dwImpactExplosion !=  m_explosion)
 		m_weapon.setImpactExplosion(m_explosion);
 	return;
 }
@@ -1430,8 +1434,9 @@ void hack::godMode(feat* feature)
 
 void hack::frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featFireAmmo, feat* featExplosiveAmmo)
 {
+	if (!featSuperJump->m_bOn && !featExplosiveMelee->m_bOn && !featFireAmmo->m_bOn && !featExplosiveAmmo->m_bOn)
+		return;
 	DWORD dwValue = 0;
-	m_player.getFrameFlags();
 	if (featSuperJump->m_bOn)
 		dwValue += 64;
 	if (featExplosiveMelee->m_bOn)
@@ -1440,8 +1445,7 @@ void hack::frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featF
 		dwValue += 16;
 	if (featExplosiveAmmo->m_bOn)
 		dwValue += 8;
-	if (m_player.m_dwFrameFlags != dwValue)
-		m_player.setFrameFlags(dwValue);
+	m_player.setFrameFlags(dwValue);
 	return;
 }
 
@@ -1474,7 +1478,7 @@ void hack::infAmmo(feat* feature)
 			g_pMemMan->readMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_AMMO, cur, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
 			BYTE	value[3] = { 0x41, 0x2B, 0xD1 };
 			if (cur[0] != value[0])
-				g_pMemMan->writeMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_AMMO, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
+				g_pMemMan->writeMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_AMMO, value , sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
 			feature->m_bRestored = true;
 		}
 		return;

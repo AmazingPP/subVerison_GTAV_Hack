@@ -37,6 +37,7 @@
 #include <thread>
 #include <deque>
 #include <cmath>
+#include <tchar.h>
 
 #include <Dwmapi.h>
 #pragma comment(lib,"Dwmapi.lib")
@@ -56,7 +57,6 @@
 #include "hack.h"
 #include "CallbackProxy.h"
 #include "VehiclePreview.h"
-
 
 //offset from WORLD
 #define OFFSET_PLAYER					0x08			//playerbase
@@ -78,8 +78,8 @@
 #define OFFSET_NET_PLAYER_INFO					0xA8
 #define OFFSET_PLAYER_INFO						0x10C8			//playerInfo struct
 #define OFFSET_PLAYER_INFO_NAME					0x84
-#define OFFSET_PLAYER_INFO_SWIM_SPD				0x148			//swim speed; def 1; float
-#define	OFFSET_PLAYER_INFO_RUN_SPD				0x14C			//run speed; def 1; float
+#define OFFSET_PLAYER_INFO_SWIM_SPD				0x150			//swim speed; def 1; float
+#define	OFFSET_PLAYER_INFO_RUN_SPD				0xCD0			//run speed; def 1; float
 #define OFFSET_PLAYER_INFO_FRAMEFLAGS			0x1F9			//frame flags; DWORD
 #define OFFSET_PLAYER_INFO_WANTED_CAN_CHANGE	0x71C			//fWantedCanChange
 #define OFFSET_PLAYER_INFO_NPC_IGNORE			0x850			//npc ignore; DWORD; everyone = 0x450000;
@@ -176,7 +176,7 @@
 #define OFFSET_TUNABLE_ANTI_IDLE_KICK2			0x2C8
 #define OFFSET_TUNABLE_ANTI_IDLE_KICK3			0x2D0
 #define OFFSET_TUNABLE_ANTI_IDLE_KICK4			0x2D8
-#define OFFSET_TUNABLE_ORBITAL_CANNON_COOLDOWN	0x2C128			//OrbitalCannonCooldown;DWORD
+#define OFFSET_TUNABLE_ORBITAL_CANNON_COOLDOWN	0x2C188			//OrbitalCannonCooldown;DWORD
 #define OFFSET_TUNABLE_BUNKER_RESEARCH			0x29BB8			//UnlockAllBunkerResearch;DWORD
 
 
@@ -257,6 +257,15 @@
 #define FEATURE_T_ANTI_IDLE_KICK	0x40
 #define FEATURE_P_PLAYER_LIST		0x41
 #define FEATURE_P_MONERY_DROP		0x42
+
+static std::wstring StringToWString(const std::string& str) {
+	int num = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
+	wchar_t* wide = new wchar_t[num];
+	MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, wide, num);
+	std::wstring w_str(wide);
+	delete[] wide;
+	return w_str;
+}
 
 void	killProgram	();
 DWORD	strToVk(std::string str);
