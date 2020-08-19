@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<vector>
 
 struct VehiclePreview {
@@ -711,30 +711,30 @@ static std::vector<VehiclePreview> Trains{
 {L"油罐火车挂车","Tankercar","",""}
 };
 static std::vector<VehiclePreview> Trailer{
-{ "军用坦克", "Armytanker", "", "" },
-{ "军用拖车(空)", "Armytrailer", "", "" },
-{ "军用拖车(带挂车)", "Armytrailer2", "", "" },
-{ "干草捆挂车", "Baletrailer", "", "" },
-{ "船挂车", "Boattrailer", "", "" },
-{ "油罐挂车", "Docktrailer", "", "" },
-{ "平板挂车", "Freighttrailer", "", "" },
-{ "谷物挂车", "Graintrailer", "", "" },
-{ "房车挂车 (可乘坐)", "Proptrailer", "", "" },
-{ "耙子车头", "Raketrailer", "", "" },
-{ "油罐挂车 (RON)", "Tanker", "", "" },
-{ "油罐挂车 (无字)", "Tanker2", "", "" },
-{ "运车挂车 (空)", "Tr2", "", "" },
-{ "运船挂车 (带船)", "Tr3", "", "" },
-{ "运车挂车 (带车)", "Tr4", "", "" },
-{ "平板挂车", "Trailerlogs", "", "" },
-{ "挂车 (无箱)", "Trailers", "", "" },
-{ "挂车带箱 (Pibwasser)", "Trailers2", "", "" },
-{ "挂车带箱 (Big Goods)", "Trailers3", "", "" },
-{ "挂车带箱", "Trailers4", "", "" },
-{ "微型挂车", "Trailersmall", "", "" },
-{ "移动作战中心", "trailerlarge", "", "" },
-{ "平板拖车2", "Trflat", "", "" },
-{ "挂车厢 (Fame or Shame)", "Tvtrailer", "", "" }
+{L"军用坦克", "Armytanker", "", "" },
+{L"军用拖车(空)", "Armytrailer", "", "" },
+{L"军用拖车(带挂车)", "Armytrailer2", "", "" },
+{L"干草捆挂车", "Baletrailer", "", "" },
+{L"船挂车", "Boattrailer", "", "" },
+{L"油罐挂车", "Docktrailer", "", "" },
+{L"平板挂车", "Freighttrailer", "", "" },
+{L"谷物挂车", "Graintrailer", "", "" },
+{L"房车挂车 (可乘坐)", "Proptrailer", "", "" },
+{L"耙子车头", "Raketrailer", "", "" },
+{L"油罐挂车 (RON)", "Tanker", "", "" },
+{L"油罐挂车 (无字)", "Tanker2", "", "" },
+{L"运车挂车 (空)", "Tr2", "", "" },
+{L"运船挂车 (带船)", "Tr3", "", "" },
+{L"运车挂车 (带车)", "Tr4", "", "" },
+{L"平板挂车", "Trailerlogs", "", "" },
+{L"挂车 (无箱)", "Trailers", "", "" },
+{L"挂车带箱 (Pibwasser)", "Trailers2", "", "" },
+{L"挂车带箱 (Big Goods)", "Trailers3", "", "" },
+{L"挂车带箱", "Trailers4", "", "" },
+{L"微型挂车", "Trailersmall", "", "" },
+{L"移动作战中心", "trailerlarge", "", "" },
+{L"平板拖车2", "Trflat", "", "" },
+{L"挂车厢 (Fame or Shame)", "Tvtrailer", "", "" }
 };
 static std::vector<VehiclePreview> SUV{
 {L"悠游 行者 (CEO)","Baller6","",""},
