@@ -1002,7 +1002,7 @@ void hack::spawnVehicle(float* arg)
 			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 32, m_hModule), 1);
 			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 65, m_hModule), 1);
 
-			g_pMemMan->writeMem<int>(m_global.getGlobal(2459034 + 27 + 77, m_hModule), 0xF0400200);
+			g_pMemMan->writeMem<int>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 77, m_hModule), 0xF0400200);
 		}
 
 		m_global.setVehicleSpawn2(1);
