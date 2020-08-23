@@ -24,6 +24,7 @@
     <ClCompile Include="hack.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="memManager.cpp" />
+    <ClCompile Include="scriptGlobal.cpp" />
     <ClCompile Include="settings.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
@@ -34,7 +35,9 @@
     <ClInclude Include="entity.h" />
     <ClInclude Include="hack.h" />
     <ClInclude Include="memManager.h" />
+    <ClInclude Include="ptrHandler.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="scriptGlobal.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="vector.h" />

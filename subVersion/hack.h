@@ -76,7 +76,7 @@ class hack : public trainer
 		void	killAllNpc(float* arg);
 		void	renderPlayerList(int parent, int playerList[32]);
 		void	setImpactExplosion(float* arg);
-		void	fillAllAmmo(float* arg);
+		//void	fillAllAmmo(float* arg);
 		void	healVehicle(float* arg);
 		void	healPlayer(float* arg);
 		void	suicide(float* arg);

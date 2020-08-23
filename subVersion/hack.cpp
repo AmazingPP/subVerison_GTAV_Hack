@@ -18,6 +18,7 @@
 */
 
 #include "stdafx.h"
+#include "scriptGlobal.h"
 #include <string>
 
 /*
@@ -90,7 +91,7 @@ void hack::checkKeys()
 	}
 	if (checkKeyState(g_pSettings->m_iKeys[keyHotAmmo]))
 	{
-		g_pHack->fillAllAmmo(NULL);
+		g_pHack->fillAmmo();
 		return;
 	}
 
@@ -362,28 +363,28 @@ void hack::setImpactExplosion(float* arg)
 	this->m_explosion = (ImpactExplosionEnum)((DWORD)*arg);
 }
 
-void hack::fillAllAmmo(float* arg)
-{
-	for (size_t i = 0; i < 0x400; i++)
-	{
-		DWORD_PTR dwpWeapon, dwpAmmoInfo, dwpAmmoPtr1, dwpAmmoPtr2;
-		DWORD dwCurAmmo, dwMaxAmmo;
-		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpWeaponBase + i, &dwpWeapon);
-		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)dwpWeapon + OFFSET_WEAPON_AMMOINFO, &dwpAmmoInfo);
-
-		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)dwpAmmoInfo + OFFSET_WEAPON_AMMOINFO_CUR_1, &dwpAmmoPtr1);
-		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)dwpAmmoPtr1 + OFFSET_WEAPON_AMMOINFO_CUR_2, &dwpAmmoPtr2);
-		g_pMemMan->readMem<DWORD>((DWORD_PTR)dwpAmmoPtr2 + OFFSET_WEAPON_AMMOINFO_CURAMMO, &dwCurAmmo);
-		if (dwCurAmmo >= 0 && dwCurAmmo <= 9999)
-		{
-			g_pMemMan->readMem<DWORD>((DWORD_PTR)dwpAmmoInfo + OFFSET_WEAPON_AMMOINFO_MAX, &dwMaxAmmo);
-			if (dwMaxAmmo >= 20 && dwMaxAmmo <= 9999 && dwCurAmmo < dwMaxAmmo)
-			{
-				g_pMemMan->writeMem<DWORD>((DWORD_PTR)dwpAmmoPtr2 + OFFSET_WEAPON_AMMOINFO_CURAMMO, &dwMaxAmmo);
-			}
-		}
-	}
-}
+//void hack::fillAllAmmo(float* arg)
+//{
+//	for (size_t i = 0; i < 0x400; i++)
+//	{
+//		DWORD_PTR dwpWeapon, dwpAmmoInfo, dwpAmmoPtr1, dwpAmmoPtr2;
+//		DWORD dwCurAmmo, dwMaxAmmo;
+//		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpWeaponBase + i, &dwpWeapon);
+//		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)dwpWeapon + OFFSET_WEAPON_AMMOINFO, &dwpAmmoInfo);
+//
+//		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)dwpAmmoInfo + OFFSET_WEAPON_AMMOINFO_CUR_1, &dwpAmmoPtr1);
+//		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)dwpAmmoPtr1 + OFFSET_WEAPON_AMMOINFO_CUR_2, &dwpAmmoPtr2);
+//		g_pMemMan->readMem<DWORD>((DWORD_PTR)dwpAmmoPtr2 + OFFSET_WEAPON_AMMOINFO_CURAMMO, &dwCurAmmo);
+//		if (dwCurAmmo >= 0 && dwCurAmmo <= 9999)
+//		{
+//			g_pMemMan->readMem<DWORD>((DWORD_PTR)dwpAmmoInfo + OFFSET_WEAPON_AMMOINFO_MAX, &dwMaxAmmo);
+//			if (dwMaxAmmo >= 20 && dwMaxAmmo <= 9999 && dwCurAmmo < dwMaxAmmo)
+//			{
+//				g_pMemMan->writeMem<DWORD>((DWORD_PTR)dwpAmmoPtr2 + OFFSET_WEAPON_AMMOINFO_CURAMMO, &dwMaxAmmo);
+//			}
+//		}
+//	}
+//}
 
 void hack::healVehicle(float* arg)
 {
@@ -918,15 +919,11 @@ void hack::unlockClothes(float* arg)
 
 void hack::intoPV(float* arg)
 {
-	if (m_global.initIntoPVPtr(m_hModule))
+	scriptGlobal(2409287).at(8).as<int>() = 1;
+	Sleep(500);
+	if (scriptGlobal(2409287).at(8).as<int>().value() == 1)
 	{
-		m_global.setIntoPersonalVehicle(1);
-		Sleep(500);
-		m_global.getIntoPersonalVehicle();
-		if (m_global.m_dwIntoPersonalVehicle == 1)
-		{
-			m_global.setIntoPersonalVehicle(0);
-		}
+		scriptGlobal(2409287).at(8).as<int>() = 0;
 	}
 }
 

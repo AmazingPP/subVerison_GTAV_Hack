@@ -34,7 +34,7 @@ class memManager
 		void	initPtr();
 
 		template <typename rT>
-		void	readMem(DWORD_PTR address, rT* output, DWORD size = NULL, DWORD prot = NULL)
+		inline void	readMem(DWORD_PTR address, rT* output, DWORD size = NULL, DWORD prot = NULL)
 		{
 			size	= (size == NULL) ? sizeof(rT) : size;
 			ReadProcessMemory(m_hProc, (LPVOID) address, output, size, NULL);
@@ -42,7 +42,7 @@ class memManager
 		}
 
 		template <typename wT>
-		void	writeMem(DWORD_PTR address, wT* value , DWORD size = NULL, DWORD prot = NULL)
+		inline void	writeMem(DWORD_PTR address, wT* value , DWORD size = NULL, DWORD prot = NULL)
 		{
 			size	= (size == NULL) ? sizeof(wT) : size;
 			WriteProcessMemory(m_hProc, (LPVOID) address, value, size, NULL);
@@ -50,7 +50,7 @@ class memManager
 		}
 
 		template <typename wT>
-		void	writeMem(DWORD_PTR address, wT value, DWORD size = NULL, DWORD prot = NULL)
+		inline void	writeMem(DWORD_PTR address, wT value, DWORD size = NULL, DWORD prot = NULL)
 		{
 			size = (size == NULL) ? sizeof(wT) : size;
 			WriteProcessMemory(m_hProc, (LPVOID)address, &value, size, NULL);

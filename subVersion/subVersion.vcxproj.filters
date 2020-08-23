@@ -36,6 +36,9 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="scriptGlobal.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3D9Render.h">
@@ -69,6 +72,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="VehiclePreview.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="scriptGlobal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ptrHandler.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

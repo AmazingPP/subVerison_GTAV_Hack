@@ -187,8 +187,9 @@
 #define OFFSET_PED_INTERFACE_PED_LIST		0x100
 #define OFFSET_PED_INTERFACE_CUR_PEDS		0x110
 
-//global offsets
+//globals
 #define OFFSET_GLOBAL_VEHICLE_HASH		2460715
+#define OFFSET_GLOBAL_MERRYWEATHER		2537071
 
 
 //feature indexing
