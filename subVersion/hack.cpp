@@ -912,7 +912,6 @@ void hack::unlockClothes(float* arg)
 	}
 	for (size_t i = 0; i <= 31; i++)
 	{
-
 		dStatPushBack(string_to_hash("ADMIN_CLOTHES_GV_BS_" + std::to_string(i)), -1);
 	}
 }
@@ -976,30 +975,30 @@ void hack::spawnVehicle(float* arg)
 		m_global.setVehiclePosZ(-255);
 		if (true)
 		{
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 10, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 11, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 12, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 13, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 14, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 15, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 16, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 17, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 18, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 19, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 20, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 10, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 11, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 12, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 13, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 14, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 15, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 16, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 17, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 18, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 19, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 20, m_hModule), 1);
 
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 21, m_hModule), 4);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 22, m_hModule), 3);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 23, m_hModule), 3);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 24, m_hModule), 57);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 25, m_hModule), 4);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 26, m_hModule), 5);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 28, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 30, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 32, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 65, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 21, m_hModule), 4);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 22, m_hModule), 3);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 23, m_hModule), 3);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 24, m_hModule), 57);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 25, m_hModule), 4);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 26, m_hModule), 5);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 28, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 30, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 32, m_hModule), 1);
+			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 65, m_hModule), 1);
 
-			g_pMemMan->writeMem<int>(m_global.getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 77, m_hModule), 0xF0400200);
+			g_pMemMan->writeMem<int>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 77, m_hModule), 0xF0400200);
 		}
 
 		m_global.setVehicleSpawn2(1);
@@ -1040,6 +1039,11 @@ void hack::selfDropMoney(feat* feature)
 void hack::dStatPushBack(unsigned int hash, int value)
 {
 	this->m_dStat.push_back(std::pair<unsigned int, int>(hash, value));
+}
+
+void hack::callMerryweather(std::ptrdiff_t index)
+{
+	scriptGlobal(GLOBAL_MERRYWEATHER).at(index).as<int>() = 1;
 }
 
 void hack::consumeStatQueue()
@@ -2082,6 +2086,36 @@ void hack::tunableAntiIdleKick(feat* feature)
 	if (m_tunable.m_dwAntiIdleKick4 != 2000000000)
 		m_tunable.setAntiIdleKick4(2000000000);
 	return;
+}
+
+void hack::ammoDrop(float* arg)
+{
+	callMerryweather(833);
+}
+
+void hack::miniGunDrop(float* arg)
+{
+	callMerryweather(843);
+}
+
+void hack::boatTaxi(float* arg)
+{
+	callMerryweather(834);
+}
+
+void hack::heliTaxi(float* arg)
+{
+	callMerryweather(835);
+}
+
+void hack::backupHeli(float* arg)
+{
+	callMerryweather(4389);
+}
+
+void hack::airstrike(float* arg)
+{
+	callMerryweather(4390);
 }
 
 void hack::about(float* arg)

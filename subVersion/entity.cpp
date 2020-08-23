@@ -1244,16 +1244,16 @@ bool global::initIntoPVPtr(HMODULE base)
 
 bool global::initVehiclePtr(HMODULE base)
 {
-	m_dwpVehicleSpawn1 = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 2, base);
-	m_dwpVehicleSpawn2 = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 5, base);
-	m_dwpVehicleHash = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 66, base);
-	m_dwpVehicleKickPrevent1 = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 121, base);
-	m_dwpVehicleKickPrevent2 = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 122, base);
-	m_dwpVehicleX = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 7 + 0, base);
-	m_dwpVehicleY = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 7 + 1, base);
-	m_dwpVehicleZ = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 7 + 2, base);
-	m_dwpPrimaryColor = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 5, base);
-	m_dwpSecondaryColor = getGlobal(OFFSET_GLOBAL_VEHICLE_HASH + 27 + 6, base);
+	m_dwpVehicleSpawn1 = getGlobal(GLOBAL_VEHICLE_HASH + 2, base);
+	m_dwpVehicleSpawn2 = getGlobal(GLOBAL_VEHICLE_HASH + 5, base);
+	m_dwpVehicleHash = getGlobal(GLOBAL_VEHICLE_HASH + 27 + 66, base);
+	m_dwpVehicleKickPrevent1 = getGlobal(GLOBAL_VEHICLE_HASH + 121, base);
+	m_dwpVehicleKickPrevent2 = getGlobal(GLOBAL_VEHICLE_HASH + 122, base);
+	m_dwpVehicleX = getGlobal(GLOBAL_VEHICLE_HASH + 7 + 0, base);
+	m_dwpVehicleY = getGlobal(GLOBAL_VEHICLE_HASH + 7 + 1, base);
+	m_dwpVehicleZ = getGlobal(GLOBAL_VEHICLE_HASH + 7 + 2, base);
+	m_dwpPrimaryColor = getGlobal(GLOBAL_VEHICLE_HASH + 27 + 5, base);
+	m_dwpSecondaryColor = getGlobal(GLOBAL_VEHICLE_HASH + 27 + 6, base);
 
 	return m_dwpVehicleSpawn1 != 0 || m_dwpVehicleSpawn2 != 0 || m_dwpVehicleHash != 0 ||
 		m_dwpVehicleKickPrevent1 != 0 || m_dwpVehicleKickPrevent2 != 0 ||
