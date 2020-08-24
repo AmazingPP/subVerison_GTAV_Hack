@@ -1046,6 +1046,11 @@ void hack::callMerryweather(std::ptrdiff_t index)
 	scriptGlobal(GLOBAL_MERRYWEATHER).at(index).as<int>() = 1;
 }
 
+int hack::getPlayerId()
+{
+	return scriptGlobal(2419327).at(1).as<int>().value();
+}
+
 void hack::consumeStatQueue()
 {
 	if (!m_bInit)
@@ -2088,6 +2093,16 @@ void hack::tunableAntiIdleKick(feat* feature)
 	return;
 }
 
+void hack::instantBullShark(float* arg)
+{
+	scriptGlobal(2439138).at(3895).as<int>() = 5;
+}
+
+void hack::bullSharkDrop(float* arg)
+{
+	callMerryweather(841);
+}
+
 void hack::ammoDrop(float* arg)
 {
 	callMerryweather(833);
@@ -2116,6 +2131,57 @@ void hack::backupHeli(float* arg)
 void hack::airstrike(float* arg)
 {
 	callMerryweather(4390);
+}
+
+void hack::antiRemoteBounty(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(70).as<int>() = 0;
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	if (scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(70).as<int>().value() != 1)
+		scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(70).as<int>() = 1;
+
+	return;
+}
+
+void hack::antiRemoteVehicleKick(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(63).as<int>() = 0;
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	if (scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(63).as<int>().value() != 1)
+		scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(63).as<int>() = 1;
+
+	return;
+}
+
+void hack::antiRemoteSetWantedLevel(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(524).as<int>() = 0;
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	if (scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(524).as<int>().value() != 1)
+		scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(524).as<int>() = 1;
+
+	return;
 }
 
 void hack::about(float* arg)

@@ -283,12 +283,14 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	addFeature(-1, unlock, L"解锁衣服", feat_btn, &hack::unlockClothes, -1.f);
 	g_iFeature[FEATURE_T_BUNKER_RESEARCH] = g_pSettings->addFeature(-1, unlock, L"解锁所有地堡研究(临时)", feat_toggle, "BunkerResearch");
 	int merryweather = g_pSettings->addFeature(-1, olService, L"梅利威瑟 >>", feat_parent);
+	addFeature(-1, merryweather, L"牛鲨睾酮空投", feat_btn, &hack::bullSharkDrop, -1.f);
 	addFeature(-1, merryweather, L"弹药空投", feat_btn, &hack::ammoDrop, -1.f);
 	addFeature(-1, merryweather, L"无畏战士空投", feat_btn, &hack::miniGunDrop, -1.f);
 	addFeature(-1, merryweather, L"船只接送", feat_btn, &hack::boatTaxi, -1.f);
 	addFeature(-1, merryweather, L"直升机接送", feat_btn, &hack::heliTaxi, -1.f);
 	addFeature(-1, merryweather, L"支援直升机", feat_btn, &hack::backupHeli, -1.f);
 	addFeature(-1, merryweather, L"空袭", feat_btn, &hack::airstrike, -1.f);
+	addFeature(-1, olService, L"使用牛鲨睾酮", feat_btn, &hack::instantBullShark, -1.f);
 	addFeature(4, -1, L"GitHub - 关于", feat_btn, &hack::about, 0.f);
 	addFeature(4, -1, L"检查更新", feat_btn, &hack::about, 1.f);
 

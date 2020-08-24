@@ -148,12 +148,17 @@ class hack : public trainer
 		void	tunableOrbitalCannonCooldown(feat* feature);
 		void	tunableBunkerResearch(feat* feature);
 		void	tunableAntiIdleKick(feat* feature);
+		void	instantBullShark(float* arg);
+		void	bullSharkDrop(float* arg);
 		void	ammoDrop(float* arg);
 		void	miniGunDrop(float* arg);
 		void	boatTaxi(float* arg);
 		void	heliTaxi(float* arg);
 		void	backupHeli(float* arg);
 		void	airstrike(float* arg);
+		void	antiRemoteBounty(feat* feature);
+		void	antiRemoteVehicleKick(feat* feature);
+		void	antiRemoteSetWantedLevel(feat* feature);
 		void	about(float* arg);
 
 	private:
@@ -175,6 +180,7 @@ class hack : public trainer
 		void	getObjective();
 		void	dStatPushBack(unsigned int hash, int value);
 		void	callMerryweather(std::ptrdiff_t index);
+		int		getPlayerId();
 
 		unsigned int string_to_hash(std::string input,std::string pre = "MP0_")
 		{
