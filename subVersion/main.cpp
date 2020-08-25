@@ -39,6 +39,7 @@ bool		g_bKillSwitch	= false;
 bool		g_bKillRender	= false;
 bool		g_bKillAttach	= false;
 bool		g_bKillHack		= false;
+bool		g_bKillKeys		= false;
 
 long		ADDRESS_WORLD		= 0;
 long		ADDRESS_BLIP		= 0;
@@ -62,6 +63,7 @@ int					addFeature( int cat,
 								float arg);
 DWORD __stdcall		threadAttach(LPVOID lpParam);
 DWORD __stdcall		threadRender(LPVOID lpParam);
+DWORD __stdcall		threadKeys	(LPVOID lpParam);
 DWORD __stdcall		threadHack	(LPVOID lpParam);
 
 int __stdcall WinMain(	HINSTANCE	hInstance,
@@ -351,6 +353,13 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 					NULL,
 					0,
 					nullptr);
+	Sleep(100);
+	CreateThread(	NULL,
+					0,
+					threadKeys,
+					NULL,
+					0,
+					nullptr);
 
 	MSG msg;
 	while(true)
@@ -435,9 +444,20 @@ DWORD __stdcall threadRender(LPVOID lpParam)
 	while(!g_bKillSwitch)
 	{
 		g_pD3D9Render->render();
-		Sleep(0x10);
+		Sleep(1);
 	}
 	g_bKillRender	= true;
+	return 0;
+}
+
+DWORD __stdcall	threadKeys(LPVOID lpParam)
+{
+	while (!g_bKillSwitch)
+	{
+		g_pHack->checkKeys();
+		Sleep(1);
+	}
+	g_bKillKeys		= true;
 	return 0;
 }
 
@@ -447,7 +467,6 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 	while(!g_bKillSwitch)
 	{
 		BYTE btInit	= g_pHack->initPointers();
-		g_pHack->checkKeys();
 
 		if(!(btInit & INITPTR_INVALID_WORLD) && !(btInit & INITPTR_INVALID_PLAYER))
 		{
@@ -560,7 +579,7 @@ void	killProgram()
 	g_pSettings->m_iniParser.write();	//save options
 
 	//make sure we shut down all threads before deleting the objects
-	while(!g_bKillAttach || !g_bKillRender || !g_bKillHack)
+	while(!g_bKillAttach || !g_bKillRender || !g_bKillHack || !g_bKillKeys)
 		Sleep(1);
 
 	//restore patched code

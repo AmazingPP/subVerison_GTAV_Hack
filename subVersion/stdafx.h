@@ -279,6 +279,7 @@ extern bool		g_bKillSwitch;
 extern bool		g_bKillRender;
 extern bool		g_bKillAttach;
 extern bool		g_bKillHack;
+extern bool		g_bKillKeys;
 //Addresses from GTAV.exe module
 extern long     ADDRESS_WORLD;				//48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07
 extern long		ADDRESS_BLIP;				//4C 8D 05 ? ? ? ? 0F B7 C1
