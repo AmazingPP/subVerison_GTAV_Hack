@@ -55,6 +55,7 @@ bool	trainer::checkKeyState(int key)
 
 hack::hack() {
 	m_explosion = ImpactExplosionEnum::DefaultBullets;
+	m_lastModel = 3999186071; //prop_cash_pile_01
 }
 
 hack::~hack() {}
@@ -181,8 +182,16 @@ BYTE hack::initPointers()
 		return INITPTR_INVALID_REPLAY_INTERFACE;
 	m_replayInterface.m_dwpPedInterface = m_dwpReplayInterfaceBase;
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpReplayInterfaceBase + OFFSET_REPLAY_PED_INTERFACE, &m_replayInterface.m_dwpPedInterface);
-	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_replayInterface.m_dwpPedInterface + OFFSET_PED_INTERFACE_PED_LIST, &m_replayInterface.m_dwpPedList);
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_replayInterface.m_dwpPedInterface + OFFSET_INTERFACE_LIST, &m_replayInterface.m_dwpPedList);
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpReplayInterfaceBase + OFFSET_REPLAY_PICKUP_INTERFACE, &m_replayInterface.m_dwpPickUpInterface);
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_replayInterface.m_dwpPickUpInterface + OFFSET_INTERFACE_LIST, &m_replayInterface.m_dwpPickUpList);
 
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_hModule + ADDRESS_UNK_MODEL, &m_dwpUnkModelBase);
+	if (m_dwpUnkModelBase == 0)
+		return INITPTR_INVALID_UNK_MODEL;
+	m_unkModel.m_dwpUnkModelBase = m_dwpUnkModelBase;
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpUnkModelBase + 0, &m_unkModel.m_dwpUnkModelStruct);
+	
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpWorldBase + OFFSET_PLAYER, &m_dwpPlayerBase);
 	if (m_dwpPlayerBase == 0)
 		return INITPTR_INVALID_PLAYER;
@@ -483,13 +492,13 @@ void hack::casinoStatBitSet2(float* arg)
 		dStatPushBack(string_to_hash("H3OPT_KEYLEVELS"), 2);
 		break;
 	case 2:
-		dStatPushBack(string_to_hash("H3OPT_CREWWEAP"), 5);
+		dStatPushBack(string_to_hash("H3OPT_CREWWEAP"), 6);
 		break;
 	case 3:
-		dStatPushBack(string_to_hash("H3OPT_CREWDRIVER"), 5);
+		dStatPushBack(string_to_hash("H3OPT_CREWDRIVER"), 6);
 		break;
 	case 4:
-		dStatPushBack(string_to_hash("H3OPT_CREWHACKER"), 4);
+		dStatPushBack(string_to_hash("H3OPT_CREWHACKER"), 5);
 		break;
 	case 5:
 		dStatPushBack(string_to_hash("H3OPT_VEHS"), 0);
@@ -512,14 +521,31 @@ void hack::casinoStatBitSet2(float* arg)
 	default:
 		dStatPushBack(string_to_hash("H3OPT_DISRUPTSHIP"), 3);
 		dStatPushBack(string_to_hash("H3OPT_KEYLEVELS"), 2);
-		dStatPushBack(string_to_hash("H3OPT_CREWWEAP"), 5);
-		dStatPushBack(string_to_hash("H3OPT_CREWDRIVER"), 5);
-		dStatPushBack(string_to_hash("H3OPT_CREWHACKER"), 4);
+		dStatPushBack(string_to_hash("H3OPT_CREWWEAP"), 6);
+		dStatPushBack(string_to_hash("H3OPT_CREWDRIVER"), 6);
+		dStatPushBack(string_to_hash("H3OPT_CREWHACKER"), 5);
 		dStatPushBack(string_to_hash("H3OPT_VEHS"), 3);
 		dStatPushBack(string_to_hash("H3OPT_WEAPS"), 0);
 		break;
 	}
 	dStatPushBack(string_to_hash("H3OPT_BITSET0"), -1);
+}
+
+void hack::casinoHeistCut(feat* feature, int playerIndex)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue = static_cast<featSlider*>(feature)->m_fValue;
+	if (getCasinoHeistCut(playerIndex) != (int)fValue)
+		setCasinoHeistCut(playerIndex, (int)fValue);
+
+	return;
 }
 
 void hack::unlockHeistCars(float* arg)
@@ -1016,19 +1042,13 @@ void hack::selfDropMoney(feat* feature)
 			{
 				if (feature->m_bOn)
 				{
-					if (m_global.initMoneyPtr(m_hModule))
-					{
-						m_player.getPos();
-						m_global.setMoneyObject(1);
-						m_global.setMoneyVal(2000);
-						m_global.setMoneyPosX(m_player.m_v3Pos.x);
-						m_global.setMoneyPosY(m_player.m_v3Pos.y);
-						m_global.setMoneyPosZ(m_player.m_v3Pos.z + 5);
-						m_global.findMoneyPtr(m_hModule);
-						m_global.setMoneyCall(2);
-					}
+					if (scriptGlobal(GLOBAL_TUNEABLES).at(167).as<int>().value() != 10000)
+						scriptGlobal(GLOBAL_TUNEABLES).at(167).as<int>() = 10000;
+
+					m_player.getPos();
+					createAmbientPickup(joaat("PICKUP_MONEY_VARIABLE"), m_player.m_v3Pos.x, m_player.m_v3Pos.y, m_player.m_v3Pos.z + 5, 10000, joaat("p_poly_bag_01_s"));
 				}
-				Sleep(100);
+				Sleep(300);
 			}
 		});
 		t.detach();
@@ -1048,7 +1068,59 @@ void hack::callMerryweather(std::ptrdiff_t index)
 
 int hack::getPlayerId()
 {
-	return scriptGlobal(2419327).at(1).as<int>().value();
+	return scriptGlobal(2439138).as<int>().value();
+}
+
+void hack::setCasinoHeistCut(int playerIndex, int cut)
+{
+	scriptGlobal(1700796).at(getPlayerId(), 68).at(12).at(1).at(playerIndex).as<int>() = cut;
+}
+
+int hack::getCasinoHeistCut(int playerIndex)
+{
+	return scriptGlobal(1700796).at(getPlayerId(), 68).at(12).at(1).at(playerIndex).as<int>().value();
+}
+
+void hack::createAmbientPickup(unsigned int pickupHash, float posX, float posY, float posZ, int value, unsigned int modelHash)
+{
+	scriptGlobal(2513247).at(1).as<int>() = value;
+	scriptGlobal(2513247).at(3).as<float>() = posX;
+	scriptGlobal(2513247).at(4).as<float>() = posY;
+	scriptGlobal(2513247).at(5).as<float>() = posZ;
+	scriptGlobal(4263954).at(scriptGlobal(2513247).as<int>().value(), 85).at(66).at(2).as<int>() = 2;
+	scriptGlobal(2513253).as<int>() = 1;
+
+	m_unkModel.getModelHash();
+	if (m_unkModel.m_dwModelHash != modelHash)
+		m_unkModel.setModelHash(modelHash);
+
+	m_replayInterface.getCurPedNum();
+	for (size_t i = 0; i < m_replayInterface.dw_curPickUpNum; i++)
+	{
+		DWORD_PTR dwpPickup;
+		unsigned int dwPickupHash;
+		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_replayInterface.m_dwpPickUpList + i * 0x10, &dwpPickup);
+		g_pMemMan->readMem<unsigned int>(dwpPickup + OFFSET_REPLAY_PICKUP_HASH, &dwPickupHash);
+		if (dwPickupHash != 4263048111)
+			g_pMemMan->writeMem<unsigned int>(dwpPickup + OFFSET_REPLAY_PICKUP_HASH, pickupHash);
+	}
+}
+
+void hack::blockScriptEvents(feat* feature, std::ptrdiff_t index)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>() = 0;
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	if (scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>().value() != 1)
+		scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>() = 1;
+
+	return;
 }
 
 void hack::consumeStatQueue()
@@ -2133,54 +2205,38 @@ void hack::airstrike(float* arg)
 	callMerryweather(4390);
 }
 
-void hack::antiRemoteBounty(feat* feature)
+void hack::disableThePhone(feat* feature)
 {
 	if (!feature->m_bOn)
 	{
 		if (!feature->m_bRestored)
 		{
-			scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(70).as<int>() = 0;
+			scriptGlobal(19486).at(1).as<int>() = 3;
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if (scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(70).as<int>().value() != 1)
-		scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(70).as<int>() = 1;
+	if (scriptGlobal(19486).at(1).as<int>().value() > 1)
+		scriptGlobal(19486).at(1).as<int>() = 1;
 
+	return;
+}
+
+void hack::antiRemoteBounty(feat* feature)
+{
+	blockScriptEvents(feature, 70);
 	return;
 }
 
 void hack::antiRemoteVehicleKick(feat* feature)
 {
-	if (!feature->m_bOn)
-	{
-		if (!feature->m_bRestored)
-		{
-			scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(63).as<int>() = 0;
-			feature->m_bRestored = true;
-		}
-		return;
-	}
-	if (scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(63).as<int>().value() != 1)
-		scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(63).as<int>() = 1;
-
+	blockScriptEvents(feature, 63);
 	return;
 }
 
-void hack::antiRemoteSetWantedLevel(feat* feature)
+void hack::antiRemoteForceMission(feat* feature)
 {
-	if (!feature->m_bOn)
-	{
-		if (!feature->m_bRestored)
-		{
-			scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(524).as<int>() = 0;
-			feature->m_bRestored = true;
-		}
-		return;
-	}
-	if (scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(524).as<int>().value() != 1)
-		scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(524).as<int>() = 1;
-
+	blockScriptEvents(feature, 722);
 	return;
 }
 

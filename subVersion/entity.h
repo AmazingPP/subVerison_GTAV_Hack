@@ -417,15 +417,8 @@ class global
 		DWORD_PTR	m_dwpStatHash,
 					m_dwpStatValue,
 					m_dwpStatCall,
-					m_dwpMoneyObject,
-					m_dwpMoneyVal,
-					m_dwpMoneyPosX,
-					m_dwpMoneyPosY,
-					m_dwpMoneyPosZ,
-					m_dwpMoneyCall,
 					m_dwpSessionTransition,
 					m_dwpSessionID,
-					m_dwpIntoPersonalVehicle,
 					m_dwpVehicleSpawn1,
 					m_dwpVehicleSpawn2,
 					m_dwpVehicleHash,
@@ -464,35 +457,18 @@ class global
 				global();
 				~global();
 		bool	initStatPtr(HMODULE base);
-		bool	initMoneyPtr(HMODULE base);
 		bool	initSessionPtr(HMODULE base);
-		bool	initIntoPVPtr(HMODULE base);
 		bool	initVehiclePtr(HMODULE base);
-		bool	findMoneyPtr(HMODULE base);
 		void	getStatHash();
 		void	setStatHash(unsigned int value);
 		void	getStatValue();
 		void	setStatValue(int value);
 		void	getStatCall();
 		void	setStatCall(int value);
-		void	getMoneyObject();
-		void	setMoneyObject(BYTE value);
-		void	getMoneyVal();
-		void	setMoneyVal(int value);
-		void	getMoneyPosX();
-		void	setMoneyPosX(float value);
-		void	getMoneyPosY();
-		void	setMoneyPosY(float value);
-		void	getMoneyPosZ();
-		void	setMoneyPosZ(float value);
-		void	getMoneyCall();
-		void	setMoneyCall(BYTE value);
 		void	getSessionTransition();
 		void	setSessionTransition(int value);
 		void	getSessionID();
 		void	setSessionID(int value);
-		void	getIntoPersonalVehicle();
-		void	setIntoPersonalVehicle(int value);
 		void	getVehicleSpawn1();
 		void	setVehicleSpawn1(int value);
 		void	getVehicleSpawn2();
@@ -524,7 +500,10 @@ class replayInterface
 {
 public:
 		entity	*g_pPedList[256];
-		DWORD	dw_curPedNum;
+		entity	*g_pPickUpList[73];
+		DWORD	dw_curPedNum,
+				dw_curPickUpNum;
+		void	getCurPedNum();
 
 				replayInterface();
 				~replayInterface();
@@ -533,6 +512,22 @@ public:
 
 	DWORD_PTR	m_dwpReplayInterfaceBase,
 				m_dwpPedInterface,
-				m_dwpPedList;
+				m_dwpPedList,
+				m_dwpPickUpInterface,
+				m_dwpPickUpList;
+};
+
+class unkModel
+{
+public:
+	unsigned int m_dwModelHash;
+	void	getModelHash();
+	void	setModelHash(unsigned int value);
+
+	unkModel();
+	~unkModel();
+
+	DWORD_PTR	m_dwpUnkModelBase,
+				m_dwpUnkModelStruct;
 };
 #endif

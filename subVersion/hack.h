@@ -30,6 +30,7 @@
 #define INITPTR_INVALID_GLOBAL  1 << 5
 #define INITPTR_INVALID_PLAYER_LIST 1 << 6
 #define INITPTR_INVALID_REPLAY_INTERFACE 1 << 7
+#define INITPTR_INVALID_UNK_MODEL 1 << 7
 class trainer
 {
 	public:
@@ -52,9 +53,11 @@ class hack : public trainer
 		tunable m_tunable;
 		global	m_global;
 		replayInterface	m_replayInterface;
+		unkModel m_unkModel;
 		std::string m_mpId;
 		std::deque<std::pair<unsigned int,int>> m_dStat;
 		ImpactExplosionEnum m_explosion;
+		unsigned int m_lastModel;
 
 		HMODULE	m_hModule;
 
@@ -86,6 +89,7 @@ class hack : public trainer
 		void	casinoStat(float* arg);
 		void	casinoStatBitSet1(float* arg);
 		void	casinoStatBitSet2(float* arg);
+		void	casinoHeistCut(feat* feature, int playerIndex);
 		void	unlockHeistCars(float* arg);
 		void	unlockLSC(float* arg);
 		void	unlockWeaponCamos(float* arg);
@@ -156,9 +160,10 @@ class hack : public trainer
 		void	heliTaxi(float* arg);
 		void	backupHeli(float* arg);
 		void	airstrike(float* arg);
+		void	disableThePhone(feat* feature);
 		void	antiRemoteBounty(feat* feature);
 		void	antiRemoteVehicleKick(feat* feature);
-		void	antiRemoteSetWantedLevel(feat* feature);
+		void	antiRemoteForceMission(feat* feature);
 		void	about(float* arg);
 
 	private:
@@ -173,7 +178,8 @@ class hack : public trainer
 					m_dwpTunableBase,
 					m_dwpGlobalBase,
 					m_dwpPlayerListBase,
-					m_dwpReplayInterfaceBase;
+					m_dwpReplayInterfaceBase,
+					m_dwpUnkModelBase;
 		bool		m_bInit,m_bSelfDropInit;
 
 		void	getWaypoint();
@@ -181,6 +187,10 @@ class hack : public trainer
 		void	dStatPushBack(unsigned int hash, int value);
 		void	callMerryweather(std::ptrdiff_t index);
 		int		getPlayerId();
+		void	setCasinoHeistCut(int playerIndex, int cut);
+		int		getCasinoHeistCut(int playerIndex);
+		void	createAmbientPickup(unsigned int pickupHash, float posX, float posY, float posZ, int value, unsigned int modelHash);
+		void	blockScriptEvents(feat* feature, std::ptrdiff_t index);
 
 		unsigned int string_to_hash(std::string input,std::string pre = "MP0_")
 		{

@@ -184,14 +184,20 @@
 
 //replay interface offsets
 #define OFFSET_REPLAY_PED_INTERFACE			0x18
-#define OFFSET_PED_INTERFACE_PED_LIST		0x100
-#define OFFSET_PED_INTERFACE_CUR_PEDS		0x110
+#define OFFSET_REPLAY_PICKUP_INTERFACE		0x20
+#define OFFSET_INTERFACE_LIST				0x100
+#define OFFSET_INTERFACE_CUR_NUMS			0x110
+#define OFFSET_REPLAY_PICKUP_HASH			0x488
+
+//unk model
+#define OFFSET_MODEL_HASH		0x2640
 
 //globals
 #define GLOBAL_TUNEABLES		262145
 #define GLOBAL_VEHICLE_HASH		2460715
 #define GLOBAL_MERRYWEATHER		2537071
 #define GLOBAL_BLOCK_SCRIPT_EVENTS	1391799
+#define GLOBAL_BUSINESS			1590535
 
 //feature indexing
 #define FEATURE_P_GOD				0x00
@@ -259,6 +265,10 @@
 #define FEATURE_T_ANTI_IDLE_KICK	0x40
 #define FEATURE_P_PLAYER_LIST		0x41
 #define FEATURE_P_MONERY_DROP		0x42
+#define FEATURE_G_CASINO_CUT_0		0x43
+#define FEATURE_G_CASINO_CUT_1		0x44
+#define FEATURE_G_CASINO_CUT_2		0x45
+#define FEATURE_G_CASINO_CUT_3		0x46
 
 static std::wstring StringToWString(const std::string& str) {
 	int num = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
@@ -290,4 +300,5 @@ extern long		ADDRESS_WEAPON;
 extern long		ADDRESS_GLOBAL;				//4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11
 extern long		ADDRESS_PLAYER_LIST;		//48 8B 0D ? ? ? ? E8 ? ? ? ? 48 8B C8 E8 ? ? ? ? 48 8B CF
 extern long		ADDRESS_REPLAY_INTERFACE;	//48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D ? ? ? ?
+extern long		ADDRESS_UNK_MODEL;			//4C 8B 15 ? ? ? ? 49 8B 04 D2 44 39 40 08
 #endif

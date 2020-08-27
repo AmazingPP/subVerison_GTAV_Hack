@@ -1215,31 +1215,12 @@ bool global::initStatPtr(HMODULE base)
 	return m_dwpStatCall != 0 || m_dwpStatHash != 0 || m_dwpStatValue != 0;
 }
 
-bool global::initMoneyPtr(HMODULE base)
-{
-	m_dwpMoneyObject = getGlobal(2513253, base);
-	m_dwpMoneyVal = getGlobal(2513247 + 1, base);
-	m_dwpMoneyPosX = getGlobal(2513247 + 3, base);
-	m_dwpMoneyPosY = getGlobal(2513247 + 4, base);
-	m_dwpMoneyPosZ = getGlobal(2513247 + 5, base);
-
-	return  m_dwpMoneyObject != 0 || m_dwpMoneyVal != 0 || m_dwpMoneyPosX != 0
-		|| m_dwpMoneyPosY != 0 || m_dwpMoneyPosZ != 0;
-}
-
 bool global::initSessionPtr(HMODULE base)
 {
 	m_dwpSessionID = getGlobal(1312836, base);
 	m_dwpSessionTransition = getGlobal(1312425, base);
 
 	return  m_dwpSessionID != 0 || m_dwpSessionTransition != 0;
-}
-
-bool global::initIntoPVPtr(HMODULE base)
-{
-	m_dwpIntoPersonalVehicle = getGlobal(2409287 + 8, base);
-
-	return  m_dwpIntoPersonalVehicle != 0;
 }
 
 bool global::initVehiclePtr(HMODULE base)
@@ -1259,16 +1240,6 @@ bool global::initVehiclePtr(HMODULE base)
 		m_dwpVehicleKickPrevent1 != 0 || m_dwpVehicleKickPrevent2 != 0 ||
 		m_dwpVehicleX != 0 || m_dwpVehicleY != 0 ||
 		m_dwpVehicleZ != 0 || m_dwpPrimaryColor != 0 || m_dwpSecondaryColor;
-}
-
-
-bool global::findMoneyPtr(HMODULE base)
-{
-	float buffer;
-	DWORD_PTR dwpTemp = getGlobal(2513247, base);
-	g_pMemMan->readMem<float>(dwpTemp, &buffer);
-	m_dwpMoneyCall = getGlobal(85 * (DWORD)buffer + 4263954 + 69, base);
-	return true;
 }
 
 DWORD_PTR global::getGlobal(int atIndex, HMODULE base)
@@ -1314,78 +1285,6 @@ void global::setStatCall(int value)
 	return;
 }
 
-void global::getMoneyObject()
-{
-	g_pMemMan->readMem<BYTE>(m_dwpMoneyObject, &m_btMoneyObject);
-	return;
-}
-
-void global::setMoneyObject(BYTE value)
-{
-	g_pMemMan->writeMem<BYTE>(m_dwpMoneyObject, &value);
-	return;
-}
-
-void global::getMoneyVal()
-{
-	g_pMemMan->readMem<int>(m_dwpMoneyVal, &m_dwMoneyVal);
-	return;
-}
-
-void global::setMoneyVal(int value)
-{
-	g_pMemMan->writeMem<int>(m_dwpMoneyVal, &value);
-	return;
-}
-
-void global::getMoneyPosX()
-{
-	g_pMemMan->readMem<float>(m_dwpMoneyPosX, &m_fMoneyPosX);
-	return;
-}
-
-void global::setMoneyPosX(float value)
-{
-	g_pMemMan->writeMem<float>(m_dwpMoneyPosX, &value);
-	return;
-}
-
-void global::getMoneyPosY()
-{
-	g_pMemMan->readMem<float>(m_dwpMoneyPosY, &m_fMoneyPosY);
-	return;
-}
-
-void global::setMoneyPosY(float value)
-{
-	g_pMemMan->writeMem<float>(m_dwpMoneyPosY, &value);
-	return;
-}
-
-void global::getMoneyPosZ()
-{
-	g_pMemMan->readMem<float>(m_dwpMoneyPosZ, &m_fMoneyPosZ);
-	return;
-}
-
-void global::setMoneyPosZ(float value)
-{
-	g_pMemMan->writeMem<float>(m_dwpMoneyPosZ, &value);
-	return;
-}
-
-void global::getMoneyCall()
-{
-	g_pMemMan->readMem<BYTE>(m_dwpMoneyCall, &m_btMoneyCall);
-	return;
-}
-
-void global::setMoneyCall(BYTE value)
-{
-	g_pMemMan->writeMem<BYTE>(m_dwpMoneyCall, &value);
-	return;
-}
-
 void global::getSessionTransition()
 {
 	g_pMemMan->readMem<int>(m_dwpSessionTransition, &m_dwSessionTransition);
@@ -1407,18 +1306,6 @@ void global::getSessionID()
 void global::setSessionID(int value)
 {
 	g_pMemMan->writeMem<int>(m_dwpSessionID, &value);
-	return;
-}
-
-void global::getIntoPersonalVehicle()
-{
-	g_pMemMan->readMem<int>(m_dwpIntoPersonalVehicle, &m_dwIntoPersonalVehicle);
-	return;
-}
-
-void global::setIntoPersonalVehicle(int value)
-{
-	g_pMemMan->writeMem<int>(m_dwpIntoPersonalVehicle, &value);
 	return;
 }
 
@@ -1543,6 +1430,12 @@ void global::setSecondaryColor(BYTE value)
 	return;
 }
 
+void replayInterface::getCurPedNum()
+{
+	g_pMemMan->readMem<DWORD>((DWORD_PTR)m_dwpPickUpInterface + OFFSET_INTERFACE_CUR_NUMS, &dw_curPickUpNum);
+	return;
+}
+
 replayInterface::replayInterface()
 {
 }
@@ -1567,4 +1460,24 @@ void replayInterface::initPeds()
 		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_dwpPedList + i * 0x10, &g_pPedList[i]->m_dwpBase);
 		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)g_pPedList[i]->m_dwpBase + OFFSET_ENTITY_POSBASE, &g_pPedList[i]->m_dwpPosBase);
 	}
+}
+
+void unkModel::getModelHash()
+{
+	g_pMemMan->readMem<unsigned int>(m_dwpUnkModelStruct + OFFSET_MODEL_HASH, &m_dwModelHash);
+	return;
+}
+
+void unkModel::setModelHash(unsigned int value)
+{
+	g_pMemMan->writeMem<unsigned int>(m_dwpUnkModelStruct + OFFSET_MODEL_HASH, &value);
+	return;
+}
+
+unkModel::unkModel()
+{
+}
+
+unkModel::~unkModel()
+{
 }

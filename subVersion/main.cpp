@@ -50,6 +50,7 @@ long		ADDRESS_WEAPON		= 0;
 long		ADDRESS_GLOBAL		= 0;
 long		ADDRESS_PLAYER_LIST = 0;
 long		ADDRESS_REPLAY_INTERFACE = 0;
+long		ADDRESS_UNK_MODEL	= 0;
 //fuction prototypes
 LRESULT	__stdcall	WindowProc(	HWND	hWnd,
 								UINT	message,
@@ -266,7 +267,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	addFeature(-1, bitSet2, L"一键解锁、最高等级", feat_btn, &hack::casinoStatBitSet2, 11.f);
 	addFeature(-1, bitSet2, L"削弱敌人装备", feat_btn, &hack::casinoStatBitSet2, 0.f);
 	addFeature(-1, bitSet2, L"钥匙卡最高级", feat_btn, &hack::casinoStatBitSet2, 1.f);
-	addFeature(-1, bitSet2, L"最高级抢手", feat_btn, &hack::casinoStatBitSet2, 2.f);
+	addFeature(-1, bitSet2, L"最高级枪手", feat_btn, &hack::casinoStatBitSet2, 2.f);
 	addFeature(-1, bitSet2, L"最高级司机", feat_btn, &hack::casinoStatBitSet2, 3.f);
 	addFeature(-1, bitSet2, L"最高级黑客", feat_btn, &hack::casinoStatBitSet2, 4.f);
 	int vehs = g_pSettings->addFeature(-1, bitSet2, L"逃亡载具 >>", feat_parent);
@@ -277,6 +278,11 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	int weaps = g_pSettings->addFeature(-1, bitSet2, L"武器 >>", feat_parent);
 	addFeature(-1, weaps, L"0", feat_btn, &hack::casinoStatBitSet2, 9.f);
 	addFeature(-1, weaps, L"1", feat_btn, &hack::casinoStatBitSet2, 10.f);
+	int casinoCut = g_pSettings->addFeature(-1, casino, L"分红设置 >>", feat_parent);
+	g_iFeature[FEATURE_G_CASINO_CUT_0] = g_pSettings->addFeature(-1, casinoCut, L"玩家1", feat_slider, "casinoCut0", 0.f, 85.f, (float)1.f / 9.f);
+	g_iFeature[FEATURE_G_CASINO_CUT_1] = g_pSettings->addFeature(-1, casinoCut, L"玩家2", feat_slider, "casinoCut1", 0.f, 85.f, (float)1.f / 9.f);
+	g_iFeature[FEATURE_G_CASINO_CUT_2] = g_pSettings->addFeature(-1, casinoCut, L"玩家3", feat_slider, "casinoCut2", 0.f, 85.f, (float)1.f / 9.f);
+	g_iFeature[FEATURE_G_CASINO_CUT_3] = g_pSettings->addFeature(-1, casinoCut, L"玩家4", feat_slider, "casinoCut3", 0.f, 85.f, (float)1.f / 9.f);
 	int unlock = g_pSettings->addFeature(-1, recovery, L"解锁 >>", feat_parent);
 	addFeature(-1, unlock, L"解锁改车配件", feat_btn, &hack::unlockLSC, -1.f);
 	addFeature(-1, unlock, L"解锁武器涂装", feat_btn, &hack::unlockWeaponCamos, -1.f);
@@ -561,6 +567,10 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 			if (!(btInit & INITPTR_INVALID_GLOBAL))
 			{
 				g_pHack->selfDropMoney(g_pSettings->getFeature(g_iFeature[FEATURE_P_MONERY_DROP]));
+				g_pHack->casinoHeistCut(g_pSettings->getFeature(g_iFeature[FEATURE_G_CASINO_CUT_0]), 0);
+				g_pHack->casinoHeistCut(g_pSettings->getFeature(g_iFeature[FEATURE_G_CASINO_CUT_1]), 1);
+				g_pHack->casinoHeistCut(g_pSettings->getFeature(g_iFeature[FEATURE_G_CASINO_CUT_2]), 2);
+				g_pHack->casinoHeistCut(g_pSettings->getFeature(g_iFeature[FEATURE_G_CASINO_CUT_3]), 3);
 				g_pHack->consumeStatQueue();
 			}
 
