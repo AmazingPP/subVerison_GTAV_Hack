@@ -1215,14 +1215,6 @@ bool global::initStatPtr(HMODULE base)
 	return m_dwpStatCall != 0 || m_dwpStatHash != 0 || m_dwpStatValue != 0;
 }
 
-bool global::initSessionPtr(HMODULE base)
-{
-	m_dwpSessionID = getGlobal(1312836, base);
-	m_dwpSessionTransition = getGlobal(1312425, base);
-
-	return  m_dwpSessionID != 0 || m_dwpSessionTransition != 0;
-}
-
 bool global::initVehiclePtr(HMODULE base)
 {
 	m_dwpVehicleSpawn1 = getGlobal(GLOBAL_VEHICLE_HASH + 2, base);
@@ -1282,30 +1274,6 @@ void global::getStatCall()
 void global::setStatCall(int value)
 {
 	g_pMemMan->writeMem<int>(m_dwpStatCall, &value);
-	return;
-}
-
-void global::getSessionTransition()
-{
-	g_pMemMan->readMem<int>(m_dwpSessionTransition, &m_dwSessionTransition);
-	return;
-}
-
-void global::setSessionTransition(int value)
-{
-	g_pMemMan->writeMem<int>(m_dwpSessionTransition, &value);
-	return;
-}
-
-void global::getSessionID()
-{
-	g_pMemMan->readMem<int>(m_dwpSessionID, &m_dwSessionID);
-	return;
-}
-
-void global::setSessionID(int value)
-{
-	g_pMemMan->writeMem<int>(m_dwpSessionID, &value);
 	return;
 }
 

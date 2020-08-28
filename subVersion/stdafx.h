@@ -57,6 +57,7 @@
 #include "hack.h"
 #include "CallbackProxy.h"
 #include "VehiclePreview.h"
+#include "WeaponPreview.h"
 
 //offset from WORLD
 #define OFFSET_PLAYER					0x08			//playerbase
@@ -269,6 +270,7 @@
 #define FEATURE_G_CASINO_CUT_1		0x44
 #define FEATURE_G_CASINO_CUT_2		0x45
 #define FEATURE_G_CASINO_CUT_3		0x46
+#define FEATURE_G_DISABLE_THE_PHONE	0x47
 
 static std::wstring StringToWString(const std::string& str) {
 	int num = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);

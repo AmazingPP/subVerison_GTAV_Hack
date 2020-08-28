@@ -57,7 +57,6 @@ class hack : public trainer
 		std::string m_mpId;
 		std::deque<std::pair<unsigned int,int>> m_dStat;
 		ImpactExplosionEnum m_explosion;
-		unsigned int m_lastModel;
 
 		HMODULE	m_hModule;
 
@@ -100,6 +99,7 @@ class hack : public trainer
 		void	loadSession(float* arg);
 		void	forwardTeleport(float* arg);
 		void	spawnVehicle(float* arg);
+		void	selfDropWeapon(float* arg);
 		void	selfDropMoney(feat* feature);
 		void	waterProof(feat* feature);
 		void	undeadOffradar(feat* feature);
@@ -152,6 +152,8 @@ class hack : public trainer
 		void	tunableOrbitalCannonCooldown(feat* feature);
 		void	tunableBunkerResearch(feat* feature);
 		void	tunableAntiIdleKick(feat* feature);
+		void	removePassiveModeCooldown(feat* feature);
+		void	allowSellOnNonPublic(feat* feature);
 		void	instantBullShark(float* arg);
 		void	bullSharkDrop(float* arg);
 		void	ammoDrop(float* arg);

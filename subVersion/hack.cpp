@@ -55,7 +55,6 @@ bool	trainer::checkKeyState(int key)
 
 hack::hack() {
 	m_explosion = ImpactExplosionEnum::DefaultBullets;
-	m_lastModel = 3999186071; //prop_cash_pile_01
 }
 
 hack::~hack() {}
@@ -64,6 +63,7 @@ void hack::checkKeys()
 {
 	if (checkKeyState(g_pSettings->m_iKeys[keyExit]))
 	{
+		g_bKillKeys = true;
 		g_bKillHack = true;
 		killProgram();
 		return;
@@ -238,30 +238,42 @@ void hack::getWaypoint()
 		if (n > 0 && buf[0] == 8 && buf[1] == 84)
 		{
 			g_pMemMan->readMem<v2>((DWORD_PTR)n + 0x10, &m_v2Waypoint);
+			break;
 		}
 	}
 
-	//g_pMemMan->readMem<v2>((DWORD_PTR) m_hModule + ADDRESS_WAYPOINT, &m_v2Waypoint);
 	return;
 }
 
 void hack::getObjective()
 {
+	static int ColorYellowMission = 66;
+	static int ColorYellow = 5;
+	static int ColorWhite = 0;
+	static int ColorGreen = 2;
+	static int SpriteCrateDrop = 306;
+	static int SpriteStandard = 1;
+	static int SpriteRaceFinish = 38;
+
 	DWORD_PTR a = (DWORD_PTR)m_hModule + ADDRESS_BLIP;
 	for (size_t i = 2000; i > 1; i--)
 	{
 		DWORD64 n;
-		DWORD buf[2];
+		DWORD dwColor,dwIcon;
 		g_pMemMan->readMem<DWORD64>((DWORD_PTR)a + (i * 8), &n);
-		g_pMemMan->readMem<DWORD>((DWORD_PTR)n + 0x40, &buf[0]);
-		g_pMemMan->readMem<DWORD>((DWORD_PTR)n + 0x48, &buf[1]);
-		if (n > 0 && buf[0] == 1 && (buf[1] == 5 || buf[1] == 60 || buf[1] == 66))
+		g_pMemMan->readMem<DWORD>((DWORD_PTR)n + 0x40, &dwIcon);
+		g_pMemMan->readMem<DWORD>((DWORD_PTR)n + 0x48, &dwColor);
+		if (n > 0 && dwColor == ColorYellowMission || dwIcon == SpriteStandard
+			&& dwColor == ColorYellow || dwIcon == SpriteStandard
+			&& dwColor == ColorWhite || dwIcon == SpriteRaceFinish
+			&& dwColor == ColorGreen || dwIcon == SpriteStandard
+			&& dwColor == SpriteCrateDrop)
 		{
 			g_pMemMan->readMem<v3>((DWORD_PTR)n + 0x10, &m_v3Objective);
+			break;
 		}
 	}
 
-	//g_pMemMan->readMem<v3>((DWORD_PTR) m_hModule + ADDRESS_OBJECTIVE, &m_v3Objective);
 	return;
 }
 
@@ -954,12 +966,20 @@ void hack::intoPV(float* arg)
 
 void hack::loadSession(float* arg)
 {
-	if (m_global.initSessionPtr(m_hModule))
+	int id = (int)*arg;
+	if (id  == -1)
 	{
-		m_global.setSessionID((int)*arg);
-		m_global.setSessionTransition(1);
-		Sleep(400);
-		m_global.setSessionTransition(0);
+		scriptGlobal(1312425).at(2).as<int>() = id;
+		scriptGlobal(1312425).as<int>() = 1;
+		Sleep(200);
+		scriptGlobal(1312425).as<int>() = 0;
+	}
+	else
+	{
+		scriptGlobal(1312836).as<int>() = id;
+		scriptGlobal(1312425).as<int>() = 1;
+		Sleep(200);
+		scriptGlobal(1312425).as<int>() = 0;
 	}
 }
 
@@ -1032,13 +1052,20 @@ void hack::spawnVehicle(float* arg)
 	}
 }
 
+void hack::selfDropWeapon(float* arg)
+{
+	int index = (int)*arg;
+	m_player.getPos();
+	createAmbientPickup(joaat(Weapons[index].Pickup), m_player.m_v3Pos.x, m_player.m_v3Pos.y, m_player.m_v3Pos.z + 2, 9999, joaat(Weapons[index].Model));
+}
+
 void hack::selfDropMoney(feat* feature)
 {
 	if (!m_bSelfDropInit)
 	{
 		m_bSelfDropInit = true;
 		std::thread t([=] {
-			while (true)
+			while (!g_bKillSwitch)
 			{
 				if (feature->m_bOn)
 				{
@@ -1094,15 +1121,21 @@ void hack::createAmbientPickup(unsigned int pickupHash, float posX, float posY, 
 	if (m_unkModel.m_dwModelHash != modelHash)
 		m_unkModel.setModelHash(modelHash);
 
+	Sleep(100);
 	m_replayInterface.getCurPedNum();
 	for (size_t i = 0; i < m_replayInterface.dw_curPickUpNum; i++)
 	{
-		DWORD_PTR dwpPickup;
-		unsigned int dwPickupHash;
-		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_replayInterface.m_dwpPickUpList + i * 0x10, &dwpPickup);
+		DWORD_PTR dwpPickup, dwpPickupCur;
+		unsigned int dwPickupHash, dwModelHash;
+		g_pMemMan->readMem<DWORD_PTR>(m_replayInterface.m_dwpPickUpList + i * 0x10, &dwpPickup);
+		g_pMemMan->readMem<DWORD_PTR>(dwpPickup + 0x20, &dwpPickupCur);
+		g_pMemMan->readMem<unsigned int>(dwpPickupCur + 0x18, &dwModelHash);
 		g_pMemMan->readMem<unsigned int>(dwpPickup + OFFSET_REPLAY_PICKUP_HASH, &dwPickupHash);
-		if (dwPickupHash != 4263048111)
+		if (dwPickupHash != pickupHash && dwModelHash == modelHash)
+		{
 			g_pMemMan->writeMem<unsigned int>(dwpPickup + OFFSET_REPLAY_PICKUP_HASH, pickupHash);
+			break;
+		}
 	}
 }
 
@@ -1129,7 +1162,7 @@ void hack::consumeStatQueue()
 	{
 		m_bInit = true;
 		std::thread tConsumeStatQueue([=] {
-			while (true)
+			while (!g_bKillSwitch)
 			{
 				if (!m_dStat.empty())
 				{
@@ -2162,6 +2195,40 @@ void hack::tunableAntiIdleKick(feat* feature)
 		m_tunable.setAntiIdleKick3(2000000000);
 	if (m_tunable.m_dwAntiIdleKick4 != 2000000000)
 		m_tunable.setAntiIdleKick4(2000000000);
+	return;
+}
+
+void hack::removePassiveModeCooldown(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	if (scriptGlobal(2537071).at(4393).as<int>().value() != 0)
+		scriptGlobal(2537071).at(4393).as<int>() = 0;
+	if (scriptGlobal(1696236).as<int>().value() != 0)
+		scriptGlobal(1696236).as<int>() = 0;
+
+	return;
+}
+
+void hack::allowSellOnNonPublic(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	if (scriptGlobal(2450632).at(644).as<int>().value() != 0)
+		scriptGlobal(2450632).at(644).as<int>() = 0;
+
 	return;
 }
 

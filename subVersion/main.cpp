@@ -83,7 +83,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pCBMap		= new std::map<int, CallbackProxy<hack, float>*>;
 
 	LPCSTR	szWindowTitleTarget	= "Grand Theft Auto V";
-	LPCWSTR	szWindowTitle		= L"subVersion mAsk°重制版 v1.3.1";
+	LPCWSTR	szWindowTitle		= L"subVersion mAsk°重制版 v1.3.2";
 	g_pMemMan->setWindowName(szWindowTitleTarget);
 	g_pD3D9Render->m_szWindowTitle = szWindowTitle;
 
@@ -226,7 +226,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 		addFeature(-1, session, tbl_SessionMItems[i].second, feat_btn, &hack::loadSession, tbl_SessionMItems[i].first);
 	int olService = g_pSettings->addFeature(4, -1, L"线上 >>", feat_parent);
 	addFeature(-1, olService, L"坐进个人载具", feat_btn, &hack::intoPV, -1.f);
-	g_iFeature[FEATURE_P_MONERY_DROP] = g_pSettings->addFeature(-1, olService, L"钱袋刷钱", feat_toggle, "moneyDrop");
+	g_iFeature[FEATURE_P_MONERY_DROP] = g_pSettings->addFeature(-1, olService, L"钱袋刷钱（10K）", feat_toggle, "moneyDrop");
 	//g_iFeature[FEATURE_P_PLAYER_LIST] = g_pSettings->addFeature(3, -1, "玩家列表 >>", feat_parent);
 	//for (size_t i = 0; i < sizeof(g_iFeaturePlayerList)/sizeof(g_iFeaturePlayerList[0]); i++)
 	//{
@@ -291,6 +291,9 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	addFeature(-1, unlock, L"解锁衣服", feat_btn, &hack::unlockClothes, -1.f);
 	g_iFeature[FEATURE_T_BUNKER_RESEARCH] = g_pSettings->addFeature(-1, unlock, L"解锁所有地堡研究(临时)", feat_toggle, "BunkerResearch");
 	int merryweather = g_pSettings->addFeature(-1, olService, L"梅利威瑟 >>", feat_parent);
+	int dropWeapon = g_pSettings->addFeature(-1, olService, L"获得武器 >>", feat_parent);
+	for (size_t i = 0; i < Weapons.size(); i++)
+		addFeature(-1, dropWeapon, Weapons[i].Name, feat_btn, &hack::selfDropWeapon, i);
 	addFeature(-1, merryweather, L"牛鲨睾酮空投", feat_btn, &hack::bullSharkDrop, -1.f);
 	addFeature(-1, merryweather, L"弹药空投", feat_btn, &hack::ammoDrop, -1.f);
 	addFeature(-1, merryweather, L"无畏战士空投", feat_btn, &hack::miniGunDrop, -1.f);
@@ -299,6 +302,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	addFeature(-1, merryweather, L"支援直升机", feat_btn, &hack::backupHeli, -1.f);
 	addFeature(-1, merryweather, L"空袭", feat_btn, &hack::airstrike, -1.f);
 	addFeature(-1, olService, L"使用牛鲨睾酮", feat_btn, &hack::instantBullShark, -1.f);
+	g_iFeature[FEATURE_G_DISABLE_THE_PHONE] = g_pSettings->addFeature(-1, olService, L"屏蔽来电", feat_toggle, "disableThePhone");
 	addFeature(4, -1, L"GitHub - 关于", feat_btn, &hack::about, 0.f);
 	addFeature(4, -1, L"检查更新", feat_btn, &hack::about, 1.f);
 
@@ -571,6 +575,7 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->casinoHeistCut(g_pSettings->getFeature(g_iFeature[FEATURE_G_CASINO_CUT_1]), 1);
 				g_pHack->casinoHeistCut(g_pSettings->getFeature(g_iFeature[FEATURE_G_CASINO_CUT_2]), 2);
 				g_pHack->casinoHeistCut(g_pSettings->getFeature(g_iFeature[FEATURE_G_CASINO_CUT_3]), 3);
+				g_pHack->disableThePhone(g_pSettings->getFeature(g_iFeature[FEATURE_G_DISABLE_THE_PHONE]));
 				g_pHack->consumeStatQueue();
 			}
 

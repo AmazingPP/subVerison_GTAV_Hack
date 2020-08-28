@@ -42,6 +42,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="VehiclePreview.h" />
+    <ClInclude Include="WeaponPreview.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="mask.ico" />

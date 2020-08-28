@@ -80,6 +80,9 @@
     <ClInclude Include="ptrHandler.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="WeaponPreview.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="mask.ico">

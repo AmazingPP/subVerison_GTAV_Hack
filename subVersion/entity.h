@@ -417,8 +417,6 @@ class global
 		DWORD_PTR	m_dwpStatHash,
 					m_dwpStatValue,
 					m_dwpStatCall,
-					m_dwpSessionTransition,
-					m_dwpSessionID,
 					m_dwpVehicleSpawn1,
 					m_dwpVehicleSpawn2,
 					m_dwpVehicleHash,
@@ -436,8 +434,6 @@ class global
 		int				m_dwStatValue,
 						m_dwStatCall,
 						m_dwMoneyVal,
-						m_dwSessionTransition,
-						m_dwSessionID,
 						m_dwIntoPersonalVehicle,
 						m_dwVehicleSpawn1,
 						m_dwVehicleSpawn2,
@@ -457,7 +453,6 @@ class global
 				global();
 				~global();
 		bool	initStatPtr(HMODULE base);
-		bool	initSessionPtr(HMODULE base);
 		bool	initVehiclePtr(HMODULE base);
 		void	getStatHash();
 		void	setStatHash(unsigned int value);
@@ -465,8 +460,6 @@ class global
 		void	setStatValue(int value);
 		void	getStatCall();
 		void	setStatCall(int value);
-		void	getSessionTransition();
-		void	setSessionTransition(int value);
 		void	getSessionID();
 		void	setSessionID(int value);
 		void	getVehicleSpawn1();
