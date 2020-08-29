@@ -303,6 +303,8 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	addFeature(-1, merryweather, L"空袭", feat_btn, &hack::airstrike, -1.f);
 	addFeature(-1, olService, L"使用牛鲨睾酮", feat_btn, &hack::instantBullShark, -1.f);
 	g_iFeature[FEATURE_G_DISABLE_THE_PHONE] = g_pSettings->addFeature(-1, olService, L"屏蔽来电", feat_toggle, "disableThePhone");
+	g_iFeature[FEATURE_G_PASSIVE_CD] = g_pSettings->addFeature(-1, olService, L"杀人后被动无冷却", feat_toggle, "removePassiveModeCD");
+	g_iFeature[FEATURE_G_SEEL_NON_PUB] = g_pSettings->addFeature(-1, olService, L"非公开战局运货", feat_toggle, "allowSellOnNonPublic");
 	addFeature(4, -1, L"GitHub - 关于", feat_btn, &hack::about, 0.f);
 	addFeature(4, -1, L"检查更新", feat_btn, &hack::about, 1.f);
 
@@ -576,6 +578,8 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->casinoHeistCut(g_pSettings->getFeature(g_iFeature[FEATURE_G_CASINO_CUT_2]), 2);
 				g_pHack->casinoHeistCut(g_pSettings->getFeature(g_iFeature[FEATURE_G_CASINO_CUT_3]), 3);
 				g_pHack->disableThePhone(g_pSettings->getFeature(g_iFeature[FEATURE_G_DISABLE_THE_PHONE]));
+				g_pHack->removePassiveModeCooldown(g_pSettings->getFeature(g_iFeature[FEATURE_G_PASSIVE_CD]));
+				g_pHack->allowSellOnNonPublic(g_pSettings->getFeature(g_iFeature[FEATURE_G_SEEL_NON_PUB]));
 				g_pHack->consumeStatQueue();
 			}
 

@@ -271,6 +271,8 @@
 #define FEATURE_G_CASINO_CUT_2		0x45
 #define FEATURE_G_CASINO_CUT_3		0x46
 #define FEATURE_G_DISABLE_THE_PHONE	0x47
+#define FEATURE_G_PASSIVE_CD		0x48
+#define FEATURE_G_SEEL_NON_PUB		0x49
 
 static std::wstring StringToWString(const std::string& str) {
 	int num = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);

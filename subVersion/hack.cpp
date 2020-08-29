@@ -64,7 +64,6 @@ void hack::checkKeys()
 	if (checkKeyState(g_pSettings->m_iKeys[keyExit]))
 	{
 		g_bKillKeys = true;
-		g_bKillHack = true;
 		killProgram();
 		return;
 	}
@@ -1011,7 +1010,9 @@ void hack::spawnVehicle(float* arg)
 		v3Pos.x += 6 * fAngle2;
 		v3Pos.y += 6 * fAngle;
 
-		m_global.setVehicleHash(joaat(vehiclePreview[vehTypeIndex].second[vehIndex].VCode));
+		auto vehicle = vehiclePreview[vehTypeIndex].second[vehIndex];
+
+		m_global.setVehicleHash(joaat(vehicle.VCode));
 		m_global.setVehicleKickPrevent1(2);
 		m_global.setVehicleKickPrevent2(14);
 		m_global.setSecondaryColor(-1);
@@ -1021,24 +1022,25 @@ void hack::spawnVehicle(float* arg)
 		m_global.setVehiclePosZ(-255);
 		if (true)
 		{
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 10, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 11, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 12, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 13, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 14, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 15, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 16, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 17, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 18, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 19, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 20, m_hModule), 1);
+			int* pTemp = (int*)malloc(sizeof(vehicle.VMod));
+			memcpy(pTemp, &vehicle.VMod, sizeof(vehicle.VMod));
 
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 21, m_hModule), 4);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 22, m_hModule), 3);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 23, m_hModule), 3);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 24, m_hModule), 57);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 25, m_hModule), 4);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 26, m_hModule), 5);
+			for (int i = 0; i < sizeof(vehicle.VMod) / sizeof(int); i++)
+			{
+				if (i < 17)
+				{
+					g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 10 + i, m_hModule), pTemp[i]);
+				}
+				else if (i > 22)
+				{
+					g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 10 + 6 + i, m_hModule), pTemp[i]);
+				}
+				else
+				{
+					continue;
+				}
+			}
+			free(pTemp);
 			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 28, m_hModule), 1);
 			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 30, m_hModule), 1);
 			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 32, m_hModule), 1);
