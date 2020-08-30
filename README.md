@@ -238,4 +238,4 @@ F8       | 补满所有武器弹药
 
 再次感谢您的支持。
 
-![Alt text](https://github.com/AmazingPP/subVerison_GTAV_Hack/edit/master/Doate/QRCode.jpg)
+<img src="https://github.com/AmazingPP/subVerison_GTAV_Hack/blob/master/Doate/QRCode.jpg" width="30%" height="30%"/>
