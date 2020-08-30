@@ -18,7 +18,6 @@
 */
 
 #pragma once
-#include<map>
 #ifndef HACK_H
 #define HACK_H
 
@@ -51,7 +50,6 @@ class hack : public trainer
 		vehicle m_vehicle;
 		weapon	m_weapon;
 		tunable m_tunable;
-		global	m_global;
 		replayInterface	m_replayInterface;
 		unkModel m_unkModel;
 		std::string m_mpId;
@@ -163,7 +161,10 @@ class hack : public trainer
 		void	backupHeli(float* arg);
 		void	airstrike(float* arg);
 		void	disableThePhone(feat* feature);
+		void	antiKickToSP(feat* feature);
+		void	antiApartmentTp(feat* feature);
 		void	antiRemoteBounty(feat* feature);
+		void	antiWeatherControl(feat* feature);
 		void	antiRemoteVehicleKick(feat* feature);
 		void	antiRemoteForceMission(feat* feature);
 		void	about(float* arg);
@@ -194,20 +195,7 @@ class hack : public trainer
 		void	createAmbientPickup(unsigned int pickupHash, float posX, float posY, float posZ, int value, unsigned int modelHash);
 		void	blockScriptEvents(feat* feature, std::ptrdiff_t index);
 
-		unsigned int string_to_hash(std::string input,std::string pre = "MP0_")
-		{
-			unsigned int num1 = 0U;
-			input = pre + input;
-			for (char c : input)
-			{
-				unsigned int num2 = num1 + (unsigned int)tolower(c);
-				unsigned int num3 = num2 + (num2 << 10);
-				num1 = num3 ^ num3 >> 6;
-			}
-			unsigned int num4 = num1 + (num1 << 3);
-			unsigned int num5 = num4 ^ num4 >> 11;
-			return num5 + (num5 << 15);
-		}
+		unsigned int string_to_hash(std::string input, std::string pre = "MP0_");
 };
 
 extern hack*		g_pHack;

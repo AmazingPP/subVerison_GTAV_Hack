@@ -16,11 +16,8 @@
 	You should have received a copy of the GNU General Public License along
 	with subVersion GTA:O SC External Hack.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #include "stdafx.h"
 #include "scriptGlobal.h"
-#include <string>
-
 /*
 	TRAINER
 */
@@ -37,7 +34,7 @@ bool	trainer::checkKeyState(int key)
 {
 	if
 		(
-			clock() - m_keyTmr > 100 &&
+			clock() - m_keyTmr > 10 &&
 			(GetAsyncKeyState(key) & 0x8001) == 0x8001
 			)
 	{
@@ -158,7 +155,6 @@ void hack::checkKeys()
 
 BYTE hack::initPointers()
 {
-
 	BYTE r = 0;
 
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_hModule + ADDRESS_WORLD, &m_dwpWorldBase);
@@ -173,7 +169,6 @@ BYTE hack::initPointers()
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_hModule + ADDRESS_GLOBAL, &m_dwpGlobalBase);
 	if (m_dwpGlobalBase == 0)
 		return INITPTR_INVALID_GLOBAL;
-	m_global.m_dwpGlobalBase = m_dwpGlobalBase;
 	m_mpId = "MP0_";
 
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_hModule + ADDRESS_REPLAY_INTERFACE, &m_dwpReplayInterfaceBase);
@@ -955,12 +950,8 @@ void hack::unlockClothes(float* arg)
 
 void hack::intoPV(float* arg)
 {
-	scriptGlobal(2409287).at(8).as<int>() = 1;
-	Sleep(500);
-	if (scriptGlobal(2409287).at(8).as<int>().value() == 1)
-	{
-		scriptGlobal(2409287).at(8).as<int>() = 0;
-	}
+	if (scriptGlobal(2537071).at(296).as<int>().value() != -1)
+		scriptGlobal(2409287).at(8).as<int>() = 1;
 }
 
 void hack::loadSession(float* arg)
@@ -997,8 +988,6 @@ void hack::forwardTeleport(float* arg)
 
 void hack::spawnVehicle(float* arg)
 {
-	if (m_global.initVehiclePtr(m_hModule))
-	{
 		int vehTypeIndex = (int)*arg / 1000;
 		int vehIndex = (int)*arg % 1000;
 		m_player.getPos();
@@ -1012,14 +1001,15 @@ void hack::spawnVehicle(float* arg)
 
 		auto vehicle = vehiclePreview[vehTypeIndex].second[vehIndex];
 
-		m_global.setVehicleHash(joaat(vehicle.VCode));
-		m_global.setVehicleKickPrevent1(2);
-		m_global.setVehicleKickPrevent2(14);
-		m_global.setSecondaryColor(-1);
-		m_global.setPrimaryColor(-1);
-		m_global.setVehiclePosX(v3Pos.x);
-		m_global.setVehiclePosY(v3Pos.y);
-		m_global.setVehiclePosZ(-255);
+		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(66).as<unsigned int>() = joaat(vehicle.VCode);
+		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(94).as<int>() = 2;
+		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(95).as<int>() = 14;
+		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(5).as<BYTE>() = -1;
+		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(6).as<BYTE>() = -1;
+		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(7).at(0).as<float>() = v3Pos.x;
+		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(7).at(1).as<float>() = v3Pos.y;
+		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(7).at(2).as<float>() = -255.0f;
+
 		if (true)
 		{
 			int* pTemp = (int*)malloc(sizeof(vehicle.VMod));
@@ -1029,11 +1019,11 @@ void hack::spawnVehicle(float* arg)
 			{
 				if (i < 17)
 				{
-					g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 10 + i, m_hModule), pTemp[i]);
+					scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(10 + i).as<BYTE>() = pTemp[i];
 				}
 				else if (i > 22)
 				{
-					g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 10 + 6 + i, m_hModule), pTemp[i]);
+					scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(10 + 6 + i).as<BYTE>() = pTemp[i];
 				}
 				else
 				{
@@ -1041,17 +1031,15 @@ void hack::spawnVehicle(float* arg)
 				}
 			}
 			free(pTemp);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 28, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 30, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 32, m_hModule), 1);
-			g_pMemMan->writeMem<BYTE>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 65, m_hModule), 1);
-
-			g_pMemMan->writeMem<int>(m_global.getGlobal(GLOBAL_VEHICLE_HASH + 27 + 77, m_hModule), 0xF0400200);
+			scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(28).as<BYTE>() = 1;
+			scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(30).as<BYTE>() = 1;
+			scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(32).as<BYTE>() = 1;
+			scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(65).as<BYTE>() = 1;
+			scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(77).as<int>() = 0xF0400200;
 		}
 
-		m_global.setVehicleSpawn2(1);
-		m_global.setVehicleSpawn1(1);
-	}
+		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(5).as<int>() = 1;
+		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(2).as<int>() = 1;
 }
 
 void hack::selfDropWeapon(float* arg)
@@ -1139,6 +1127,7 @@ void hack::createAmbientPickup(unsigned int pickupHash, float posX, float posY, 
 			break;
 		}
 	}
+	m_unkModel.setModelHash(joaat("prop_cash_pile_01"));
 }
 
 void hack::blockScriptEvents(feat* feature, std::ptrdiff_t index)
@@ -1158,6 +1147,11 @@ void hack::blockScriptEvents(feat* feature, std::ptrdiff_t index)
 	return;
 }
 
+unsigned int hack::string_to_hash(std::string input, std::string pre)
+{
+	return joaat(pre + input);
+}
+
 void hack::consumeStatQueue()
 {
 	if (!m_bInit)
@@ -1171,25 +1165,19 @@ void hack::consumeStatQueue()
 					g_pD3D9Render->m_bMBShowing = true;
 					g_pD3D9Render->m_sTitle = L"正在处理队列";
 					g_pD3D9Render->m_sDetail = L"剩余" + std::to_wstring(m_dStat.size()) + L"个待处理";
-					if (m_global.initStatPtr(m_hModule))
-					{
-						m_global.getStatHash();
-						unsigned int resotreHash = m_global.m_dwStatHash;
-						m_global.getStatValue();
-						DWORD resotreValue = m_global.m_dwStatValue;
-						m_global.getStatCall();
-						DWORD call = m_global.m_dwStatCall;
 
-						m_global.setStatHash(m_dStat.front().first);
-						m_global.setStatValue(m_dStat.front().second);
-						m_global.setStatCall(-1);
-						Sleep(1000);
-						m_global.setStatHash(resotreHash);
-						m_global.setStatValue(resotreValue);
-					}
+					unsigned int resotreHash = scriptGlobal(1387876).at(4).as<unsigned int>().value();
+					int resotreValue = scriptGlobal(939452).at(5526).as<int>().value();
+
+					scriptGlobal(1387876).at(4).as<unsigned int>() = m_dStat.front().first;
+					scriptGlobal(939452).at(5526).as<int>() = m_dStat.front().second;
+					scriptGlobal(1377170).at(1139).as<int>() = -1;
+					Sleep(1000);
+					scriptGlobal(1387876).at(4).as<unsigned int>() = resotreHash;
+					scriptGlobal(939452).at(5526).as<int>() = resotreValue;
 					m_dStat.pop_front();
 				}
-				else
+				else if (g_pD3D9Render->m_bMBShowing)
 				{
 					g_pD3D9Render->m_bMBShowing = false;
 				}
@@ -2291,9 +2279,43 @@ void hack::disableThePhone(feat* feature)
 	return;
 }
 
+void hack::antiKickToSP(feat* feature)
+{
+	static const ptrdiff_t offests[] = { 6,16,20,21,22,23,24,52,327,369,479,483,489,491,529,533,566,578,591,609,610,611,616,618,633,634,637,643,644,645,647,693,722,733,739,749,771 };
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			for (auto index : offests) {
+				scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>() = 0;
+			}
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	for (auto index : offests) {
+		if (scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>().value() != 1)
+			scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>() = 1;
+	}
+
+	return;
+}
+
+void hack::antiApartmentTp(feat* feature)
+{
+	blockScriptEvents(feature, 533);
+	return;
+}
+
 void hack::antiRemoteBounty(feat* feature)
 {
 	blockScriptEvents(feature, 70);
+	return;
+}
+
+void hack::antiWeatherControl(feat* feature)
+{
+	blockScriptEvents(feature, 17);
 	return;
 }
 
@@ -2318,6 +2340,9 @@ void hack::about(float* arg)
 		break;
 	case 1:
 		WinExec("explorer.exe https://github.com/AmazingPP/subVerison_GTAV_Hack/releases", SW_NORMAL);
+		break;
+	case 2:
+		WinExec("explorer.exe https://github.com/AmazingPP/subVerison_GTAV_Hack/blob/master/README.md#%E6%8D%90%E8%B5%A0", SW_NORMAL);
 		break;
 	default:
 		break;

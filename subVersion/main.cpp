@@ -305,8 +305,16 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_G_DISABLE_THE_PHONE] = g_pSettings->addFeature(-1, olService, L"屏蔽来电", feat_toggle, "disableThePhone");
 	g_iFeature[FEATURE_G_PASSIVE_CD] = g_pSettings->addFeature(-1, olService, L"杀人后被动无冷却", feat_toggle, "removePassiveModeCD");
 	g_iFeature[FEATURE_G_SEEL_NON_PUB] = g_pSettings->addFeature(-1, olService, L"非公开战局运货", feat_toggle, "allowSellOnNonPublic");
+	int protection = g_pSettings->addFeature(4, -1, L"防护 >>", feat_parent);
+	g_iFeature[FEATURE_G_ANTI_KICK] = g_pSettings->addFeature(-1, protection, L"踢出防护", feat_toggle, "antiKickToSP");
+	g_iFeature[FEATURE_G_ANTI_TP] = g_pSettings->addFeature(-1, protection, L"公寓传送防护", feat_toggle, "antiApartmentTp");
+	g_iFeature[FEATURE_G_ANTI_BOUNTY] = g_pSettings->addFeature(-1, protection, L"悬赏防护", feat_toggle, "antiRemoteBounty");
+	g_iFeature[FEATURE_G_ANTI_WEATHER] = g_pSettings->addFeature(-1, protection, L"天气控制防护", feat_toggle, "antiWeatherControl");
+	g_iFeature[FEATURE_G_ANTI_VEH_KICK] = g_pSettings->addFeature(-1, protection, L"载具踢出防护", feat_toggle, "antiRemoteVehicleKick");
+	g_iFeature[FEATURE_G_ANTI_SEND_MISSION] = g_pSettings->addFeature(-1, protection, L"强制进任务防护", feat_toggle, "antiRemoteForceMission");
 	addFeature(4, -1, L"GitHub - 关于", feat_btn, &hack::about, 0.f);
 	addFeature(4, -1, L"检查更新", feat_btn, &hack::about, 1.f);
+	addFeature(4, -1, L"捐赠 - 为我更好的开发提供动力", feat_btn, &hack::about, 2.f);
 
 
 	g_pSettings->setActiveCat(0);			//this needs to be called so we can fill the current feature buffer
@@ -580,6 +588,12 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->disableThePhone(g_pSettings->getFeature(g_iFeature[FEATURE_G_DISABLE_THE_PHONE]));
 				g_pHack->removePassiveModeCooldown(g_pSettings->getFeature(g_iFeature[FEATURE_G_PASSIVE_CD]));
 				g_pHack->allowSellOnNonPublic(g_pSettings->getFeature(g_iFeature[FEATURE_G_SEEL_NON_PUB]));
+				g_pHack->antiKickToSP(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_KICK]));
+				g_pHack->antiApartmentTp(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_TP]));
+				g_pHack->antiRemoteBounty(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_BOUNTY]));
+				g_pHack->antiWeatherControl(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_WEATHER]));
+				g_pHack->antiRemoteVehicleKick(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_VEH_KICK]));
+				g_pHack->antiRemoteForceMission(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_SEND_MISSION]));
 				g_pHack->consumeStatQueue();
 			}
 

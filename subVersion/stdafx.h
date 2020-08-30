@@ -17,9 +17,6 @@
     with subVersion GTA:O SC External Hack.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//#define __SC_VERSION__
-//#define __STEAM_VERSION__
-
 #ifndef STDAFX_H
 #define STDAFX_H
 
@@ -195,7 +192,7 @@
 
 //globals
 #define GLOBAL_TUNEABLES		262145
-#define GLOBAL_VEHICLE_HASH		2460715
+#define GLOBAL_CREATE_VEHICLE		2460715
 #define GLOBAL_MERRYWEATHER		2537071
 #define GLOBAL_BLOCK_SCRIPT_EVENTS	1391799
 #define GLOBAL_BUSINESS			1590535
@@ -273,6 +270,12 @@
 #define FEATURE_G_DISABLE_THE_PHONE	0x47
 #define FEATURE_G_PASSIVE_CD		0x48
 #define FEATURE_G_SEEL_NON_PUB		0x49
+#define FEATURE_G_ANTI_KICK			0x4A
+#define FEATURE_G_ANTI_TP			0x4B
+#define FEATURE_G_ANTI_BOUNTY		0x4C
+#define FEATURE_G_ANTI_WEATHER		0x4D
+#define FEATURE_G_ANTI_VEH_KICK		0x4E
+#define FEATURE_G_ANTI_SEND_MISSION 0x4F
 
 static std::wstring StringToWString(const std::string& str) {
 	int num = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
@@ -281,6 +284,20 @@ static std::wstring StringToWString(const std::string& str) {
 	std::wstring w_str(wide);
 	delete[] wide;
 	return w_str;
+}
+
+static unsigned int joaat(std::string input)
+{
+	unsigned int num1 = 0U;
+	for (char c : input)
+	{
+		unsigned int num2 = num1 + (unsigned int)tolower(c);
+		unsigned int num3 = num2 + (num2 << 10);
+		num1 = num3 ^ num3 >> 6;
+	}
+	unsigned int num4 = num1 + (num1 << 3);
+	unsigned int num5 = num4 ^ num4 >> 11;
+	return num5 + (num5 << 15);
 }
 
 void	killProgram	();

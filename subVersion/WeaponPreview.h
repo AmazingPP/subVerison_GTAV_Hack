@@ -8,7 +8,7 @@ struct WeaponPreview {
 	char* Model;
 };
 
-static std::vector<WeaponPreview> Weapons{
+static const std::vector<WeaponPreview> Weapons{
 	{L"Advancedrifle", "weapon_advancedrifle", "pickup_weapon_advancedrifle", "w_ar_advancedrifle" },
 	{L"Appistol","weapon_appistol","pickup_weapon_appistol","w_pi_appistol" },
 	{L"Assaultrifle","weapon_assaultrifle","pickup_weapon_assaultrifle","w_ar_assaultrifle" },

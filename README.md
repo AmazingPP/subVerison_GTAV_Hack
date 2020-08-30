@@ -22,6 +22,7 @@ subVerison重置版——GTAV线上外置修改器
 - [相关仓库](#相关仓库)
 - [维护者](#维护者)
 - [使用许可](#使用许可)
+- [捐赠](#捐赠)
 
 ## 背景
 
@@ -228,3 +229,13 @@ F8       | 补满所有武器弹药
 ## 使用许可
 
 [GPL-3.0](LICENSE) © AmazingPP
+
+
+## 捐赠
+感谢您使用 `subVersion` 
+
+感谢您的捐赠，它将给予我动力，更专注于 `subVersion` 的后续开发。
+
+再次感谢您的支持。
+
+![Alt text](https://github.com/AmazingPP/subVerison_GTAV_Hack/edit/master/Doate/QRCode.jpg)

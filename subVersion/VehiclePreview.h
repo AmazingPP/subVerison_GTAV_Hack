@@ -52,7 +52,7 @@ struct VehiclePreview {
 	VehicleModValues VMod;
 };
 
-static std::vector<VehiclePreview>  SummerDLC{
+static const std::vector<VehiclePreview>  SummerDLC{
 { L"毕福 俱乐部", "CLUB", VehicleModValues{ 10,8,5,2,9,6,5,8,2,6,5,4,3,3,58,4,5,48,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14 }},
 { L"非凡 艳妇D10", "COQUETTE4", VehicleModValues{ 8,5,4,3,6,3,3,6,0,0,3,4,3,3,58,4,5,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10 }},
 { L"英庞提 比特公爵", "DUKES3", VehicleModValues{ 7,10,3,4,9,8,4,12,4,2,26,4,3,3,58,4,5,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13 }},
@@ -70,7 +70,7 @@ static std::vector<VehiclePreview>  SummerDLC{
 { L"冒险家 游侠经典四驱车", "YOUGA3", VehicleModValues{ 8,4,6,5,6,1,7,9,0,4,3,4,3,3,58,4,5,36,0,0,0,15,0,4,0,7,1,16,0,0,0,8,0,6,0,0,5,1,5,6,4,3,16 }}
 };
 
-static std::vector<VehiclePreview> Super{
+static const std::vector<VehiclePreview> Super{
 { L"菲斯特 811", "Pfister811", VehicleModValues{ 1,5,1,2,3,0,0,0,0,0,1,4,3,3,58,4,5,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"特卢菲 灵蛇", "Adder", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"傲弗拉 独裁者", "autarch", VehicleModValues{ 16,11,2,4,7,0,0,8,1,5,0,4,3,3,58,4,5,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -121,7 +121,7 @@ static std::vector<VehiclePreview> Super{
 { L"佩嘉西 佐卢索", "zorrusso", VehicleModValues{ 5,4,0,0,6,0,2,3,0,0,1,4,3,3,58,0,5,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10 }}
 };
 
-static std::vector<VehiclePreview> Sports{
+static const std::vector<VehiclePreview> Sports{
 { L"亚班尼 爱快", "Alpha", VehicleModValues{ 4,1,0,1,2,0,0,2,0,0,0,4,3,3,58,4,5,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"冒险家 女妖", "Banshee", VehicleModValues{ 3,1,0,0,2,0,0,2,0,0,0,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"丁卡 小型旅行家", "Blista2", VehicleModValues{ 3,0,0,1,3,1,0,2,0,0,1,4,3,3,58,4,5,48,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -199,7 +199,7 @@ static std::vector<VehiclePreview> Sports{
 { L"爱尼仕 梦魇", "ZR3803", VehicleModValues{ 6,1,1,0,2,3,0,4,3,5,0,4,3,4,58,0,5,36,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,4,3,4,1,1,2,0,0,4 }},
 { L"爱尼仕 末日", "ZR380", VehicleModValues{ 6,1,1,0,2,3,0,5,3,5,0,4,3,4,58,0,5,36,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,4,3,4,1,1,2,0,0,4 }}
 };
-static std::vector<VehiclePreview> SportsClassics{
+static const std::vector<VehiclePreview> SportsClassics{
 { L"欧斯洛 炽焰", "Ardent", VehicleModValues{ 3,5,1,0,1,0,0,6,2,0,6,4,3,4,58,3,5,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40 }},
 { L"兰帕达提 佳士可", "casco", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"卢恩 切布列克", "cheburek", VehicleModValues{ 9,8,4,2,0,0,2,8,2,0,7,4,3,3,58,5,5,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10 }},
@@ -244,7 +244,7 @@ static std::vector<VehiclePreview> SportsClassics{
 { L"卡林 190z", "z190", VehicleModValues{ 21,16,14,18,14,12,11,17,9,9,12,4,3,3,58,3,5,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10 }},
 { L"绝品 经典锡安", "zion3", VehicleModValues{ 8,7,3,10,5,3,2,8,3,2,5,4,3,4,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10 }}
 };
-static std::vector<VehiclePreview> Coupes{
+static const std::vector<VehiclePreview> Coupes{
 { L"埃努斯 至尊慧眼", "cogcabrio", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"浪子 典范", "Exemplar", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"欧斯洛 F620", "F620", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -260,7 +260,7 @@ static std::vector<VehiclePreview> Coupes{
 { L"绝品 锡安", "Zion", VehicleModValues{ 3,0,0,0,4,1,0,1,0,0,1,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"绝品 锡安 敞篷版", "Zion2", VehicleModValues{ 3,0,0,0,4,1,0,1,0,0,0,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<VehiclePreview> Muscle{
+static const std::vector<VehiclePreview> Muscle{
 { L"威皮 刀片", "Blade", VehicleModValues{ 2,1,1,0,1,1,1,4,0,0,0,4,3,3,58,4,5,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"英庞提 灭世暴徒 损坏穿模版", "ruiner3", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"亚班尼 风流海盗 定制版", "Buccaneer2", VehicleModValues{ 0,1,2,0,1,0,1,4,1,0,0,4,3,3,58,0,5,36,4,13,16,12,45,0,14,0,0,16,15,22,4,7,4,5,4,0,0,0,0,2,0,0,9 }},
@@ -330,7 +330,7 @@ static std::vector<VehiclePreview> Muscle{
 { L"绝致 优胜美地", "yosemite", VehicleModValues{ 10,11,1,11,0,3,4,9,0,0,4,4,3,3,58,4,5,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10 }},
 { L"绝致 甩尾优胜美地", "yosemite2", VehicleModValues{ 9,11,1,11,1,3,4,5,1,0,4,4,3,3,58,4,5,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10 }}
 };
-static std::vector<VehiclePreview> Offroad{
+static const std::vector<VehiclePreview> Offroad{
 { L"毕福 沙丘征服者", "bfinjection", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"毕福 必浮塔", "Bifta", VehicleModValues{ 3,0,0,1,3,1,0,0,0,0,2,4,3,3,58,0,5,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"长崎 (崔佛所有)", "Blazer3", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -390,7 +390,7 @@ static std::vector<VehiclePreview> Offroad{
 { L"卢恩 萨巴", "Zhaba", VehicleModValues{ 6,3,3,8,9,3,6,0,2,2,6,4,3,2,58,0,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,30 }},
 
 };
-static std::vector<VehiclePreview> Motorcycles{
+static const std::vector<VehiclePreview> Motorcycles{
 { L"丁卡 街头恶魔", "Akuma", VehicleModValues{ 0,0,0,0,2,0,0,0,0,0,0,4,3,3,58,0,5,72,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"LCC 阿瓦鲁斯", "Avarus", VehicleModValues{ 12,2,2,8,3,3,1,0,1,0,5,4,3,3,58,0,5,72,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18 }},
 { L"长崎 BF400", "BF400", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,0,5,72,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 }},
@@ -445,7 +445,7 @@ static std::vector<VehiclePreview> Motorcycles{
 { L"西部 碎尸者", "ZOMBIEB", VehicleModValues{ 11,4,2,9,8,3,0,4,8,0,7,4,3,3,58,0,5,72,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18 }},
 { L"西部 鞭尸者", "ZOMBIEA", VehicleModValues{ 11,4,2,9,8,3,0,4,8,0,7,4,3,3,58,0,5,72,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18 }},
 };
-static std::vector<VehiclePreview> Military{
+static const std::vector<VehiclePreview> Military{
 { L"HVY APC", "apc", VehicleModValues{ 0,0,0,0,0,0,0,0,0,1,1,4,3,3,58,0,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40 }},
 { L"冯·伏厄 防空拖车", "Trailersmall2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,2,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40 }},
 { L"地霸王", "Barracks3", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -462,7 +462,7 @@ static std::vector<VehiclePreview> Military{
 { L"巨象 推进者", "thruster", VehicleModValues{ 0,2,0,0,1,0,0,0,0,0,2,4,3,0,0,0,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40 }},
 { L"HVY 拖车型地霸王", "Barracks2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 };
-static std::vector<VehiclePreview> Emergency{
+static const std::vector<VehiclePreview> Emergency{
 { L"救护车", "Ambulance", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"FIB 公务车", "Fbi", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"消防车", "Firetruk", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -483,7 +483,7 @@ static std::vector<VehiclePreview> Emergency{
 { L"威皮 警用SUV", "Sheriff2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"威皮 无标志巡逻车", "Police4", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<VehiclePreview> Service{
+static const std::vector<VehiclePreview> Service{
 { L"机场巴士", "Airbus", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"MTL 布里凯德", "Brickade", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"城市巴士", "Bus", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -497,7 +497,7 @@ static std::vector<VehiclePreview> Service{
 { L"垃圾大王", "Trash", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"MTL 拓荒者", "Wastelander", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<VehiclePreview> Sedans{
+static const std::vector<VehiclePreview> Sedans{
 { L"绝致 海致 (雪地版)", "Asea2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,48,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"绝致 海致", "Asea", VehicleModValues{ 1,4,0,0,1,0,0,3,1,1,2,4,3,3,58,4,5,48,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"卡林 爱硕普", "Asterope", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -529,7 +529,7 @@ static std::vector<VehiclePreview> Sedans{
 { L"福狮 守护星", "Warrener", VehicleModValues{ 4,3,2,2,4,1,4,2,2,0,0,4,3,3,58,4,5,48,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"亚班尼 华盛顿", "Washington", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<VehiclePreview> Industrial{
+static const std::vector<VehiclePreview> Industrial{
 { L"HVY 推土机", "Bulldozer", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"HVY 钻洞机", "Cutter", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"码头装卸车", "Handler", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -542,7 +542,7 @@ static std::vector<VehiclePreview> Industrial{
 { L"威霸 工地倾卸车 (单轮款)", "Tiptruck", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"威霸 工地倾卸车", "Tiptruck2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<VehiclePreview> Compacts{
+static const std::vector<VehiclePreview> Compacts{
 { L"麦斯威尔 阿斯波", "asbo", VehicleModValues{ 15,6,0,12,8,4,2,11,4,4,6,4,3,3,58,4,5,48,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10 }},
 { L"丁卡 旅行家", "Blista", VehicleModValues{ 0,1,1,1,1,0,0,1,0,0,0,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"卡林 爱快名人油电车 (FlyUS)", "Dilettante2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,0,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -558,7 +558,7 @@ static std::vector<VehiclePreview> Compacts{
 { L"绝致 狂想曲", "Rhapsody", VehicleModValues{ 1,1,0,0,3,0,0,3,3,0,0,4,3,3,58,4,5,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"威尼 天威", "Issi2", VehicleModValues{ 0,1,1,1,1,0,0,1,0,0,0,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<VehiclePreview> Commercial{
+static const std::vector<VehiclePreview> Commercial{
 { L"威皮 班森", "Benson", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"MTL 科幻地狱犬", "CERBERUS2", VehicleModValues{ 0,0,3,0,7,3,7,5,0,5,1,4,3,4,58,0,5,50,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,4,3,6,1,0,0,0,0,18 }},
 { L"MTL 梦魇地狱犬", "CERBERUS3", VehicleModValues{ 0,0,3,0,11,3,7,5,0,5,1,4,3,4,58,0,5,50,0,0,0,0,0,0,0,0,0,0,0,10,0,0,0,0,4,3,6,1,0,0,0,0,4 }},
@@ -580,7 +580,7 @@ static std::vector<VehiclePreview> Commercial{
 { L"威霸 拦截者", "Stockade", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"贝飞特 惊骇位元", "Terbyte", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<VehiclePreview> Planes {
+static const std::vector<VehiclePreview> Planes {
 { L"白金汉 阿尔法-Z1", "alphaz1", VehicleModValues{ 0,2,0,0,0,0,0,0,0,0,0,4,3,0,0,0,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8 }},
 { L"巨象 复仇者 螺旋桨展开", "avenger", VehicleModValues{ 0,2,0,0,0,0,0,0,0,4,2,4,3,0,0,0,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40 }},
 { L"巨象 复仇者 螺旋桨收起", "avenger2", VehicleModValues{ 0,2,0,0,0,0,0,0,0,4,2,4,3,0,0,0,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40 }},
@@ -620,7 +620,7 @@ static std::vector<VehiclePreview> Planes {
 { L"白金汉 威斯特拉", "Vestra", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"沃拉托 (炸弹投放)", "volatol", VehicleModValues{ 0,2,0,0,0,0,0,0,0,4,0,4,3,0,0,0,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10 }}
 };
-static std::vector<VehiclePreview> Utility {
+static const std::vector<VehiclePreview> Utility {
 { L"机场拖车", "Airtug", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"军用平板挂车 (空)", "Armytrailer", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"军用平板挂车 (附带钻头车)", "Armytrailer2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -665,7 +665,7 @@ static std::vector<VehiclePreview> Utility {
 { L"威皮 沙德勒 (雪地版)", "Sadler2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"威皮 沙德勒", "Sadler", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<VehiclePreview> Helicopters {
+static const std::vector<VehiclePreview> Helicopters {
 { L"阿库拉", "akula", VehicleModValues{ 0,0,0,0,0,2,0,0,0,4,1,4,3,0,0,0,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40 }},
 { L"歼灭者直升机", "Annihilator", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"长崎 兀鹰攻击直升机", "Buzzard", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -691,7 +691,7 @@ static std::vector<VehiclePreview> Helicopters {
 { L"女武神 (装甲版)", "Valkyrie", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"白金汉 弗拉图斯", "Volatus", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<VehiclePreview> Vans {
+static const std::vector<VehiclePreview> Vans {
 { L"毕福 乘风 (破旧版)", "Surfer2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"毕福 乘风", "Surfer", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"冒险家 野牛 (带后备架)", "Bison2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -727,7 +727,7 @@ static std::vector<VehiclePreview> Vans {
 { L"冒险家 游侠 (经典)", "Youga2", VehicleModValues{ 1,0,0,1,1,1,0,0,0,0,1,4,3,3,58,4,5,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12 }},
 { L"冒险家 游侠", "Youga", VehicleModValues{ 0,3,0,0,1,1,0,1,0,0,2,4,3,3,58,3,5,48,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<VehiclePreview> Boats {
+static const std::vector<VehiclePreview> Boats {
 { L"长崎 小艇", "Dinghy", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"长崎 小艇 (附加光源)", "Dinghy2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"长崎 小艇 (抢劫用)", "Dinghy3", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -750,7 +750,7 @@ static std::vector<VehiclePreview> Boats {
 { L"诗津 烈阳号 (带扶手)", "Tropic2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"拖船", "Tug", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<VehiclePreview> Cycles {
+static const std::vector<VehiclePreview> Cycles {
 { L"BMX", "Bmx", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,72,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"巡航者", "Cruiser", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,72,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"极限耐力竞速自行车", "Tribike2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,72,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -759,7 +759,7 @@ static std::vector<VehiclePreview> Cycles {
 { L"特莱塞可竞速自行车", "Tribike3", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,72,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"惠比特竞速自行车", "Tribike", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,72,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<VehiclePreview> Trains {
+static const std::vector<VehiclePreview> Trains {
 { L"缆车", "Cablecar", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"火车挂车", "Freightcont1", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"火车挂车带箱", "Freightcont2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -769,7 +769,7 @@ static std::vector<VehiclePreview> Trains {
 { L"城市电车 (半个)", "Metrotrain", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"油罐火车挂车", "Tankercar", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<VehiclePreview> Trailer {
+static const std::vector<VehiclePreview> Trailer {
 { L"军用坦克", "Armytanker", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"军用拖车(空)", "Armytrailer", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"军用拖车(带挂车)", "Armytrailer2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -795,7 +795,7 @@ static std::vector<VehiclePreview> Trailer {
 { L"平板拖车2", "Trflat", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"挂车厢 (Fame or Shame)", "Tvtrailer", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<VehiclePreview> SUV {
+static const std::vector<VehiclePreview> SUV {
 { L"悠游 行者 (CEO)", "Baller6", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"悠游 行者 2", "Baller2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"悠游 行者 LE (Armored)", "Baller5", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
@@ -828,7 +828,7 @@ static std::vector<VehiclePreview> SUV {
 { L"贝飞特 XLS(装甲版)", "Xls2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"贝飞特 XLS", "Xls", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static std::vector<std::pair<std::wstring, std::vector<VehiclePreview>>> vehiclePreview {
+static const std::vector<std::pair<std::wstring, std::vector<VehiclePreview>>> vehiclePreview {
     {L"夏日DLC >>",SummerDLC},
 	{L"超跑 >>",Super},
 	{L"跑车 >>",Sports},
@@ -854,18 +854,3 @@ static std::vector<std::pair<std::wstring, std::vector<VehiclePreview>>> vehicle
 	{L"拖车 >>",Trailer},
 	{L"SUV >>",SUV},
 };
-
-
-static unsigned int joaat(std::string input)
-{
-	unsigned int num1 = 0U;
-	for (char c : input)
-	{
-		unsigned int num2 = num1 + (unsigned int)tolower(c);
-		unsigned int num3 = num2 + (num2 << 10);
-		num1 = num3 ^ num3 >> 6;
-	}
-	unsigned int num4 = num1 + (num1 << 3);
-	unsigned int num5 = num4 ^ num4 >> 11;
-	return num5 + (num5 << 15);
-}
