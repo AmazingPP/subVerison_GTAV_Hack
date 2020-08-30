@@ -146,8 +146,8 @@
 #define OFFSET_WEAPON_AMMOINFO_CUR_2	0x00			//ptr tr lvl 2, ptr 1
 #define OFFSET_WEAPON_AMMOINFO_CURAMMO	0x18			//offset to cur ammo
 #define OFFSET_WEAPON_AMMOINFO_TYPE		0x0C			//offset to projectile type?
-#define OFFSET_WEAPON_SPREAD			0x7C			//float set to 0
-#define OFFSET_WEAPON_BULLET_DMG		0xBC			//float times 10 (so when 0, it will stay 0)
+#define OFFSET_WEAPON_SPREAD			0x74			//float set to 0
+#define OFFSET_WEAPON_BULLET_DMG		0xB0			//float times 10 (so when 0, it will stay 0)
 #define OFFSET_WEAPON_RELOAD_MULTIPLIER	0x134			//float times 10
 #define OFFSET_WEAPON_RECOIL			0x2F4			//float set to 0
 #define OFFSET_WEAPON_MODEL_HASH		0x14
