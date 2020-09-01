@@ -5,13 +5,29 @@ template<class T>
 class prtHandler
 {
 public:
-	prtHandler(DWORD_PTR ptr);
+	prtHandler<T>(DWORD_PTR ptr);
 
 	T value();
 
-	template<class T>
-	void operator=(const T value) {
+	T operator=(const T value) {
 		g_pMemMan->writeMem(m_ptr, value);
+		return value;
+	}
+
+	constexpr bool operator==(const T other) noexcept {
+		return other == this->value();
+	}
+
+	constexpr bool operator!=(const T other) noexcept {
+		return other != this->value();
+	}
+
+	constexpr bool operator>(const T other) noexcept {
+		return other > this->value();
+	}
+
+	constexpr bool operator<(const T other) noexcept {
+		return other < this->value();
 	}
 
 private:

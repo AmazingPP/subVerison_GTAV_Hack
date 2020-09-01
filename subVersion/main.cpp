@@ -292,8 +292,12 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_T_BUNKER_RESEARCH] = g_pSettings->addFeature(-1, unlock, L"解锁所有地堡研究(临时)", feat_toggle, "BunkerResearch");
 	int merryweather = g_pSettings->addFeature(-1, olService, L"梅利威瑟 >>", feat_parent);
 	int dropWeapon = g_pSettings->addFeature(-1, olService, L"获得武器 >>", feat_parent);
-	for (size_t i = 0; i < Weapons.size(); i++)
-		addFeature(-1, dropWeapon, Weapons[i].Name, feat_btn, &hack::selfDropWeapon, i);
+	for (size_t i = 0; i < weaponPreview.size(); i++)
+	{
+		int temp = g_pSettings->addFeature(-1, dropWeapon, weaponPreview[i].first, feat_parent);
+		for (size_t j = 0; j < weaponPreview[i].second.size(); j++)
+			addFeature(-1, temp, weaponPreview[i].second[j].Name, feat_btn, &hack::selfDropWeapon, i * 1000 + j);
+	}
 	addFeature(-1, merryweather, L"牛鲨睾酮空投", feat_btn, &hack::bullSharkDrop, -1.f);
 	addFeature(-1, merryweather, L"弹药空投", feat_btn, &hack::ammoDrop, -1.f);
 	addFeature(-1, merryweather, L"无畏战士空投", feat_btn, &hack::miniGunDrop, -1.f);
@@ -301,11 +305,13 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	addFeature(-1, merryweather, L"直升机接送", feat_btn, &hack::heliTaxi, -1.f);
 	addFeature(-1, merryweather, L"支援直升机", feat_btn, &hack::backupHeli, -1.f);
 	addFeature(-1, merryweather, L"空袭", feat_btn, &hack::airstrike, -1.f);
-	addFeature(-1, olService, L"使用牛鲨睾酮", feat_btn, &hack::instantBullShark, -1.f);
+	g_iFeature[FEATURE_G_BULL_SHARK] = g_pSettings->addFeature(-1, olService, L"牛鲨睾酮", feat_toggle, "bullShark");
+	g_iFeature[FEATURE_G_OFF_RADAR] = g_pSettings->addFeature(-1, olService, L"雷达隐匿", feat_toggle, "offRadar");
 	g_iFeature[FEATURE_G_DISABLE_THE_PHONE] = g_pSettings->addFeature(-1, olService, L"屏蔽来电", feat_toggle, "disableThePhone");
 	g_iFeature[FEATURE_G_PASSIVE_CD] = g_pSettings->addFeature(-1, olService, L"杀人后被动无冷却", feat_toggle, "removePassiveModeCD");
 	g_iFeature[FEATURE_G_SEEL_NON_PUB] = g_pSettings->addFeature(-1, olService, L"非公开战局运货", feat_toggle, "allowSellOnNonPublic");
 	int protection = g_pSettings->addFeature(4, -1, L"防护 >>", feat_parent);
+	g_iFeature[FEATURE_G_ANTI_CEO_KICK] = g_pSettings->addFeature(-1, protection, L"CEO踢出防护", feat_toggle, "antiCEOKick");
 	g_iFeature[FEATURE_G_ANTI_KICK] = g_pSettings->addFeature(-1, protection, L"踢出防护", feat_toggle, "antiKickToSP");
 	g_iFeature[FEATURE_G_ANTI_TP] = g_pSettings->addFeature(-1, protection, L"公寓传送防护", feat_toggle, "antiApartmentTp");
 	g_iFeature[FEATURE_G_ANTI_BOUNTY] = g_pSettings->addFeature(-1, protection, L"悬赏防护", feat_toggle, "antiRemoteBounty");
@@ -588,12 +594,15 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->disableThePhone(g_pSettings->getFeature(g_iFeature[FEATURE_G_DISABLE_THE_PHONE]));
 				g_pHack->removePassiveModeCooldown(g_pSettings->getFeature(g_iFeature[FEATURE_G_PASSIVE_CD]));
 				g_pHack->allowSellOnNonPublic(g_pSettings->getFeature(g_iFeature[FEATURE_G_SEEL_NON_PUB]));
+				g_pHack->antiCEOKick(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_CEO_KICK]));
 				g_pHack->antiKickToSP(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_KICK]));
 				g_pHack->antiApartmentTp(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_TP]));
 				g_pHack->antiRemoteBounty(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_BOUNTY]));
 				g_pHack->antiWeatherControl(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_WEATHER]));
 				g_pHack->antiRemoteVehicleKick(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_VEH_KICK]));
 				g_pHack->antiRemoteForceMission(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_SEND_MISSION]));
+				g_pHack->offRadar(g_pSettings->getFeature(g_iFeature[FEATURE_G_OFF_RADAR]));
+				g_pHack->instantBullShark(g_pSettings->getFeature(g_iFeature[FEATURE_G_BULL_SHARK]));
 				g_pHack->consumeStatQueue();
 			}
 

@@ -950,7 +950,7 @@ void hack::unlockClothes(float* arg)
 
 void hack::intoPV(float* arg)
 {
-	if (scriptGlobal(2537071).at(296).as<int>().value() != -1)
+	if (scriptGlobal(2537071).at(296).as<int>() != -1)
 		scriptGlobal(2409287).at(8).as<int>() = 1;
 }
 
@@ -1021,6 +1021,10 @@ void hack::spawnVehicle(float* arg)
 				{
 					scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(10 + i).as<BYTE>() = pTemp[i];
 				}
+				else if (pTemp[42] > 0 && i == 42)
+				{
+					scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(10 + 6 + i).as<BYTE>() = rand() % pTemp[i] + 1;
+				}
 				else if (i > 22)
 				{
 					scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(10 + 6 + i).as<BYTE>() = pTemp[i];
@@ -1044,9 +1048,11 @@ void hack::spawnVehicle(float* arg)
 
 void hack::selfDropWeapon(float* arg)
 {
-	int index = (int)*arg;
+	int weaponTypeIndex = (int)*arg / 1000;
+	int weaponIndex = (int)*arg % 1000;
+	auto weapon = weaponPreview[weaponTypeIndex].second[weaponIndex];
 	m_player.getPos();
-	createAmbientPickup(joaat(Weapons[index].Pickup), m_player.m_v3Pos.x, m_player.m_v3Pos.y, m_player.m_v3Pos.z + 2, 9999, joaat(Weapons[index].Model));
+	createAmbientPickup(joaat(weapon.Pickup), m_player.m_v3Pos.x, m_player.m_v3Pos.y, m_player.m_v3Pos.z + 2, 9999, joaat("prop_cash_pile_01"));
 }
 
 void hack::selfDropMoney(feat* feature)
@@ -1059,7 +1065,7 @@ void hack::selfDropMoney(feat* feature)
 			{
 				if (feature->m_bOn)
 				{
-					if (scriptGlobal(GLOBAL_TUNEABLES).at(167).as<int>().value() != 10000)
+					if (scriptGlobal(GLOBAL_TUNEABLES).at(167).as<int>() != 10000)
 						scriptGlobal(GLOBAL_TUNEABLES).at(167).as<int>() = 10000;
 
 					m_player.getPos();
@@ -1086,6 +1092,11 @@ void hack::callMerryweather(std::ptrdiff_t index)
 int hack::getPlayerId()
 {
 	return scriptGlobal(2439138).as<int>().value();
+}
+
+int hack::getNetworkTime()
+{
+	return scriptGlobal(1312585).at(11).as<int>().value();
 }
 
 void hack::setCasinoHeistCut(int playerIndex, int cut)
@@ -1141,7 +1152,7 @@ void hack::blockScriptEvents(feat* feature, std::ptrdiff_t index)
 		}
 		return;
 	}
-	if (scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>().value() != 1)
+	if (scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>() != 1)
 		scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>() = 1;
 
 	return;
@@ -2198,9 +2209,9 @@ void hack::removePassiveModeCooldown(feat* feature)
 		}
 		return;
 	}
-	if (scriptGlobal(2537071).at(4393).as<int>().value() != 0)
+	if (scriptGlobal(2537071).at(4393).as<int>() != 0)
 		scriptGlobal(2537071).at(4393).as<int>() = 0;
-	if (scriptGlobal(1696236).as<int>().value() != 0)
+	if (scriptGlobal(1696236).as<int>() != 0)
 		scriptGlobal(1696236).as<int>() = 0;
 
 	return;
@@ -2216,15 +2227,27 @@ void hack::allowSellOnNonPublic(feat* feature)
 		}
 		return;
 	}
-	if (scriptGlobal(2450632).at(644).as<int>().value() != 0)
+	if (scriptGlobal(2450632).at(644).as<int>() != 0)
 		scriptGlobal(2450632).at(644).as<int>() = 0;
 
 	return;
 }
 
-void hack::instantBullShark(float* arg)
+void hack::instantBullShark(feat* feature)
 {
-	scriptGlobal(2439138).at(3895).as<int>() = 5;
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			scriptGlobal(2439138).at(3895).as<int>() = 5;
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	if (scriptGlobal(2439138).at(3895).as<int>() == 0)
+		scriptGlobal(2439138).at(3895).as<int>() = 5;
+
+	return;
 }
 
 void hack::bullSharkDrop(float* arg)
@@ -2262,20 +2285,51 @@ void hack::airstrike(float* arg)
 	callMerryweather(4390);
 }
 
+void hack::offRadar(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			scriptGlobal(2425662).at(getPlayerId(), 421).at(200).as<int>() = 0;
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	if (scriptGlobal(2425662).at(getPlayerId(), 421).at(200).as<int>() == 0)
+	{
+		// Ghost organization
+		//scriptGlobal(2537071).at(4561).as<int>() = 22;
+		//scriptGlobal(262145).at(12674).as<int>() = 6000000;
+		scriptGlobal(2425662).at(getPlayerId(), 421).at(200).as<int>() = 1;
+		scriptGlobal(2439138).at(70).as<int>() = getNetworkTime();
+	}
+
+	return;
+}
+
 void hack::disableThePhone(feat* feature)
 {
 	if (!feature->m_bOn)
 	{
 		if (!feature->m_bRestored)
 		{
-			scriptGlobal(19486).at(1).as<int>() = 3;
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if (scriptGlobal(19486).at(1).as<int>().value() > 1)
-		scriptGlobal(19486).at(1).as<int>() = 1;
+	if (scriptGlobal(6671).as<int>() > 0)
+	{
+		scriptGlobal(2543673).at(37).as<int>() = 1;
+		scriptGlobal(6671).as<int>() = 0;
+	}
 
+	return;
+}
+
+void hack::antiCEOKick(feat* feature)
+{
+	blockScriptEvents(feature, 570);
 	return;
 }
 
@@ -2294,7 +2348,7 @@ void hack::antiKickToSP(feat* feature)
 		return;
 	}
 	for (auto index : offests) {
-		if (scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>().value() != 1)
+		if (scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>() != 1)
 			scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>() = 1;
 	}
 
@@ -2336,13 +2390,13 @@ void hack::about(float* arg)
 	switch ((int)*arg)
 	{
 	case 0:
-		WinExec("explorer.exe https://github.com/AmazingPP/subVerison_GTAV_Hack", SW_NORMAL);
+		WinExec("explorer.exe https://github.com/AmazingPP/subVerison_GTAV_Hack", SW_SHOW);
 		break;
 	case 1:
-		WinExec("explorer.exe https://github.com/AmazingPP/subVerison_GTAV_Hack/releases", SW_NORMAL);
+		WinExec("explorer.exe https://github.com/AmazingPP/subVerison_GTAV_Hack/releases", SW_SHOW);
 		break;
 	case 2:
-		WinExec("explorer.exe https://github.com/AmazingPP/subVerison_GTAV_Hack/blob/master/README.md#%E6%8D%90%E8%B5%A0", SW_NORMAL);
+		WinExec("explorer.exe https://github.com/AmazingPP/subVerison_GTAV_Hack/blob/master/README.md#%E6%8D%90%E8%B5%A0", SW_SHOW);
 		break;
 	default:
 		break;

@@ -11,7 +11,7 @@ public:
 	scriptGlobal at(std::ptrdiff_t index, std::size_t size);
 
 	template <typename T>
-	auto as()
+	prtHandler<T> as()
 	{
 		return prtHandler<T>(get());
 	}

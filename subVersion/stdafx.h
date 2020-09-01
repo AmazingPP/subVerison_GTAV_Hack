@@ -276,6 +276,9 @@
 #define FEATURE_G_ANTI_WEATHER		0x4D
 #define FEATURE_G_ANTI_VEH_KICK		0x4E
 #define FEATURE_G_ANTI_SEND_MISSION 0x4F
+#define FEATURE_G_OFF_RADAR			0x50
+#define FEATURE_G_BULL_SHARK		0x51
+#define FEATURE_G_ANTI_CEO_KICK		0x52
 
 static std::wstring StringToWString(const std::string& str) {
 	int num = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);

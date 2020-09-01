@@ -152,7 +152,7 @@ class hack : public trainer
 		void	tunableAntiIdleKick(feat* feature);
 		void	removePassiveModeCooldown(feat* feature);
 		void	allowSellOnNonPublic(feat* feature);
-		void	instantBullShark(float* arg);
+		void	instantBullShark(feat* feature);
 		void	bullSharkDrop(float* arg);
 		void	ammoDrop(float* arg);
 		void	miniGunDrop(float* arg);
@@ -160,7 +160,9 @@ class hack : public trainer
 		void	heliTaxi(float* arg);
 		void	backupHeli(float* arg);
 		void	airstrike(float* arg);
+		void	offRadar(feat* feature);
 		void	disableThePhone(feat* feature);
+		void	antiCEOKick(feat* feature);
 		void	antiKickToSP(feat* feature);
 		void	antiApartmentTp(feat* feature);
 		void	antiRemoteBounty(feat* feature);
@@ -190,6 +192,7 @@ class hack : public trainer
 		void	dStatPushBack(unsigned int hash, int value);
 		void	callMerryweather(std::ptrdiff_t index);
 		int		getPlayerId();
+		int		getNetworkTime();
 		void	setCasinoHeistCut(int playerIndex, int cut);
 		int		getCasinoHeistCut(int playerIndex);
 		void	createAmbientPickup(unsigned int pickupHash, float posX, float posY, float posZ, int value, unsigned int modelHash);
