@@ -392,4 +392,5 @@ F8       | 补满所有武器弹药
 
 再次感谢您的支持。
 
+[点击捐赠](https://www.zhaofupeng.com/zb_users/upload/2020/09/202009031609168443683.png)
 <img src="https://github.com/AmazingPP/subVerison_GTAV_Hack/blob/master/Donate/QRCode.jpg" width="30%" height="30%"/>
