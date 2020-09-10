@@ -279,6 +279,7 @@
 #define FEATURE_G_OFF_RADAR			0x50
 #define FEATURE_G_BULL_SHARK		0x51
 #define FEATURE_G_ANTI_CEO_KICK		0x52
+#define FEATURE_T_SUICIDE_CD		0x53
 
 static std::wstring StringToWString(const std::string& str) {
 	int num = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
@@ -308,6 +309,8 @@ DWORD	strToVk(std::string str);
 
 extern HWND		g_hWnd;
 extern int		g_iFeature[MAX_MENU_FEATURES];
+extern int		g_iIndex;
+extern int		g_iFeaturePlayerList[32];
 
 extern bool		g_bKillSwitch;
 extern bool		g_bKillRender;

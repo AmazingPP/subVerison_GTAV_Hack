@@ -538,6 +538,8 @@ featParent::~featParent() {}
 
 void	featParent::toggle()
 {
+	if (m_szName == L"Íæ¼ÒÁÐ±í >>")
+		g_pHack->renderPlayerList();
 	m_iActiveFeatureRet = g_pSettings->getActiveFeature();
 	m_iDisplayOffsetRet	= g_pSettings->getDisplayOffset();
 	g_pSettings->fillFeatureCurBuffer(this->m_iId, FFB_PARENT);

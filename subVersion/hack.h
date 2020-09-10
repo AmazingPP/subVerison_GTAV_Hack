@@ -74,7 +74,7 @@ class hack : public trainer
 		void	fillAmmo();
 		void    consumeStatQueue();
 		void	killAllNpc(float* arg);
-		void	renderPlayerList(int parent, int playerList[32]);
+		void	renderPlayerList();
 		void	setImpactExplosion(float* arg);
 		//void	fillAllAmmo(float* arg);
 		void	healVehicle(float* arg);
@@ -150,6 +150,7 @@ class hack : public trainer
 		void	tunableOrbitalCannonCooldown(feat* feature);
 		void	tunableBunkerResearch(feat* feature);
 		void	tunableAntiIdleKick(feat* feature);
+		void	removeSuicideCooldown(feat* feature);
 		void	removePassiveModeCooldown(feat* feature);
 		void	allowSellOnNonPublic(feat* feature);
 		void	instantBullShark(feat* feature);

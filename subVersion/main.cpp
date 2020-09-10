@@ -83,7 +83,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pCBMap		= new std::map<int, CallbackProxy<hack, float>*>;
 
 	LPCSTR	szWindowTitleTarget	= "Grand Theft Auto V";
-	LPCWSTR	szWindowTitle		= L"subVersion mAsk°重制版 v1.3.2";
+	LPCWSTR	szWindowTitle		= L"subVersion mAsk°重制版 v1.3.3";
 	g_pMemMan->setWindowName(szWindowTitleTarget);
 	g_pD3D9Render->m_szWindowTitle = szWindowTitle;
 
@@ -227,11 +227,9 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	int olService = g_pSettings->addFeature(4, -1, L"线上 >>", feat_parent);
 	addFeature(-1, olService, L"坐进个人载具", feat_btn, &hack::intoPV, -1.f);
 	g_iFeature[FEATURE_P_MONERY_DROP] = g_pSettings->addFeature(-1, olService, L"钱袋刷钱（10K）", feat_toggle, "moneyDrop");
-	//g_iFeature[FEATURE_P_PLAYER_LIST] = g_pSettings->addFeature(3, -1, "玩家列表 >>", feat_parent);
+	g_iFeature[FEATURE_P_PLAYER_LIST] = g_pSettings->addFeature(3, -1, L"玩家列表 >>", feat_parent);
 	//for (size_t i = 0; i < sizeof(g_iFeaturePlayerList)/sizeof(g_iFeaturePlayerList[0]); i++)
-	//{
-	//	g_iFeaturePlayerList[i] = g_pSettings->addFeature(-1, g_iFeature[FEATURE_P_PLAYER_LIST],"线上 >>", feat_parent);
-	//}
+	//	g_iFeaturePlayerList[i] = g_pSettings->addFeature(-1, g_iFeature[FEATURE_P_PLAYER_LIST], L"线上 >>", feat_parent);
 	int vehSpawn = g_pSettings->addFeature(-1, olService, L"刷车 >>", feat_parent);
 	for (size_t i = 0; i < vehiclePreview.size(); i++)
 	{
@@ -243,6 +241,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	int tunable = g_pSettings->addFeature(-1, olService, L"可调参数 >>", feat_parent);
 	g_iFeature[FEATURE_T_ANTI_IDLE_KICK] = g_pSettings->addFeature(-1, tunable, L"AFK反挂机踢出", feat_toggle, "AntiIdleKick");
 	g_iFeature[FEATURE_T_ORBITAL_CANNON] = g_pSettings->addFeature(-1, tunable, L"天基炮无冷却", feat_toggle, "OrbitalCannon");
+	g_iFeature[FEATURE_T_SUICIDE_CD] = g_pSettings->addFeature(-1, tunable, L"自杀无冷却", feat_toggle, "SuicideCD");
 	g_iFeature[FEATURE_T_RP_MP]			   = g_pSettings->addFeature(-1, tunable, L"RP倍数", feat_slider,"RP", 1.f, 1000.f , (float)1.f / 9.f);
 	g_iFeature[FEATURE_T_AP_MP]			   = g_pSettings->addFeature(-1, tunable, L"AP倍数", feat_slider, "AP", 1.f, 1000.f, (float)1.f / 9.f);
 	g_iFeature[FEATURE_T_MISSION_PAYOUT]   = g_pSettings->addFeature(-1, tunable, L"最小任务金额", feat_slider, "MinMissionPayout", 0.f, 100000.f);
@@ -603,10 +602,9 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->antiRemoteForceMission(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_SEND_MISSION]));
 				g_pHack->offRadar(g_pSettings->getFeature(g_iFeature[FEATURE_G_OFF_RADAR]));
 				g_pHack->instantBullShark(g_pSettings->getFeature(g_iFeature[FEATURE_G_BULL_SHARK]));
+				g_pHack->removeSuicideCooldown(g_pSettings->getFeature(g_iFeature[FEATURE_T_SUICIDE_CD]));
 				g_pHack->consumeStatQueue();
 			}
-
-			//g_pHack->renderPlayerList(g_iFeature[FEATURE_P_PLAYER_LIST], g_iFeaturePlayerList);
 		}
 		Sleep(1);
 	}

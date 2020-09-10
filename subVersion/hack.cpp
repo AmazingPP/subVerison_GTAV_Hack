@@ -1122,7 +1122,7 @@ void hack::createAmbientPickup(unsigned int pickupHash, float posX, float posY, 
 	if (m_unkModel.m_dwModelHash != modelHash)
 		m_unkModel.setModelHash(modelHash);
 
-	Sleep(100);
+	Sleep(150);
 	m_replayInterface.getCurPedNum();
 	for (size_t i = 0; i < m_replayInterface.dw_curPickUpNum; i++)
 	{
@@ -1214,11 +1214,11 @@ void hack::killAllNpc(float* arg)
 	}
 }
 
-void hack::renderPlayerList(int parent,int playerList[32])
+void hack::renderPlayerList()
 {
 	for (size_t i = 0; i < 32; i++)
 	{
-		g_pSettings->updataFeature(playerList[i], -1, parent, L"Íæ¼Ò" + std::to_wstring(i), feat_teleport,tp_static, -1336.f, -3044.f, -225.f);
+		g_pSettings->updataFeature(g_iFeaturePlayerList[i], -1, g_iFeature[FEATURE_P_PLAYER_LIST], L"Íæ¼Ò" + std::to_wstring(i), feat_teleport,tp_static, -1336.f, -3044.f, -225.f);
 	}
 }
 
@@ -2196,6 +2196,28 @@ void hack::tunableAntiIdleKick(feat* feature)
 		m_tunable.setAntiIdleKick3(2000000000);
 	if (m_tunable.m_dwAntiIdleKick4 != 2000000000)
 		m_tunable.setAntiIdleKick4(2000000000);
+	return;
+}
+
+void hack::removeSuicideCooldown(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			scriptGlobal(262145).at(27617).as<int>() = 300000;
+			scriptGlobal(262145).at(27618).as<int>() = 60000;
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	if (scriptGlobal(2537071).at(6599).as<int>() != -1)
+		scriptGlobal(2537071).at(6599).as<int>() = -1;
+	if (scriptGlobal(262145).at(27617).as<int>() != 0)
+		scriptGlobal(262145).at(27617).as<int>() = 0;
+	if (scriptGlobal(262145).at(27618).as<int>() != 0)
+		scriptGlobal(262145).at(27618).as<int>() = 0;
+
 	return;
 }
 
