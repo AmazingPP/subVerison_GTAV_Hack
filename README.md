@@ -36,7 +36,7 @@ subVerison重置版——GTAV线上外置修改器
 `subVersion` 是一款支持线上模式的外置修改器，带有d3d9实现的UI。
 
 ## 支持的版本
-[GTAV 1.51](https://www.rockstargames.com/zh/games/info/V)
+[GTAV 1.52](https://www.rockstargames.com/zh/games/info/V)
 
 线下及线上
 
