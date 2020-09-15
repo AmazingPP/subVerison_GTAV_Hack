@@ -46,7 +46,7 @@ long		ADDRESS_BLIP		= 0;
 long		ADDRESS_AMMO		= 0;
 long		ADDRESS_MAGAZINE	= 0;
 long		ADDRESS_TUNABLE		= 0;
-long		ADDRESS_WEAPON		= 0;
+long		ADDRESS_TRIGGER		= 0;
 long		ADDRESS_GLOBAL		= 0;
 long		ADDRESS_PLAYER_LIST = 0;
 long		ADDRESS_REPLAY_INTERFACE = 0;
@@ -83,7 +83,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pCBMap		= new std::map<int, CallbackProxy<hack, float>*>;
 
 	LPCSTR	szWindowTitleTarget	= "Grand Theft Auto V";
-	LPCWSTR	szWindowTitle		= L"subVersion mAsk°重制版 v1.3.3";
+	LPCWSTR	szWindowTitle		= L"subVersion mAsk°重制版 v1.3.4";
 	g_pMemMan->setWindowName(szWindowTitleTarget);
 	g_pD3D9Render->m_szWindowTitle = szWindowTitle;
 
@@ -100,9 +100,14 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_P_SUICIDE]			= addFeature(0, -1, L"自杀", feat_btn, &hack::suicide, -1.f);
 	g_iFeature[FEATURE_P_WANTED]			= g_pSettings->addFeature(0, -1, L"通缉等级", feat_slider, "wanted", 0.f, 5.f, .2f);
 	g_iFeature[FEATURE_P_NEVERWANTED]		= g_pSettings->addFeature(0, -1, L"永不通缉", feat_toggle, "neverWanted");
-	//addFeature(0, -1, "杀死所有NPC", feat_btn, &hack::killAllNpc, -1.f);
-	g_iFeature[FEATURE_P_ANTINPC]			= g_pSettings->addFeature(0, -1, L"反NPC", feat_toggle, "antiNpc");
-	g_iFeature[FEATURE_P_NPC_IGNORE]		= g_pSettings->addFeature(0, -1, L"NPC无视玩家", feat_toggle, "npcIgnore");
+	int npc = g_pSettings->addFeature(0, -1, L"NPC控制 >>", feat_parent);
+	addFeature(-1, npc, L"杀死所有NPC", feat_btn, &hack::killAllNpc, -1.f);
+	addFeature(-1, npc, L"杀死所有敌对NPC", feat_btn, &hack::killHostilityNpc, -1.f);
+	addFeature(-1, npc, L"摧毁所有敌对NPC的载具", feat_btn, &hack::killHostilityNpcVeh, -1.f);
+	addFeature(-1, npc, L"传送所有NPC到我", feat_btn, &hack::tpAllNpc, -1.f);
+	addFeature(-1, npc, L"传送所有敌对NPC到我", feat_btn, &hack::tpHostilityNpc, -1.f);
+	g_iFeature[FEATURE_P_ANTINPC]			= g_pSettings->addFeature(-1, npc, L"反NPC", feat_toggle, "antiNpc");
+	g_iFeature[FEATURE_P_NPC_IGNORE]		= g_pSettings->addFeature(-1, npc, L"NPC无视玩家", feat_toggle, "npcIgnore");
 	g_iFeature[FEATURE_P_RUNSPD]			= g_pSettings->addFeature(0, -1, L"奔跑速度", feat_slider, "runSpd", 1.f, 5.f);
 	g_iFeature[FEATURE_P_SWIMSPD]			= g_pSettings->addFeature(0, -1, L"游泳速度", feat_slider, "swimSpd", 1.f, 5.f);
 	g_iFeature[FEATURE_P_SUPER_PUNCH]		= g_pSettings->addFeature(0, -1, L"近战击退倍数", feat_slider, "superPunch", 0.f, 1000.f, (float)1.f / 10.f);
@@ -115,6 +120,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 
 	//g_iFeature[FEATURE_W_FILL_ALL_AMMO]		= addFeature(1, -1, "补满所有武器弹药", feat_btn, &hack::fillAllAmmo, -1.f);
 	g_iFeature[FEATURE_W_FILL_AMMO]			= addFeature(1, -1, L"补满当前武器弹药", feat_btn, &hack::fillAmmo, -1.f);
+	g_iFeature[FEATURE_W_TRIGGER_BOT]		= g_pSettings->addFeature(1, -1, L"自动射击", feat_toggle, "triggerBot");
 	g_iFeature[FEATURE_W_SPREAD]			= g_pSettings->addFeature(1, -1, L"无扩散", feat_toggle, "noSpread");
 	g_iFeature[FEATURE_W_RECOIL]			= g_pSettings->addFeature(1, -1, L"无后座", feat_toggle, "noRecoil");
 	g_iFeature[FEATURE_W_NORELOAD]			= g_pSettings->addFeature(1, -1, L"无需换弹", feat_toggle, "noReload");
@@ -227,9 +233,10 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	int olService = g_pSettings->addFeature(4, -1, L"线上 >>", feat_parent);
 	addFeature(-1, olService, L"坐进个人载具", feat_btn, &hack::intoPV, -1.f);
 	g_iFeature[FEATURE_P_MONERY_DROP] = g_pSettings->addFeature(-1, olService, L"钱袋刷钱（10K）", feat_toggle, "moneyDrop");
-	g_iFeature[FEATURE_P_PLAYER_LIST] = g_pSettings->addFeature(3, -1, L"玩家列表 >>", feat_parent);
+	//g_iFeature[FEATURE_P_PLAYER_LIST] = g_pSettings->addFeature(3, -1, L"玩家列表 >>", feat_parent);
 	//for (size_t i = 0; i < sizeof(g_iFeaturePlayerList)/sizeof(g_iFeaturePlayerList[0]); i++)
 	//	g_iFeaturePlayerList[i] = g_pSettings->addFeature(-1, g_iFeature[FEATURE_P_PLAYER_LIST], L"线上 >>", feat_parent);
+
 	int vehSpawn = g_pSettings->addFeature(-1, olService, L"刷车 >>", feat_parent);
 	for (size_t i = 0; i < vehiclePreview.size(); i++)
 	{
@@ -571,6 +578,7 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->muzzleVelocity(g_pSettings->getFeature(g_iFeature[FEATURE_W_MUZZLE_VELOCITY]));
 				g_pHack->infAmmo(g_pSettings->getFeature(g_iFeature[FEATURE_W_AMMO]));
 				g_pHack->noReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_NORELOAD]));
+				g_pHack->triggerBot(g_pSettings->getFeature(g_iFeature[FEATURE_W_TRIGGER_BOT]));
 			}
 
 			if (!(btInit & INITPTR_INVALID_TUNABLE))

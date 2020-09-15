@@ -74,6 +74,10 @@ class hack : public trainer
 		void	fillAmmo();
 		void    consumeStatQueue();
 		void	killAllNpc(float* arg);
+		void	tpAllNpc(float* arg);
+		void	tpHostilityNpc(float* arg);
+		void	killHostilityNpc(float* arg);
+		void	killHostilityNpcVeh(float* arg);
 		void	renderPlayerList();
 		void	setImpactExplosion(float* arg);
 		//void	fillAllAmmo(float* arg);
@@ -170,6 +174,7 @@ class hack : public trainer
 		void	antiWeatherControl(feat* feature);
 		void	antiRemoteVehicleKick(feat* feature);
 		void	antiRemoteForceMission(feat* feature);
+		void	triggerBot(feat* feature);
 		void	about(float* arg);
 
 	private:
@@ -186,7 +191,7 @@ class hack : public trainer
 					m_dwpPlayerListBase,
 					m_dwpReplayInterfaceBase,
 					m_dwpUnkModelBase;
-		bool		m_bInit,m_bSelfDropInit;
+		bool		m_bInit,m_bSelfDropInit,m_bMouseDown;
 
 		void	getWaypoint();
 		void	getObjective();

@@ -1219,7 +1219,7 @@ void replayInterface::initPeds()
 		g_pPedList[i] = nullptr;
 	}
 	dw_curPedNum = 256;
-	//g_pMemMan->readMem<DWORD>((DWORD_PTR)m_dwpPedInterface + OFFSET_PED_INTERFACE_CUR_PEDS, &dw_curPedNum);
+	//g_pMemMan->readMem<DWORD>((DWORD_PTR)m_dwpPedInterface + OFFSET_INTERFACE_CUR_NUMS, &dw_curPedNum);
 
 	for (size_t i = 0; i < dw_curPedNum; i++)
 	{

@@ -344,10 +344,10 @@ int settings::updataFeature(int id, int cat, int parent, std::wstring name, feat
 	int ret = this->updataFeature(id, cat, parent, name, type);
 	if (ret < 0)
 		return ret;
-	dynamic_cast<featTeleport*>(m_pFeature[ret])->m_tpType = tpType;
-	dynamic_cast<featTeleport*>(m_pFeature[ret])->m_v3Pos.x = x;
-	dynamic_cast<featTeleport*>(m_pFeature[ret])->m_v3Pos.y = y;
-	dynamic_cast<featTeleport*>(m_pFeature[ret])->m_v3Pos.z = z;
+	//dynamic_cast<featTeleport*>(m_pFeature[ret])->m_tpType = tpType;
+	//dynamic_cast<featTeleport*>(m_pFeature[ret])->m_v3Pos.x = x;
+	//dynamic_cast<featTeleport*>(m_pFeature[ret])->m_v3Pos.y = y;
+	//dynamic_cast<featTeleport*>(m_pFeature[ret])->m_v3Pos.z = z;
 	return ret;
 }
 

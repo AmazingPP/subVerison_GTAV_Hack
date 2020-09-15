@@ -1204,7 +1204,7 @@ void hack::killAllNpc(float* arg)
 	m_replayInterface.initPeds();
 	for (size_t i = 0; i < m_replayInterface.dw_curPedNum; i++)
 	{
-		if (i == 10)
+		if (m_player.m_dwpBase == m_replayInterface.g_pPedList[i]->m_dwpBase)
 			continue;
 		m_replayInterface.g_pPedList[i]->getHealth();
 		if (m_replayInterface.g_pPedList[i]->m_cmHp.cur > 0)
@@ -1214,11 +1214,84 @@ void hack::killAllNpc(float* arg)
 	}
 }
 
+void hack::tpAllNpc(float* arg)
+{
+	m_replayInterface.initPeds();
+	for (size_t i = 0; i < m_replayInterface.dw_curPedNum; i++)
+	{
+		if (m_player.m_dwpBase == m_replayInterface.g_pPedList[i]->m_dwpBase)
+			continue;
+
+		m_player.getPos();
+		m_replayInterface.g_pPedList[i]->setPos(m_player.m_v3Pos);
+	}
+}
+
+void hack::tpHostilityNpc(float* arg)
+{
+	m_replayInterface.initPeds();
+	for (size_t i = 0; i < m_replayInterface.dw_curPedNum; i++)
+	{
+		if (m_player.m_dwpBase == m_replayInterface.g_pPedList[i]->m_dwpBase)
+			continue;
+
+		DWORD dwHostility;
+		g_pMemMan->readMem<DWORD>(m_replayInterface.g_pPedList[i]->m_dwpBase + OFFSET_REPLAY_PED_HOSTILITY, &dwHostility);
+		if (dwHostility > 1)
+		{
+			m_player.getPos();
+			m_replayInterface.g_pPedList[i]->setPos(m_player.m_v3Pos);
+		}
+	}
+}
+
+void hack::killHostilityNpc(float* arg)
+{
+	m_replayInterface.initPeds();
+	for (size_t i = 0; i < m_replayInterface.dw_curPedNum; i++)
+	{
+		if (m_player.m_dwpBase == m_replayInterface.g_pPedList[i]->m_dwpBase)
+			continue;
+
+		DWORD dwHostility;
+		g_pMemMan->readMem<DWORD>(m_replayInterface.g_pPedList[i]->m_dwpBase + OFFSET_REPLAY_PED_HOSTILITY, &dwHostility);
+		if (dwHostility > 1) 
+			m_replayInterface.g_pPedList[i]->setHealth(0);
+	}
+}
+
+void hack::killHostilityNpcVeh(float* arg)
+{
+	m_replayInterface.initPeds();
+	for (size_t i = 0; i < m_replayInterface.dw_curPedNum; i++)
+	{
+		if (m_player.m_dwpBase == m_replayInterface.g_pPedList[i]->m_dwpBase)
+			continue;
+
+		DWORD dwHostility;
+		g_pMemMan->readMem<DWORD>(m_replayInterface.g_pPedList[i]->m_dwpBase + OFFSET_REPLAY_PED_HOSTILITY, &dwHostility);
+		if (dwHostility > 1)
+		{
+			DWORD_PTR dwpVehBase;
+			g_pMemMan->readMem<DWORD_PTR>(m_replayInterface.g_pPedList[i]->m_dwpBase + OFFSET_PLAYER_VEHICLE, &dwpVehBase);
+			if (dwpVehBase != 0)
+			{
+				vehicle veh;
+				veh.m_dwpBase = dwpVehBase;
+				g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)dwpVehBase + OFFSET_ENTITY_POSBASE, &veh.m_dwpPosBase);
+				g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)dwpVehBase + OFFSET_VEHICLE_HANDLING, &veh.m_handlingCur.m_dwpHandling);
+
+				veh.setHealth(-1);
+			}
+		}
+	}
+}
+
 void hack::renderPlayerList()
 {
 	for (size_t i = 0; i < 32; i++)
 	{
-		g_pSettings->updataFeature(g_iFeaturePlayerList[i], -1, g_iFeature[FEATURE_P_PLAYER_LIST], L"Íæ¼Ò" + std::to_wstring(i), feat_teleport,tp_static, -1336.f, -3044.f, -225.f);
+		g_pSettings->updataFeature(g_iFeaturePlayerList[i], -1, g_iFeature[FEATURE_P_PLAYER_LIST], std::to_wstring(i) + L"Íæ¼Ò >>", feat_parent);
 	}
 }
 
@@ -2404,6 +2477,43 @@ void hack::antiRemoteVehicleKick(feat* feature)
 void hack::antiRemoteForceMission(feat* feature)
 {
 	blockScriptEvents(feature, 722);
+	return;
+}
+
+void hack::triggerBot(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			if (m_bMouseDown)
+			{
+				LMouseUp();
+				m_bMouseDown = false;
+			}
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	DWORD dwTrigger;// 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
+	g_pMemMan->readMem<DWORD>((DWORD_PTR)m_hModule + ADDRESS_TRIGGER, &dwTrigger);
+	if (dwTrigger == 1 || dwTrigger == 2)
+	{
+		if (!m_bMouseDown)
+		{
+			LMouseDown();
+			m_bMouseDown = true;
+		}
+	}
+	else
+	{
+		if (m_bMouseDown)
+		{
+			LMouseUp();
+			m_bMouseDown = false;
+		}
+	}
+
 	return;
 }
 

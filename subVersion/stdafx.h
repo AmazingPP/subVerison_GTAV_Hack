@@ -73,7 +73,7 @@
 
 //player (entity) offsets
 #define OFFSET_PLAYER_VEHICLE					0xD28			//ptr to last used vehicle
-#define OFFSET_NET_PLAYER_INFO					0xA8
+#define OFFSET_NET_PLAYER_INFO					0xB0
 #define OFFSET_PLAYER_INFO						0x10C8			//playerInfo struct
 #define OFFSET_PLAYER_INFO_NAME					0x84
 #define OFFSET_PLAYER_INFO_SWIM_SPD				0x150			//swim speed; def 1; float
@@ -181,11 +181,13 @@
 #define OFFSET_ATTACKER_DISTANCE		0x18			//changed to 0x18, from 0x10
 
 //replay interface offsets
+#define OFFSET_REPLAY_VEHICLE_INTERFACE		0x10
 #define OFFSET_REPLAY_PED_INTERFACE			0x18
 #define OFFSET_REPLAY_PICKUP_INTERFACE		0x20
 #define OFFSET_INTERFACE_LIST				0x100
 #define OFFSET_INTERFACE_CUR_NUMS			0x110
 #define OFFSET_REPLAY_PICKUP_HASH			0x488
+#define OFFSET_REPLAY_PED_HOSTILITY			0x18C
 
 //unk model
 #define OFFSET_MODEL_HASH		0x2640
@@ -280,6 +282,7 @@
 #define FEATURE_G_BULL_SHARK		0x51
 #define FEATURE_G_ANTI_CEO_KICK		0x52
 #define FEATURE_T_SUICIDE_CD		0x53
+#define FEATURE_W_TRIGGER_BOT		0x54
 
 static std::wstring StringToWString(const std::string& str) {
 	int num = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
@@ -307,6 +310,20 @@ static unsigned int joaat(std::string input)
 void	killProgram	();
 DWORD	strToVk(std::string str);
 
+static void LMouseDown(){
+	INPUT    Input = { 0 };
+	Input.type = INPUT_MOUSE;
+	Input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+	::SendInput(1, &Input, sizeof(INPUT));
+}
+
+static void LMouseUp() {
+	INPUT    Input = { 0 };
+	Input.type = INPUT_MOUSE;
+	Input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
+	::SendInput(1, &Input, sizeof(INPUT));
+}
+
 extern HWND		g_hWnd;
 extern int		g_iFeature[MAX_MENU_FEATURES];
 extern int		g_iIndex;
@@ -323,7 +340,7 @@ extern long		ADDRESS_BLIP;				//4C 8D 05 ? ? ? ? 0F B7 C1
 extern long		ADDRESS_AMMO;				//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
 extern long		ADDRESS_MAGAZINE;			//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
 extern long		ADDRESS_TUNABLE;
-extern long		ADDRESS_WEAPON;
+extern long		ADDRESS_TRIGGER;
 extern long		ADDRESS_GLOBAL;				//4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11
 extern long		ADDRESS_PLAYER_LIST;		//48 8B 0D ? ? ? ? E8 ? ? ? ? 48 8B C8 E8 ? ? ? ? 48 8B CF
 extern long		ADDRESS_REPLAY_INTERFACE;	//48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D ? ? ? ?
