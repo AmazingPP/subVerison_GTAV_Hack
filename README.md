@@ -2,6 +2,8 @@
 subVerison重置版——GTAV线上外置修改器
 
 [![](https://img.shields.io/badge/Powerd%20By-subVersion-brightgreen)](https://github.com/sub1to/subVersion_GTAO_Hack)
+![download](https://img.shields.io/github/downloads/AmazingPP/subVerison_GTAV_Hack/total)
+![license](https://img.shields.io/github/license/AmazingPP/subVerison_GTAV_Hack)
 ```
                      __       __     __                                __                     
                     |  \     |  \   |  \                              |  \                    
@@ -385,7 +387,7 @@ F8       | 补满所有武器弹药
 [GPL-3.0](LICENSE) © AmazingPP
 
 
-## 捐赠
+## 捐赠🧧
 感谢您使用 `subVersion` 
 
 感谢您的捐赠，它将给予我动力，更专注于 `subVersion` 的后续开发。
@@ -393,4 +395,5 @@ F8       | 补满所有武器弹药
 再次感谢您的支持。
 
 [点击捐赠](https://www.zhaofupeng.com/zb_users/upload/2020/09/202009031609168443683.png)
+
 <img src="https://github.com/AmazingPP/subVerison_GTAV_Hack/blob/master/Donate/QRCode.jpg" width="30%" height="30%"/>
