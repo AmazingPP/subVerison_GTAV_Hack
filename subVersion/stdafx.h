@@ -52,7 +52,6 @@
 #include "settings.h"
 #include "entity.h"
 #include "hack.h"
-#include "CallbackProxy.h"
 #include "VehiclePreview.h"
 #include "WeaponPreview.h"
 
@@ -72,7 +71,7 @@
 #define OFFSET_ENTITY_ATTACKER			0x2A8			//base to a list of the last 3 entities that attacked the current entity
 
 //player (entity) offsets
-#define OFFSET_PLAYER_VEHICLE					0xD28			//ptr to last used vehicle
+#define OFFSET_PLAYER_VEHICLE					0xD30			//ptr to last used vehicle
 #define OFFSET_NET_PLAYER_INFO					0xB0
 #define OFFSET_PLAYER_INFO						0x10C8			//playerInfo struct
 #define OFFSET_PLAYER_INFO_NAME					0x84
@@ -193,11 +192,12 @@
 #define OFFSET_MODEL_HASH		0x2640
 
 //globals
-#define GLOBAL_TUNEABLES		262145
-#define GLOBAL_CREATE_VEHICLE		2460715
+#define GLOBAL_TUNEABLES		0x40001
+#define GLOBAL_CREATE_VEHICLE		2462286
 #define GLOBAL_MERRYWEATHER		2537071
-#define GLOBAL_BLOCK_SCRIPT_EVENTS	1391799
+#define GLOBAL_BLOCK_SCRIPT_EVENTS	1391942
 #define GLOBAL_BUSINESS			1590535
+#define GLOBAL_SESSION			1312443
 
 //feature indexing
 #define FEATURE_P_GOD				0x00
@@ -251,18 +251,17 @@
 #define FEATURE_V_BOOST				0x32
 #define FEATURE_V_RECHARGE_SPEED	0x33
 #define FEATURE_V_HEAL				0x34
-#define FEATURE_T_RP_MP				0x35
-#define FEATURE_T_AP_MP				0x36
-#define FEATURE_T_MISSION_PAYOUT	0x37
+#define FEATURE_G_RP_MP				0x35
+#define FEATURE_G_MISSION_PAYOUT	0x37
 #define FEATURE_W_FILL_ALL_AMMO		0x38
 #define FEATURE_W_FORCE_ON_PED		0x39
 #define FEATURE_W_FORCE_ON_VEHICLE	0x3A
 #define FEATURE_W_FORCE_ON_HELI		0x3B
 #define FEATURE_W_BULLET_EDIT		0x3C
 #define FEATURE_P_NPC_IGNORE		0x3D
-#define FEATURE_T_ORBITAL_CANNON	0x3E
-#define FEATURE_T_BUNKER_RESEARCH	0x3F
-#define FEATURE_T_ANTI_IDLE_KICK	0x40
+#define FEATURE_G_ORBITAL_CANNON	0x3E
+#define FEATURE_G_BUNKER_RESEARCH	0x3F
+#define FEATURE_G_ANTI_IDLE_KICK	0x40
 #define FEATURE_P_PLAYER_LIST		0x41
 #define FEATURE_P_MONERY_DROP		0x42
 #define FEATURE_G_CASINO_CUT_0		0x43
@@ -339,7 +338,6 @@ extern long     ADDRESS_WORLD;				//48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 8
 extern long		ADDRESS_BLIP;				//4C 8D 05 ? ? ? ? 0F B7 C1
 extern long		ADDRESS_AMMO;				//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
 extern long		ADDRESS_MAGAZINE;			//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
-extern long		ADDRESS_TUNABLE;
 extern long		ADDRESS_TRIGGER;
 extern long		ADDRESS_GLOBAL;				//4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11
 extern long		ADDRESS_PLAYER_LIST;		//48 8B 0D ? ? ? ? E8 ? ? ? ? 48 8B C8 E8 ? ? ? ? 48 8B CF

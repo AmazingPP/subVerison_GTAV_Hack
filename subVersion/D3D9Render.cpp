@@ -70,16 +70,6 @@ bool	D3D9Render::init(HWND hWnd)
 	return true;
 }
 
-static std::string floatToString(float val) {
-	auto res = std::to_string(val);
-	const std::string format("$1");
-	std::regex r("(\\d*)\\.0{6}|");
-	std::regex r2("(\\d*\\.{1}0*[^0]+)0*");
-	res = std::regex_replace(res, r2, format);
-	res = std::regex_replace(res, r, format);
-	return res;
-}
-
 bool	D3D9Render::render()
 {
 	m_pD3dDev->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_ARGB(0,0,0,0), 1.f, 0);
@@ -171,7 +161,9 @@ bool	D3D9Render::render()
 				float		mod	= (slider->m_fValue - slider->m_fMin) / (slider->m_fMax - slider->m_fMin);
 				this->drawBoxBorder(x, y, w, h, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_SLIDER_BG, LAYOUT_COLOR_BORDER);
 				this->drawBoxBorder(x + (int) (mod * (w - h)), y, h, h, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_SLIDER_BTN, LAYOUT_COLOR_BORDER);
-				//this->drawText(floatToString(slider->m_fValue), x, y, w - 1, h, 0, LAYOUT_COLOR_VALUE_TEXT, DT_CENTER | DT_VCENTER);
+#ifdef _DEBUG
+				this->drawText(std::to_wstring(slider->m_fValue), x, y, w - 1, h, 0, LAYOUT_COLOR_VALUE_TEXT, DT_CENTER | DT_VCENTER);
+#endif // DEBUG
 			}
 		}
 

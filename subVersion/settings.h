@@ -16,7 +16,6 @@
     You should have received a copy of the GNU General Public License along
     with subVersion GTA:O SC External Hack.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #pragma once
 #ifndef SETTINGS_H
 #define SETTINGS_H
@@ -50,6 +49,8 @@
 #define keyHotAmmo		0xD
 #define keyMenuBack		0xE
 
+class hack;
+
 class featCat
 {
 	public:
@@ -81,15 +82,30 @@ class feat
 		virtual void	dec();
 };
 
+template<typename... TArgs>
 class featBtn : public feat
 {
 	public:
-		int			m_iIndex;
-		float		m_fArg;
+		std::function<void()> m_Action;
 
-		featBtn();
-		~featBtn();
-		void toggle();
+		featBtn(void(hack::* const func)(TArgs...), TArgs... args)
+		{
+			m_Action = [=]()
+			{
+				std::thread t([=]()
+				{
+					(g_pHack->*func)(args...);
+				});
+				t.detach();
+			};
+		}
+		~featBtn() {};
+
+		void toggle()
+		{
+			if (m_Action)
+				std::invoke(m_Action);
+		}
 };
 
 class featSlider : public feat
@@ -217,12 +233,23 @@ class settings
 
 		int			addFeature(int cat, int parent, std::wstring name, featType type);
 		int			addFeature(int cat, int parent, std::wstring name, featType type, std::string iniKey);
-		int			addFeature(int cat, int parent, std::wstring name, featType type, int index,float arg);
 		int			addFeature(int cat, int parent, std::wstring name, featType type, std::string iniKey, float min, float max);
 		int			addFeature(int cat, int parent, std::wstring name, featType type, std::string iniKey, float min, float max, float mod);
 		int			addFeature(int cat, int parent, std::wstring name, featType type, std::string iniKey, teleType tpType);
 		int			addFeature(int cat, int parent, std::wstring name, featType type, teleType tpType);
 		int			addFeature(int cat, int parent, std::wstring name, featType type, teleType tpType, float x, float y, float z);
+
+		template	<typename... TArgs>
+		int			addFeature(int cat, int parent, std::wstring name, featType type, void(hack::* const func)(TArgs...), TArgs... arg)
+		{
+			this->m_pCurrentFeatBtn = new featBtn<TArgs...>(func, arg...);
+			int id = this->addFeature(cat, parent, name, type);
+			if (id < 0)
+				return id;
+
+			return id;
+		}
+
 		int			updataFeature(int id, int cat, int parent, std::wstring name, featType type);
 		int			updataFeature(int id, int cat, int parent, std::wstring name, featType type, teleType tpType, float x, float y, float z);
 		int			getFeatureCurCount();
@@ -237,6 +264,7 @@ class settings
 		bool		unlockFeatureCur();
 
 	protected:
+		feat*		m_pCurrentFeatBtn;
 		featCat*	m_pFeatureCat[MAX_MENU_TABS];
 		int			m_nFeatureCat = 0;
 		int			m_iActiveCat = 0;			//index for featureParent [should be the same as id]
@@ -246,7 +274,7 @@ class settings
 		feat*		m_pFeatureCur[MAX_MENU_FEATURES];	//list of features from current category
 		bool		m_bFeatureCurLock = false;
 		int			m_nFeatureCur	= 0;			//amount of features in current tab
-		bool		m_bMenuActive = false;
+		bool		m_bMenuActive = true;
 		int			m_iFeatureCurDisplayOffset = 0;
 };
 

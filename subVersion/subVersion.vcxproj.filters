@@ -62,12 +62,6 @@
     <ClInclude Include="vector.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CallbackProxy.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ColorDef.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>

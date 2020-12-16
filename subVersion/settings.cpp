@@ -16,13 +16,11 @@
     You should have received a copy of the GNU General Public License along
     with subVersion GTA:O SC External Hack.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #include "stdafx.h"
 
 /*
 	//SETTINGS CLASS
 */
-
 settings::settings()
 {
 	m_iniParser.m_szFile = "settings.ini";
@@ -199,7 +197,6 @@ int	settings::addFeatureCategory(std::wstring name)
 	m_nFeatureCat++;
 	return m_nFeatureCat - 1;
 }
-
 int		settings::addFeature(int cat, int parent, std::wstring name, featType type)
 {
 	if(	m_nFeature >= MAX_MENU_FEATURES ||																//buffer overflow
@@ -213,7 +210,7 @@ int		settings::addFeature(int cat, int parent, std::wstring name, featType type)
 			m_pFeature[m_nFeature]		= new feat;
 		break;
 		case feat_btn:
-			m_pFeature[m_nFeature]		= new featBtn;
+			m_pFeature[m_nFeature]		= m_pCurrentFeatBtn;
 		break;
 		case feat_slider:
 			m_pFeature[m_nFeature]		= new featSlider;
@@ -232,17 +229,6 @@ int		settings::addFeature(int cat, int parent, std::wstring name, featType type)
 	m_pFeature[m_nFeature]->m_szName	= name;
 	m_nFeature++;
 	return m_nFeature - 1;
-}
-
-int		settings::addFeature(int cat, int parent, std::wstring name, featType type, int index, float arg)
-{
-	int id = this->addFeature(cat, parent, name, type);
-	if (id < 0)
-		return id;
-	dynamic_cast<featBtn*>(m_pFeature[id])->m_iIndex = index;
-	dynamic_cast<featBtn*>(m_pFeature[id])->m_fArg = arg;
-
-	return id;
 }
 
 int		settings::addFeature(int cat, int parent, std::wstring name, featType type, std::string iniKey)
@@ -321,6 +307,18 @@ int		settings::addFeature(int cat, int parent, std::wstring name, featType type,
 	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.z	= z;
 	return id;
 }
+
+//template<typename ...TArgs>
+//int		settings::addFeature(int cat, int parent, std::wstring name, featType type, void(hack::* const func)(TArgs...), TArgs ...arg)
+//{
+//	//this->m_pCurrentFeatBtn = new featBtn<TArgs...>(func, arg...);
+//	return 0;
+//	//int id = this->addFeature(cat, parent, name, type);
+//	//if (id < 0)
+//	//	return id;
+//
+//	//return id;
+//}
 
 int settings::updataFeature(int id, int cat, int parent, std::wstring name, featType type)
 {
@@ -479,13 +477,6 @@ void	feat::toggle()
 void	feat::inc() {}
 void	feat::dec() {}
 
-featBtn::featBtn() {}
-featBtn::~featBtn() {}
-
-void	featBtn::toggle()
-{
-	(*g_pCBMap)[this->m_iIndex]->Exec(&this->m_fArg);
-}
 
 featSlider::featSlider() {}
 featSlider::~featSlider() {}

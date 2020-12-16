@@ -25,7 +25,6 @@
 #define INITPTR_INVALID_PLAYER	1 << 1
 #define INITPTR_INVALID_VEHICLE	1 << 2
 #define INITPTR_INVALID_WEAPON	1 << 3
-#define INITPTR_INVALID_TUNABLE 1 << 4
 #define INITPTR_INVALID_GLOBAL  1 << 5
 #define INITPTR_INVALID_PLAYER_LIST 1 << 6
 #define INITPTR_INVALID_REPLAY_INTERFACE 1 << 7
@@ -49,7 +48,6 @@ class hack : public trainer
 		player	m_player;
 		vehicle m_vehicle;
 		weapon	m_weapon;
-		tunable m_tunable;
 		replayInterface	m_replayInterface;
 		unkModel m_unkModel;
 		std::string m_mpId;
@@ -73,35 +71,34 @@ class hack : public trainer
 		void	killNpc();
 		void	fillAmmo();
 		void    consumeStatQueue();
-		void	killAllNpc(float* arg);
-		void	tpAllNpc(float* arg);
-		void	tpHostilityNpc(float* arg);
-		void	killHostilityNpc(float* arg);
-		void	killHostilityNpcVeh(float* arg);
+		void	killAllNpc();
+		void	tpAllNpc();
+		void	tpHostilityNpc();
+		void	killHostilityNpc();
+		void	killHostilityNpcVeh();
 		void	renderPlayerList();
-		void	setImpactExplosion(float* arg);
+		void	setImpactExplosion(ImpactExplosionEnum arg);
 		//void	fillAllAmmo(float* arg);
-		void	healVehicle(float* arg);
-		void	healPlayer(float* arg);
-		void	suicide(float* arg);
-		void	fillAmmo(float* arg);
-		void	fillSkillLevels(float* arg);
-		void	fillAllSnacks(float* arg);
-		void	casinoStat(float* arg);
-		void	casinoStatBitSet1(float* arg);
-		void	casinoStatBitSet2(float* arg);
+		void	healVehicle();
+		void	healPlayer();
+		void	suicide();
+		void	fillSkillLevels();
+		void	fillAllSnacks();
+		void	casinoStat();
+		void	casinoStatBitSet1(int type);
+		void	casinoStatBitSet2(int type);
 		void	casinoHeistCut(feat* feature, int playerIndex);
-		void	unlockHeistCars(float* arg);
-		void	unlockLSC(float* arg);
-		void	unlockWeaponCamos(float* arg);
-		//void	unlockWeapon(float* arg);
-		void	unlockAllAwards(float* arg);
-		void	unlockClothes(float* arg);
-		void	intoPV(float* arg);
-		void	loadSession(float* arg);
-		void	forwardTeleport(float* arg);
-		void	spawnVehicle(float* arg);
-		void	selfDropWeapon(float* arg);
+		void	unlockHeistCars();
+		void	unlockLSC();
+		void	unlockWeaponCamos();
+		//void	unlockWeapon();
+		void	unlockAllAwards();
+		void	unlockClothes();
+		void	intoPV();
+		void	loadSession(int id);
+		void	forwardTeleport(float dist);
+		void	spawnVehicle(int vehTypeIndex, int vehIndex);
+		void	selfDropWeapon(int weaponTypeIndex, int weaponIndex);
 		void	selfDropMoney(feat* feature);
 		void	waterProof(feat* feature);
 		void	undeadOffradar(feat* feature);
@@ -149,7 +146,6 @@ class hack : public trainer
 		void	vehicleWeaponDamageMult(feat* feature);
 		void	vehicleEngineDamageMult(feat* feature);
 		void	tunableRpMult(feat* feature);
-		void	tunableApMult(feat* feature);
 		void	tunableMissionPayout(feat* feature);
 		void	tunableOrbitalCannonCooldown(feat* feature);
 		void	tunableBunkerResearch(feat* feature);
@@ -158,13 +154,13 @@ class hack : public trainer
 		void	removePassiveModeCooldown(feat* feature);
 		void	allowSellOnNonPublic(feat* feature);
 		void	instantBullShark(feat* feature);
-		void	bullSharkDrop(float* arg);
-		void	ammoDrop(float* arg);
-		void	miniGunDrop(float* arg);
-		void	boatTaxi(float* arg);
-		void	heliTaxi(float* arg);
-		void	backupHeli(float* arg);
-		void	airstrike(float* arg);
+		void	bullSharkDrop();
+		void	ammoDrop();
+		void	miniGunDrop();
+		void	boatTaxi();
+		void	heliTaxi();
+		void	backupHeli();
+		void	airstrike();
 		void	offRadar(feat* feature);
 		void	disableThePhone(feat* feature);
 		void	antiCEOKick(feat* feature);
@@ -175,7 +171,7 @@ class hack : public trainer
 		void	antiRemoteVehicleKick(feat* feature);
 		void	antiRemoteForceMission(feat* feature);
 		void	triggerBot(feat* feature);
-		void	about(float* arg);
+		void	about(int arg);
 
 	private:
 		DWORD_PTR	m_dwpWorldBase,
@@ -186,7 +182,6 @@ class hack : public trainer
 					m_dwpWeaponCur,
 					m_dwpAmmoInfo,
 					m_dwpWeaponBase,
-					m_dwpTunableBase,
 					m_dwpGlobalBase,
 					m_dwpPlayerListBase,
 					m_dwpReplayInterfaceBase,

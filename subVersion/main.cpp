@@ -25,7 +25,6 @@ hack*		g_pHack;
 settings*	g_pSettings;
 memManager*	g_pMemMan;
 D3D9Render*	g_pD3D9Render;
-std::map<int, CallbackProxy<hack, float>*>* g_pCBMap;
 int			g_iFeature[MAX_MENU_FEATURES]	= {};
 int			g_iIndex;
 int			g_iFeaturePlayerList[32];
@@ -45,7 +44,6 @@ long		ADDRESS_WORLD		= 0;
 long		ADDRESS_BLIP		= 0;
 long		ADDRESS_AMMO		= 0;
 long		ADDRESS_MAGAZINE	= 0;
-long		ADDRESS_TUNABLE		= 0;
 long		ADDRESS_TRIGGER		= 0;
 long		ADDRESS_GLOBAL		= 0;
 long		ADDRESS_PLAYER_LIST = 0;
@@ -56,12 +54,6 @@ LRESULT	__stdcall	WindowProc(	HWND	hWnd,
 								UINT	message,
 								WPARAM	wParam,
 								LPARAM	lParam);
-int					addFeature( int cat, 
-								int parent,
-								std::wstring name,
-								featType type,
-								void (hack::* fun)(float*),
-								float arg);
 DWORD __stdcall		threadAttach(LPVOID lpParam);
 DWORD __stdcall		threadRender(LPVOID lpParam);
 DWORD __stdcall		threadKeys	(LPVOID lpParam);
@@ -72,18 +64,20 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 					LPSTR		lpCmdLine,
 					int			nCmdShow)
 {
-	if(FindWindow("sub1toOverlay", nullptr))	//make sure the hack is not already running
+	if (FindWindow("sub1toOverlay", nullptr))	//make sure the hack is not already running
+	{
+		MessageBoxW(nullptr, L"subVersion已在运行，请勿重复打开!", L"错误!", MB_OK);
 		exit(0);
+	}
 
 	g_iIndex		= 0;
 	g_pMemMan		= new memManager;
 	g_pSettings		= new settings;
 	g_pD3D9Render	= new D3D9Render;
 	g_pHack			= new hack;
-	g_pCBMap		= new std::map<int, CallbackProxy<hack, float>*>;
 
 	LPCSTR	szWindowTitleTarget	= "Grand Theft Auto V";
-	LPCWSTR	szWindowTitle		= L"subVersion mAsk°重制版 v1.3.4";
+	LPCWSTR	szWindowTitle		= L"subVersion mAsk°重制版 v1.3.5";
 	g_pMemMan->setWindowName(szWindowTitleTarget);
 	g_pD3D9Render->m_szWindowTitle = szWindowTitle;
 
@@ -96,16 +90,16 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 
 	g_iFeature[FEATURE_P_TRUEGOD]			= g_pSettings->addFeature(0, -1, L"无敌", feat_toggle, "trueGodMode");
 	g_iFeature[FEATURE_P_GOD]				= g_pSettings->addFeature(0, -1, L"半无敌", feat_toggle, "godMode");
-	g_iFeature[FEATURE_P_HEAL]				= addFeature(0, -1, L"治疗", feat_btn, &hack::healPlayer, -1.f);
-	g_iFeature[FEATURE_P_SUICIDE]			= addFeature(0, -1, L"自杀", feat_btn, &hack::suicide, -1.f);
+	g_iFeature[FEATURE_P_HEAL]				= g_pSettings->addFeature(0, -1, L"治疗", feat_btn, &hack::healPlayer);
+	g_iFeature[FEATURE_P_SUICIDE]			= g_pSettings->addFeature(0, -1, L"自杀", feat_btn, &hack::suicide);
 	g_iFeature[FEATURE_P_WANTED]			= g_pSettings->addFeature(0, -1, L"通缉等级", feat_slider, "wanted", 0.f, 5.f, .2f);
 	g_iFeature[FEATURE_P_NEVERWANTED]		= g_pSettings->addFeature(0, -1, L"永不通缉", feat_toggle, "neverWanted");
 	int npc = g_pSettings->addFeature(0, -1, L"NPC控制 >>", feat_parent);
-	addFeature(-1, npc, L"杀死所有NPC", feat_btn, &hack::killAllNpc, -1.f);
-	addFeature(-1, npc, L"杀死所有敌对NPC", feat_btn, &hack::killHostilityNpc, -1.f);
-	addFeature(-1, npc, L"摧毁所有敌对NPC的载具", feat_btn, &hack::killHostilityNpcVeh, -1.f);
-	addFeature(-1, npc, L"传送所有NPC到我", feat_btn, &hack::tpAllNpc, -1.f);
-	addFeature(-1, npc, L"传送所有敌对NPC到我", feat_btn, &hack::tpHostilityNpc, -1.f);
+	g_pSettings->addFeature(-1, npc, L"杀死所有NPC", feat_btn, &hack::killAllNpc);
+	g_pSettings->addFeature(-1, npc, L"杀死所有敌对NPC", feat_btn, &hack::killHostilityNpc);
+	g_pSettings->addFeature(-1, npc, L"摧毁所有敌对NPC的载具", feat_btn, &hack::killHostilityNpcVeh);
+	g_pSettings->addFeature(-1, npc, L"传送所有NPC到我", feat_btn, &hack::tpAllNpc);
+	g_pSettings->addFeature(-1, npc, L"传送所有敌对NPC到我", feat_btn, &hack::tpHostilityNpc);
 	g_iFeature[FEATURE_P_ANTINPC]			= g_pSettings->addFeature(-1, npc, L"反NPC", feat_toggle, "antiNpc");
 	g_iFeature[FEATURE_P_NPC_IGNORE]		= g_pSettings->addFeature(-1, npc, L"NPC无视玩家", feat_toggle, "npcIgnore");
 	g_iFeature[FEATURE_P_RUNSPD]			= g_pSettings->addFeature(0, -1, L"奔跑速度", feat_slider, "runSpd", 1.f, 5.f);
@@ -119,49 +113,49 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_P_STAMINA]			= g_pSettings->addFeature(0, -1, L"无限耐力", feat_toggle, "infStam");
 
 	//g_iFeature[FEATURE_W_FILL_ALL_AMMO]		= addFeature(1, -1, "补满所有武器弹药", feat_btn, &hack::fillAllAmmo, -1.f);
-	g_iFeature[FEATURE_W_FILL_AMMO]			= addFeature(1, -1, L"补满当前武器弹药", feat_btn, &hack::fillAmmo, -1.f);
+	g_iFeature[FEATURE_W_FILL_AMMO]			= g_pSettings->addFeature(1, -1, L"补满当前武器弹药", feat_btn, &hack::fillAmmo);
 	g_iFeature[FEATURE_W_TRIGGER_BOT]		= g_pSettings->addFeature(1, -1, L"自动射击", feat_toggle, "triggerBot");
+	g_iFeature[FEATURE_W_AMMO]				= g_pSettings->addFeature(1, -1, L"无限弹药", feat_toggle, "infAmmo");
 	g_iFeature[FEATURE_W_SPREAD]			= g_pSettings->addFeature(1, -1, L"无扩散", feat_toggle, "noSpread");
 	g_iFeature[FEATURE_W_RECOIL]			= g_pSettings->addFeature(1, -1, L"无后座", feat_toggle, "noRecoil");
 	g_iFeature[FEATURE_W_NORELOAD]			= g_pSettings->addFeature(1, -1, L"无需换弹", feat_toggle, "noReload");
 	g_iFeature[FEATURE_W_RELOAD]			= g_pSettings->addFeature(1, -1, L"快速换弹", feat_slider, "quickReload", 1.f, 10.f);
 	int bulletEdit = g_pSettings->addFeature(1, -1, L"子弹编辑 >>", feat_parent);
 	g_iFeature[FEATURE_W_BULLET_EDIT] = g_pSettings->addFeature(-1, bulletEdit, L"开/关", feat_toggle, "bulletEdit");
-	addFeature(-1, bulletEdit, L"手榴弹", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::GrenadeExplosion);
-	addFeature(-1, bulletEdit, L"粘弹", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::StickyBombExplosion);
-	addFeature(-1, bulletEdit, L"燃烧瓶", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MoltovCoctailExplosion);
-	addFeature(-1, bulletEdit, L"隐形爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SuperLauncher);
-	addFeature(-1, bulletEdit, L"闪电爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::LightningExplosion);
-	addFeature(-1, bulletEdit, L"大爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::BigExplosion);
-	addFeature(-1, bulletEdit, L"大爆炸2", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::BigFireyExplosion);
-	addFeature(-1, bulletEdit, L"中爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MediumExplosion);
-	addFeature(-1, bulletEdit, L"小爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::TinyExplosion);
-	addFeature(-1, bulletEdit, L"小爆炸2", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::TinyExplosions2);
-	addFeature(-1, bulletEdit, L"小水柱", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SmallWaterSpray);
-	addFeature(-1, bulletEdit, L"小火柱", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SmallFireSpray);
-	addFeature(-1, bulletEdit, L"大水柱", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::BigWaterSpray);
-	addFeature(-1, bulletEdit, L"大火柱", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::BigFireSpray);
-	addFeature(-1, bulletEdit, L"MK2爆炸子弹", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MK2ExplosiveBullets);
-	addFeature(-1, bulletEdit, L"烟雾弹", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SmokeGrenade);
-	addFeature(-1, bulletEdit, L"催泪瓦斯", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::TearGas);
-	addFeature(-1, bulletEdit, L"催泪瓦斯2", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::TearGas2);
-	addFeature(-1, bulletEdit, L"信号弹", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::RedFlareSmoke);
-	addFeature(-1, bulletEdit, L"带特效的爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::CoolGroundExplosion);
-	addFeature(-1, bulletEdit, L"大冲击波爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::CRAZYSHOCKWAVEEXPLOSION);
-	addFeature(-1, bulletEdit, L"大火灾爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::HUGEFireyExplosion);
-	addFeature(-1, bulletEdit, L"超大型飞艇爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MassiveBlimpExplosion);
-	addFeature(-1, bulletEdit, L"超大型飞艇爆炸2", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MassiveBlimpExplosion2);
-	addFeature(-1, bulletEdit, L"大爆炸+坠落碎片", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::LargeExplosionFallingDebris);
-	addFeature(-1, bulletEdit, L"火球爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::FireBallExplosion);
-	addFeature(-1, bulletEdit, L"烟花", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::FireworkExplosion);
-	addFeature(-1, bulletEdit, L"雪球", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SnowballHit);
-	addFeature(-1, bulletEdit, L"屏幕抖动爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::JustScreenShake);
-	addFeature(-1, bulletEdit, L"假爆炸（无伤害）", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SPOOFEXPLOSION);
+	g_pSettings->addFeature(-1, bulletEdit, L"手榴弹", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::GrenadeExplosion);
+	g_pSettings->addFeature(-1, bulletEdit, L"粘弹", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::StickyBombExplosion);
+	g_pSettings->addFeature(-1, bulletEdit, L"燃烧瓶", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MoltovCoctailExplosion);
+	g_pSettings->addFeature(-1, bulletEdit, L"隐形爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SuperLauncher);
+	g_pSettings->addFeature(-1, bulletEdit, L"闪电爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::LightningExplosion);
+	g_pSettings->addFeature(-1, bulletEdit, L"大爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::BigExplosion);
+	g_pSettings->addFeature(-1, bulletEdit, L"大爆炸2", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::BigFireyExplosion);
+	g_pSettings->addFeature(-1, bulletEdit, L"中爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MediumExplosion);
+	g_pSettings->addFeature(-1, bulletEdit, L"小爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::TinyExplosion);
+	g_pSettings->addFeature(-1, bulletEdit, L"小爆炸2", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::TinyExplosions2);
+	g_pSettings->addFeature(-1, bulletEdit, L"小水柱", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SmallWaterSpray);
+	g_pSettings->addFeature(-1, bulletEdit, L"小火柱", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SmallFireSpray);
+	g_pSettings->addFeature(-1, bulletEdit, L"大水柱", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::BigWaterSpray);
+	g_pSettings->addFeature(-1, bulletEdit, L"大火柱", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::BigFireSpray);
+	g_pSettings->addFeature(-1, bulletEdit, L"MK2爆炸子弹", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MK2ExplosiveBullets);
+	g_pSettings->addFeature(-1, bulletEdit, L"烟雾弹", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SmokeGrenade);
+	g_pSettings->addFeature(-1, bulletEdit, L"催泪瓦斯", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::TearGas);
+	g_pSettings->addFeature(-1, bulletEdit, L"催泪瓦斯2", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::TearGas2);
+	g_pSettings->addFeature(-1, bulletEdit, L"信号弹", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::RedFlareSmoke);
+	g_pSettings->addFeature(-1, bulletEdit, L"带特效的爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::CoolGroundExplosion);
+	g_pSettings->addFeature(-1, bulletEdit, L"大冲击波爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::CRAZYSHOCKWAVEEXPLOSION);
+	g_pSettings->addFeature(-1, bulletEdit, L"大火灾爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::HUGEFireyExplosion);
+	g_pSettings->addFeature(-1, bulletEdit, L"超大型飞艇爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MassiveBlimpExplosion);
+	g_pSettings->addFeature(-1, bulletEdit, L"超大型飞艇爆炸2", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::MassiveBlimpExplosion2);
+	g_pSettings->addFeature(-1, bulletEdit, L"大爆炸+坠落碎片", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::LargeExplosionFallingDebris);
+	g_pSettings->addFeature(-1, bulletEdit, L"火球爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::FireBallExplosion);
+	g_pSettings->addFeature(-1, bulletEdit, L"烟花", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::FireworkExplosion);
+	g_pSettings->addFeature(-1, bulletEdit, L"雪球", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SnowballHit);
+	g_pSettings->addFeature(-1, bulletEdit, L"屏幕抖动爆炸", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::JustScreenShake);
+	g_pSettings->addFeature(-1, bulletEdit, L"假爆炸（无伤害）", feat_btn, &hack::setImpactExplosion, ImpactExplosionEnum::SPOOFEXPLOSION);
 	g_iFeature[FEATURE_W_FORCE_ON_PED]		= g_pSettings->addFeature(1, -1, L"人冲击力", feat_slider, "forceOnPed", 1.f, 10000.f);
 	g_iFeature[FEATURE_W_FORCE_ON_VEHICLE]	= g_pSettings->addFeature(1, -1, L"车辆冲击力", feat_slider, "forceOnVeh", 1.f, 10000.f);
 	g_iFeature[FEATURE_W_FORCE_ON_HELI]		= g_pSettings->addFeature(1, -1, L"直升机冲击力", feat_slider, "forceOnHeli", 1.f, 10000.f);
 	g_iFeature[FEATURE_W_DAMAGE]			= g_pSettings->addFeature(1, -1, L"武器伤害倍数", feat_slider, "bulletDamage", 1.f, 10.f);
-	g_iFeature[FEATURE_W_AMMO]				= g_pSettings->addFeature(1, -1, L"无限弹药", feat_toggle, "infAmmo");
 	g_iFeature[FEATURE_W_RANGE]				= g_pSettings->addFeature(1, -1, L"射程", feat_slider, "weapRange", 1.f, 10.f);
 	g_iFeature[FEATURE_W_SPINUP]			= g_pSettings->addFeature(1, -1, L"加特林无需预热", feat_toggle, "weapSpin");
 	g_iFeature[FEATURE_W_EXPLOSIVEAMMO]		= g_pSettings->addFeature(1, -1, L"爆炸子弹", feat_toggle, "explAmmo");
@@ -171,7 +165,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 
 	g_iFeature[FEATURE_V_TRUEGOD]			= g_pSettings->addFeature(2, -1, L"无敌", feat_toggle, "vehTrueGodMode");
 	g_iFeature[FEATURE_V_GOD]				= g_pSettings->addFeature(2, -1, L"半无敌", feat_toggle, "vehGodMode");
-	g_iFeature[FEATURE_V_HEAL]				= addFeature(2, -1, L"修复", feat_btn, &hack::healVehicle, -1.f);
+	g_iFeature[FEATURE_V_HEAL]				= g_pSettings->addFeature(2, -1, L"修复", feat_btn, &hack::healVehicle);
 	g_iFeature[FEATURE_V_BULLETPROOFTIRES]	= g_pSettings->addFeature(2, -1, L"防爆轮胎", feat_toggle, "vehBulletproofTires");
 	g_iFeature[FEATURE_V_SEATBELT]			= g_pSettings->addFeature(2, -1, L"安全带", feat_toggle, "seatbelt");
 	g_iFeature[FEATURE_V_GRAVITY]			= g_pSettings->addFeature(2, -1, L"重力", feat_slider, "vehGravity", 0.f, 25.f);
@@ -195,7 +189,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 
 	g_pSettings->addFeature(3, -1, L"导航点", feat_teleport, tp_waypoint);
 	g_pSettings->addFeature(3, -1, L"目标点", feat_teleport, tp_objective);
-	addFeature(3, -1, L"向前", feat_btn, &hack::forwardTeleport, 5.f);
+	g_pSettings->addFeature(3, -1, L"向前", feat_btn, &hack::forwardTeleport, 5.f);
 
 	int interior = g_pSettings->addFeature(3, -1, L"室内 >>", feat_parent);
 	g_pSettings->addFeature(-1, interior, L"FIB大楼楼顶", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
@@ -228,89 +222,88 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeature(3, -1, L"千年山", feat_teleport, tp_static, 489.979f, 5587.527f, 794.3f);
 
 	int session = g_pSettings->addFeature(4, -1, L"战局 >>", feat_parent);
-	for (size_t i = 0; i < sizeof(tbl_SessionMItems)/sizeof(tbl_SessionMItems[0]); i++)
-		addFeature(-1, session, tbl_SessionMItems[i].second, feat_btn, &hack::loadSession, tbl_SessionMItems[i].first);
+	for (int i = 0; i < sizeof(tbl_SessionMItems)/sizeof(tbl_SessionMItems[0]); i++)
+		g_pSettings->addFeature(-1, session, tbl_SessionMItems[i].second, feat_btn, &hack::loadSession, tbl_SessionMItems[i].first);
 	int olService = g_pSettings->addFeature(4, -1, L"线上 >>", feat_parent);
-	addFeature(-1, olService, L"坐进个人载具", feat_btn, &hack::intoPV, -1.f);
+	g_pSettings->addFeature(-1, olService, L"坐进个人载具", feat_btn, &hack::intoPV);
 	g_iFeature[FEATURE_P_MONERY_DROP] = g_pSettings->addFeature(-1, olService, L"钱袋刷钱（10K）", feat_toggle, "moneyDrop");
 	//g_iFeature[FEATURE_P_PLAYER_LIST] = g_pSettings->addFeature(3, -1, L"玩家列表 >>", feat_parent);
 	//for (size_t i = 0; i < sizeof(g_iFeaturePlayerList)/sizeof(g_iFeaturePlayerList[0]); i++)
 	//	g_iFeaturePlayerList[i] = g_pSettings->addFeature(-1, g_iFeature[FEATURE_P_PLAYER_LIST], L"线上 >>", feat_parent);
 
 	int vehSpawn = g_pSettings->addFeature(-1, olService, L"刷车 >>", feat_parent);
-	for (size_t i = 0; i < vehiclePreview.size(); i++)
+	for (int i = 0; i < vehiclePreview.size(); i++)
 	{
 		int temp = g_pSettings->addFeature(-1, vehSpawn, vehiclePreview[i].first, feat_parent);
-		for (size_t j = 0; j < vehiclePreview[i].second.size(); j++)
-			addFeature(-1, temp, vehiclePreview[i].second[j].VName, feat_btn, &hack::spawnVehicle, i * 1000 + j);
+		for (int j = 0; j < vehiclePreview[i].second.size(); j++)
+			g_pSettings->addFeature(-1, temp, vehiclePreview[i].second[j].VName, feat_btn, &hack::spawnVehicle, i, j);
 	}
 
 	int tunable = g_pSettings->addFeature(-1, olService, L"可调参数 >>", feat_parent);
-	g_iFeature[FEATURE_T_ANTI_IDLE_KICK] = g_pSettings->addFeature(-1, tunable, L"AFK反挂机踢出", feat_toggle, "AntiIdleKick");
-	g_iFeature[FEATURE_T_ORBITAL_CANNON] = g_pSettings->addFeature(-1, tunable, L"天基炮无冷却", feat_toggle, "OrbitalCannon");
+	g_iFeature[FEATURE_G_ANTI_IDLE_KICK] = g_pSettings->addFeature(-1, tunable, L"AFK反挂机踢出", feat_toggle, "AntiIdleKick");
+	g_iFeature[FEATURE_G_ORBITAL_CANNON] = g_pSettings->addFeature(-1, tunable, L"天基炮无冷却", feat_toggle, "OrbitalCannon");
 	g_iFeature[FEATURE_T_SUICIDE_CD] = g_pSettings->addFeature(-1, tunable, L"自杀无冷却", feat_toggle, "SuicideCD");
-	g_iFeature[FEATURE_T_RP_MP]			   = g_pSettings->addFeature(-1, tunable, L"RP倍数", feat_slider,"RP", 1.f, 1000.f , (float)1.f / 9.f);
-	g_iFeature[FEATURE_T_AP_MP]			   = g_pSettings->addFeature(-1, tunable, L"AP倍数", feat_slider, "AP", 1.f, 1000.f, (float)1.f / 9.f);
-	g_iFeature[FEATURE_T_MISSION_PAYOUT]   = g_pSettings->addFeature(-1, tunable, L"最小任务金额", feat_slider, "MinMissionPayout", 0.f, 100000.f);
+	g_iFeature[FEATURE_G_RP_MP]			   = g_pSettings->addFeature(-1, tunable, L"RP倍数", feat_slider,"RP", 1.f, 1000.f , (float)1.f / 9.f);
+	g_iFeature[FEATURE_G_MISSION_PAYOUT]   = g_pSettings->addFeature(-1, tunable, L"最小任务金额", feat_slider, "MinMissionPayout", 0.f, 100000.f);
 	int recovery = g_pSettings->addFeature(-1, olService, L"解锁&恢复 >>", feat_parent);
-	addFeature(-1, recovery, L"角色属性全满", feat_btn, &hack::fillSkillLevels, -1.f);
-	addFeature(-1, recovery, L"补满零食、防弹衣", feat_btn, &hack::fillAllSnacks, -1.f);
+	g_pSettings->addFeature(-1, recovery, L"角色属性全满", feat_btn, &hack::fillSkillLevels);
+	g_pSettings->addFeature(-1, recovery, L"补满零食、防弹衣", feat_btn, &hack::fillAllSnacks);
 	int casino = g_pSettings->addFeature(-1, recovery, L"赌场豪劫 >>", feat_parent);
-	addFeature(-1, casino, L"清除冷却时间", feat_btn, &hack::casinoStat, 1.f);
+	g_pSettings->addFeature(-1, casino, L"清除冷却时间", feat_btn, &hack::casinoStat);
 	int bitSet1 = g_pSettings->addFeature(-1, casino, L"第一块计划板 >>", feat_parent);
-	addFeature(-1, bitSet1, L"解锁所有探查点", feat_btn, &hack::casinoStatBitSet1, 7.f);
-	addFeature(-1, bitSet1, L"解锁所有兴趣点", feat_btn, &hack::casinoStatBitSet1, 8.f);
+	g_pSettings->addFeature(-1, bitSet1, L"解锁所有探查点", feat_btn, &hack::casinoStatBitSet1, 7);
+	g_pSettings->addFeature(-1, bitSet1, L"解锁所有兴趣点", feat_btn, &hack::casinoStatBitSet1, 8);
 	int approach = g_pSettings->addFeature(-1, bitSet1, L"抢劫方式 >>", feat_parent);
-	addFeature(-1, approach, L"潜行匿踪", feat_btn, &hack::casinoStatBitSet1, 0.f);
-	addFeature(-1, approach, L"兵不厌诈", feat_btn, &hack::casinoStatBitSet1, 1.f);
-	addFeature(-1, approach, L"气势汹汹", feat_btn, &hack::casinoStatBitSet1, 2.f);
+	g_pSettings->addFeature(-1, approach, L"潜行匿踪", feat_btn, &hack::casinoStatBitSet1, 0);
+	g_pSettings->addFeature(-1, approach, L"兵不厌诈", feat_btn, &hack::casinoStatBitSet1, 1);
+	g_pSettings->addFeature(-1, approach, L"气势汹汹", feat_btn, &hack::casinoStatBitSet1, 2);
 	int target = g_pSettings->addFeature(-1, bitSet1, L"抢劫物品 >>", feat_parent);
-	addFeature(-1, target, L"现金", feat_btn, &hack::casinoStatBitSet1, 3.f);
-	addFeature(-1, target, L"黄金", feat_btn, &hack::casinoStatBitSet1, 4.f);
-	addFeature(-1, target, L"艺术品", feat_btn, &hack::casinoStatBitSet1, 5.f);
-	addFeature(-1, target, L"钻石", feat_btn, &hack::casinoStatBitSet1, 6.f);
+	g_pSettings->addFeature(-1, target, L"现金", feat_btn, &hack::casinoStatBitSet1, 3);
+	g_pSettings->addFeature(-1, target, L"黄金", feat_btn, &hack::casinoStatBitSet1, 4);
+	g_pSettings->addFeature(-1, target, L"艺术品", feat_btn, &hack::casinoStatBitSet1, 5);
+	g_pSettings->addFeature(-1, target, L"钻石", feat_btn, &hack::casinoStatBitSet1, 6);
 	int bitSet2 = g_pSettings->addFeature(-1, casino, L"第二块计划板 >>", feat_parent);
-	addFeature(-1, bitSet2, L"一键解锁、最高等级", feat_btn, &hack::casinoStatBitSet2, 11.f);
-	addFeature(-1, bitSet2, L"削弱敌人装备", feat_btn, &hack::casinoStatBitSet2, 0.f);
-	addFeature(-1, bitSet2, L"钥匙卡最高级", feat_btn, &hack::casinoStatBitSet2, 1.f);
-	addFeature(-1, bitSet2, L"最高级枪手", feat_btn, &hack::casinoStatBitSet2, 2.f);
-	addFeature(-1, bitSet2, L"最高级司机", feat_btn, &hack::casinoStatBitSet2, 3.f);
-	addFeature(-1, bitSet2, L"最高级黑客", feat_btn, &hack::casinoStatBitSet2, 4.f);
+	g_pSettings->addFeature(-1, bitSet2, L"一键解锁、最高等级", feat_btn, &hack::casinoStatBitSet2, 11);
+	g_pSettings->addFeature(-1, bitSet2, L"削弱敌人装备", feat_btn, &hack::casinoStatBitSet2, 0);
+	g_pSettings->addFeature(-1, bitSet2, L"钥匙卡最高级", feat_btn, &hack::casinoStatBitSet2, 1);
+	g_pSettings->addFeature(-1, bitSet2, L"最高级枪手", feat_btn, &hack::casinoStatBitSet2, 2);
+	g_pSettings->addFeature(-1, bitSet2, L"最高级司机", feat_btn, &hack::casinoStatBitSet2, 3);
+	g_pSettings->addFeature(-1, bitSet2, L"最高级黑客", feat_btn, &hack::casinoStatBitSet2, 4);
 	int vehs = g_pSettings->addFeature(-1, bitSet2, L"逃亡载具 >>", feat_parent);
-	addFeature(-1, vehs, L"0", feat_btn, &hack::casinoStatBitSet2, 5.f);
-	addFeature(-1, vehs, L"1", feat_btn, &hack::casinoStatBitSet2, 6.f);
-	addFeature(-1, vehs, L"2", feat_btn, &hack::casinoStatBitSet2, 7.f);
-	addFeature(-1, vehs, L"3", feat_btn, &hack::casinoStatBitSet2, 8.f);
+	g_pSettings->addFeature(-1, vehs, L"0", feat_btn, &hack::casinoStatBitSet2, 5);
+	g_pSettings->addFeature(-1, vehs, L"1", feat_btn, &hack::casinoStatBitSet2, 6);
+	g_pSettings->addFeature(-1, vehs, L"2", feat_btn, &hack::casinoStatBitSet2, 7);
+	g_pSettings->addFeature(-1, vehs, L"3", feat_btn, &hack::casinoStatBitSet2, 8);
 	int weaps = g_pSettings->addFeature(-1, bitSet2, L"武器 >>", feat_parent);
-	addFeature(-1, weaps, L"0", feat_btn, &hack::casinoStatBitSet2, 9.f);
-	addFeature(-1, weaps, L"1", feat_btn, &hack::casinoStatBitSet2, 10.f);
+	g_pSettings->addFeature(-1, weaps, L"0", feat_btn, &hack::casinoStatBitSet2, 9);
+	g_pSettings->addFeature(-1, weaps, L"1", feat_btn, &hack::casinoStatBitSet2, 10);
 	int casinoCut = g_pSettings->addFeature(-1, casino, L"分红设置 >>", feat_parent);
 	g_iFeature[FEATURE_G_CASINO_CUT_0] = g_pSettings->addFeature(-1, casinoCut, L"玩家1", feat_slider, "casinoCut0", 0.f, 85.f, (float)1.f / 9.f);
 	g_iFeature[FEATURE_G_CASINO_CUT_1] = g_pSettings->addFeature(-1, casinoCut, L"玩家2", feat_slider, "casinoCut1", 0.f, 85.f, (float)1.f / 9.f);
 	g_iFeature[FEATURE_G_CASINO_CUT_2] = g_pSettings->addFeature(-1, casinoCut, L"玩家3", feat_slider, "casinoCut2", 0.f, 85.f, (float)1.f / 9.f);
 	g_iFeature[FEATURE_G_CASINO_CUT_3] = g_pSettings->addFeature(-1, casinoCut, L"玩家4", feat_slider, "casinoCut3", 0.f, 85.f, (float)1.f / 9.f);
 	int unlock = g_pSettings->addFeature(-1, recovery, L"解锁 >>", feat_parent);
-	addFeature(-1, unlock, L"解锁改车配件", feat_btn, &hack::unlockLSC, -1.f);
-	addFeature(-1, unlock, L"解锁武器涂装", feat_btn, &hack::unlockWeaponCamos, -1.f);
-	addFeature(-1, unlock, L"解锁抢劫车辆批发价", feat_btn, &hack::unlockHeistCars, -1.f);
-	addFeature(-1, unlock, L"解锁奖章", feat_btn, &hack::unlockAllAwards, -1.f);
-	addFeature(-1, unlock, L"解锁衣服", feat_btn, &hack::unlockClothes, -1.f);
-	g_iFeature[FEATURE_T_BUNKER_RESEARCH] = g_pSettings->addFeature(-1, unlock, L"解锁所有地堡研究(临时)", feat_toggle, "BunkerResearch");
+	g_pSettings->addFeature(-1, unlock, L"解锁改车配件", feat_btn, &hack::unlockLSC);
+	g_pSettings->addFeature(-1, unlock, L"解锁武器涂装", feat_btn, &hack::unlockWeaponCamos);
+	g_pSettings->addFeature(-1, unlock, L"解锁抢劫车辆批发价", feat_btn, &hack::unlockHeistCars);
+	g_pSettings->addFeature(-1, unlock, L"解锁奖章", feat_btn, &hack::unlockAllAwards);
+	g_pSettings->addFeature(-1, unlock, L"解锁衣服", feat_btn, &hack::unlockClothes);
+	g_iFeature[FEATURE_G_BUNKER_RESEARCH] = g_pSettings->addFeature(-1, unlock, L"解锁所有地堡研究(临时)", feat_toggle, "BunkerResearch");
 	int merryweather = g_pSettings->addFeature(-1, olService, L"梅利威瑟 >>", feat_parent);
 	int dropWeapon = g_pSettings->addFeature(-1, olService, L"获得武器 >>", feat_parent);
-	for (size_t i = 0; i < weaponPreview.size(); i++)
+	for (int i = 0; i < weaponPreview.size(); i++)
 	{
 		int temp = g_pSettings->addFeature(-1, dropWeapon, weaponPreview[i].first, feat_parent);
-		for (size_t j = 0; j < weaponPreview[i].second.size(); j++)
-			addFeature(-1, temp, weaponPreview[i].second[j].Name, feat_btn, &hack::selfDropWeapon, i * 1000 + j);
+		for (int j = 0; j < weaponPreview[i].second.size(); j++)
+			g_pSettings->addFeature(-1, temp, weaponPreview[i].second[j].Name, feat_btn, &hack::selfDropWeapon, i, j);
 	}
-	addFeature(-1, merryweather, L"牛鲨睾酮空投", feat_btn, &hack::bullSharkDrop, -1.f);
-	addFeature(-1, merryweather, L"弹药空投", feat_btn, &hack::ammoDrop, -1.f);
-	addFeature(-1, merryweather, L"无畏战士空投", feat_btn, &hack::miniGunDrop, -1.f);
-	addFeature(-1, merryweather, L"船只接送", feat_btn, &hack::boatTaxi, -1.f);
-	addFeature(-1, merryweather, L"直升机接送", feat_btn, &hack::heliTaxi, -1.f);
-	addFeature(-1, merryweather, L"支援直升机", feat_btn, &hack::backupHeli, -1.f);
-	addFeature(-1, merryweather, L"空袭", feat_btn, &hack::airstrike, -1.f);
+	g_pSettings->addFeature(-1, merryweather, L"牛鲨睾酮空投", feat_btn, &hack::bullSharkDrop);
+	g_pSettings->addFeature(-1, merryweather, L"弹药空投", feat_btn, &hack::ammoDrop);
+	g_pSettings->addFeature(-1, merryweather, L"无畏战士空投", feat_btn, &hack::miniGunDrop);
+	g_pSettings->addFeature(-1, merryweather, L"船只接送", feat_btn, &hack::boatTaxi);
+	g_pSettings->addFeature(-1, merryweather, L"直升机接送", feat_btn, &hack::heliTaxi);
+	g_pSettings->addFeature(-1, merryweather, L"支援直升机", feat_btn, &hack::backupHeli);
+	g_pSettings->addFeature(-1, merryweather, L"空袭", feat_btn, &hack::airstrike);
 	g_iFeature[FEATURE_G_BULL_SHARK] = g_pSettings->addFeature(-1, olService, L"牛鲨睾酮", feat_toggle, "bullShark");
 	g_iFeature[FEATURE_G_OFF_RADAR] = g_pSettings->addFeature(-1, olService, L"雷达隐匿", feat_toggle, "offRadar");
 	g_iFeature[FEATURE_G_DISABLE_THE_PHONE] = g_pSettings->addFeature(-1, olService, L"屏蔽来电", feat_toggle, "disableThePhone");
@@ -324,9 +317,9 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_G_ANTI_WEATHER] = g_pSettings->addFeature(-1, protection, L"天气控制防护", feat_toggle, "antiWeatherControl");
 	g_iFeature[FEATURE_G_ANTI_VEH_KICK] = g_pSettings->addFeature(-1, protection, L"载具踢出防护", feat_toggle, "antiRemoteVehicleKick");
 	g_iFeature[FEATURE_G_ANTI_SEND_MISSION] = g_pSettings->addFeature(-1, protection, L"强制进任务防护", feat_toggle, "antiRemoteForceMission");
-	addFeature(4, -1, L"GitHub - 关于", feat_btn, &hack::about, 0.f);
-	addFeature(4, -1, L"检查更新", feat_btn, &hack::about, 1.f);
-	addFeature(4, -1, L"捐赠 - 为我更好的开发提供动力", feat_btn, &hack::about, 2.f);
+	g_pSettings->addFeature(4, -1, L"GitHub - 关于", feat_btn, &hack::about, 0);
+	g_pSettings->addFeature(4, -1, L"检查更新", feat_btn, &hack::about, 1);
+	g_pSettings->addFeature(4, -1, L"捐赠 - 为我更好的开发提供动力", feat_btn, &hack::about, 2);
 
 
 	g_pSettings->setActiveCat(0);			//this needs to be called so we can fill the current feature buffer
@@ -423,13 +416,6 @@ LRESULT __stdcall WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 	}
 
 	return DefWindowProc (hWnd, message, wParam, lParam); //default behaviour for any unhandled messages
-}
-
-int addFeature(int cat, int parent, std::wstring name, featType type, void (hack::* func)(float*), float arg)
-{
-	(*g_pCBMap)[g_iIndex] = new CallbackProxy<hack, float>;
-	(*g_pCBMap)[g_iIndex]->Set(g_pHack, func);
-	return g_pSettings->addFeature(cat, parent, name, type, g_iIndex++, arg);
 }
 
 DWORD __stdcall threadAttach(LPVOID lpParam)
@@ -581,16 +567,6 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->triggerBot(g_pSettings->getFeature(g_iFeature[FEATURE_W_TRIGGER_BOT]));
 			}
 
-			if (!(btInit & INITPTR_INVALID_TUNABLE))
-			{
-				g_pHack->tunableRpMult(g_pSettings->getFeature(g_iFeature[FEATURE_T_RP_MP]));
-				g_pHack->tunableApMult(g_pSettings->getFeature(g_iFeature[FEATURE_T_AP_MP]));
-				g_pHack->tunableMissionPayout(g_pSettings->getFeature(g_iFeature[FEATURE_T_MISSION_PAYOUT]));
-				g_pHack->tunableOrbitalCannonCooldown(g_pSettings->getFeature(g_iFeature[FEATURE_T_ORBITAL_CANNON]));
-				g_pHack->tunableBunkerResearch(g_pSettings->getFeature(g_iFeature[FEATURE_T_BUNKER_RESEARCH]));
-				g_pHack->tunableAntiIdleKick(g_pSettings->getFeature(g_iFeature[FEATURE_T_ANTI_IDLE_KICK]));
-			}
-
 			if (!(btInit & INITPTR_INVALID_GLOBAL))
 			{
 				g_pHack->selfDropMoney(g_pSettings->getFeature(g_iFeature[FEATURE_P_MONERY_DROP]));
@@ -611,6 +587,12 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->offRadar(g_pSettings->getFeature(g_iFeature[FEATURE_G_OFF_RADAR]));
 				g_pHack->instantBullShark(g_pSettings->getFeature(g_iFeature[FEATURE_G_BULL_SHARK]));
 				g_pHack->removeSuicideCooldown(g_pSettings->getFeature(g_iFeature[FEATURE_T_SUICIDE_CD]));
+				g_pHack->tunableRpMult(g_pSettings->getFeature(g_iFeature[FEATURE_G_RP_MP]));
+				g_pHack->tunableMissionPayout(g_pSettings->getFeature(g_iFeature[FEATURE_G_MISSION_PAYOUT]));
+				g_pHack->tunableOrbitalCannonCooldown(g_pSettings->getFeature(g_iFeature[FEATURE_G_ORBITAL_CANNON]));
+				g_pHack->tunableBunkerResearch(g_pSettings->getFeature(g_iFeature[FEATURE_G_BUNKER_RESEARCH]));
+				g_pHack->tunableAntiIdleKick(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_IDLE_KICK]));
+
 				g_pHack->consumeStatQueue();
 			}
 		}
