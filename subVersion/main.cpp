@@ -49,6 +49,7 @@ long		ADDRESS_GLOBAL		= 0;
 long		ADDRESS_PLAYER_LIST = 0;
 long		ADDRESS_REPLAY_INTERFACE = 0;
 long		ADDRESS_UNK_MODEL	= 0;
+long		ADDRESS_FRAME_FLAGS = 0;
 //fuction prototypes
 LRESULT	__stdcall	WindowProc(	HWND	hWnd,
 								UINT	message,

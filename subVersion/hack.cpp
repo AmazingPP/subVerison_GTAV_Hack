@@ -1605,8 +1605,23 @@ void hack::godMode(feat* feature)
 
 void hack::frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featFireAmmo, feat* featExplosiveAmmo)
 {
+	BYTE	cur[2] = {};
 	if (!featSuperJump->m_bOn && !featExplosiveMelee->m_bOn && !featFireAmmo->m_bOn && !featExplosiveAmmo->m_bOn)
+	{
+		if (!featSuperJump->m_bRestored || !featExplosiveMelee->m_bRestored || !featFireAmmo->m_bRestored || !featExplosiveAmmo->m_bRestored)
+		{
+			g_pMemMan->readMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, cur, sizeof(BYTE) * 2, PAGE_EXECUTE_READWRITE);
+			BYTE	value[2] = { 0x89, 0x0B };
+			if (cur[0] != value[0])
+				g_pMemMan->writeMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, value, sizeof(BYTE) * 2, PAGE_EXECUTE_READWRITE);
+
+			featSuperJump->m_bRestored = true;
+			featExplosiveMelee->m_bRestored = true;
+			featFireAmmo->m_bRestored = true;
+			featExplosiveAmmo->m_bRestored = true;
+		}
 		return;
+	}
 	DWORD dwValue = 0;
 	if (featSuperJump->m_bOn)
 		dwValue += 64;
@@ -1616,7 +1631,14 @@ void hack::frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featF
 		dwValue += 16;
 	if (featExplosiveAmmo->m_bOn)
 		dwValue += 8;
-	m_player.setFrameFlags(dwValue);
+
+	g_pMemMan->readMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, cur, sizeof(BYTE) * 2, PAGE_EXECUTE_READWRITE);
+	BYTE	value[2] = { 0x90, 0x90 };
+	if (cur[0] != value[0])
+		g_pMemMan->writeMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, value, sizeof(BYTE) * 2, PAGE_EXECUTE_READWRITE);
+	m_player.getFrameFlags();
+	if (m_player.m_dwFrameFlags != dwValue)
+		m_player.setFrameFlags(dwValue);
 	return;
 }
 
