@@ -958,6 +958,11 @@ void hack::loadSession(int id)
 	}
 }
 
+void hack::setRank(int rank)
+{
+	dStatPushBack(string_to_hash("CHAR_SET_RP_GIFT_ADMIN"), scriptGlobal(292402).at(rank + 1).as<int>().value());
+}
+
 void hack::forwardTeleport(float dist)
 {
 	m_player.getPos();
@@ -1062,7 +1067,7 @@ void hack::selfDropMoney(feat* feature)
 
 void hack::dStatPushBack(unsigned int hash, int value)
 {
-	this->m_dStat.push_back(std::pair<unsigned int, int>(hash, value));
+	this->m_dStat.emplace_back(std::pair<unsigned int, int>(hash, value));
 }
 
 void hack::callMerryweather(std::ptrdiff_t index)
@@ -1097,7 +1102,7 @@ void hack::createAmbientPickup(unsigned int pickupHash, float posX, float posY, 
 	scriptGlobal(2515202).at(4).as<float>() = posY;
 	scriptGlobal(2515202).at(5).as<float>() = posZ;
 	scriptGlobal(4264051).at(scriptGlobal(2515202).as<int>().value(), 85).at(66).at(2).as<int>() = 2;
-	scriptGlobal(2513253).as<int>() = 1;
+	scriptGlobal(2515208).as<int>() = 1;
 
 	m_unkModel.getModelHash();
 	if (m_unkModel.m_dwModelHash != modelHash)
@@ -2200,13 +2205,13 @@ void hack::tunableAntiIdleKick(feat* feature)
 		return;
 	}
 	if (scriptGlobal(GLOBAL_TUNEABLES).at(87).as<int>() != 2000000000)
-		scriptGlobal(GLOBAL_TUNEABLES).at(87).as<int>() == 2000000000;
+		scriptGlobal(GLOBAL_TUNEABLES).at(87).as<int>() = 2000000000;
 	if (scriptGlobal(GLOBAL_TUNEABLES).at(88).as<int>() != 2000000000)
-		scriptGlobal(GLOBAL_TUNEABLES).at(88).as<int>() == 2000000000;
+		scriptGlobal(GLOBAL_TUNEABLES).at(88).as<int>() = 2000000000;
 	if (scriptGlobal(GLOBAL_TUNEABLES).at(89).as<int>() != 2000000000)
-		scriptGlobal(GLOBAL_TUNEABLES).at(89).as<int>() == 2000000000;
+		scriptGlobal(GLOBAL_TUNEABLES).at(89).as<int>() = 2000000000;
 	if (scriptGlobal(GLOBAL_TUNEABLES).at(90).as<int>() != 2000000000)
-		scriptGlobal(GLOBAL_TUNEABLES).at(90).as<int>() == 2000000000;
+		scriptGlobal(GLOBAL_TUNEABLES).at(90).as<int>() = 2000000000;
 
 	return;
 }
@@ -2217,18 +2222,12 @@ void hack::removeSuicideCooldown(feat* feature)
 	{
 		if (!feature->m_bRestored)
 		{
-			scriptGlobal(GLOBAL_TUNEABLES).at(27617).as<int>() = 300000;
-			scriptGlobal(GLOBAL_TUNEABLES).at(27618).as<int>() = 60000;
 			feature->m_bRestored = true;
 		}
 		return;
 	}
 	if (scriptGlobal(2540384).at(6672).as<int>() != -1)
 		scriptGlobal(2540384).at(6672).as<int>() = -1;
-	if (scriptGlobal(GLOBAL_TUNEABLES).at(27617).as<int>() != 0)
-		scriptGlobal(GLOBAL_TUNEABLES).at(27617).as<int>() = 0;
-	if (scriptGlobal(GLOBAL_TUNEABLES).at(27618).as<int>() != 0)
-		scriptGlobal(GLOBAL_TUNEABLES).at(27618).as<int>() = 0;
 
 	return;
 }
@@ -2361,13 +2360,13 @@ void hack::disableThePhone(feat* feature)
 
 void hack::antiCEOKick(feat* feature)
 {
-	blockScriptEvents(feature, 570);
+	blockScriptEvents(feature, 584);
 	return;
 }
 
 void hack::antiKickToSP(feat* feature)
 {
-	constexpr ptrdiff_t offests[] = { 6,16,20,21,22,23,24,52,327,369,479,483,489,491,529,533,566,578,591,609,610,611,616,618,633,634,637,643,644,645,647,693,722,733,739,749,771 };
+	constexpr ptrdiff_t offests[] = { 6,16,20,341,383,632,647,651,657,658,752 };
 	if (!feature->m_bOn)
 	{
 		if (!feature->m_bRestored)
@@ -2389,13 +2388,13 @@ void hack::antiKickToSP(feat* feature)
 
 void hack::antiApartmentTp(feat* feature)
 {
-	blockScriptEvents(feature, 533);
+	blockScriptEvents(feature, 547);
 	return;
 }
 
 void hack::antiRemoteBounty(feat* feature)
 {
-	blockScriptEvents(feature, 70);
+	blockScriptEvents(feature, 74);
 	return;
 }
 
@@ -2407,13 +2406,13 @@ void hack::antiWeatherControl(feat* feature)
 
 void hack::antiRemoteVehicleKick(feat* feature)
 {
-	blockScriptEvents(feature, 63);
+	blockScriptEvents(feature, 64);
 	return;
 }
 
 void hack::antiRemoteForceMission(feat* feature)
 {
-	blockScriptEvents(feature, 722);
+	blockScriptEvents(feature, 736);
 	return;
 }
 

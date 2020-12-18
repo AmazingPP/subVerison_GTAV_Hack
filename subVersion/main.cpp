@@ -231,7 +231,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	//for (size_t i = 0; i < sizeof(g_iFeaturePlayerList)/sizeof(g_iFeaturePlayerList[0]); i++)
 	//	g_iFeaturePlayerList[i] = g_pSettings->addFeature(-1, g_iFeature[FEATURE_P_PLAYER_LIST], L"线上 >>", feat_parent);
 
-	int vehSpawn = g_pSettings->addFeature(-1, olService, L"刷车 >>", feat_parent);
+	int vehSpawn = g_pSettings->addFeature(-1, olService, L"刷出载具 >>", feat_parent);
 	for (int i = 0; i < vehiclePreview.size(); i++)
 	{
 		int temp = g_pSettings->addFeature(-1, vehSpawn, vehiclePreview[i].first, feat_parent);
@@ -246,6 +246,13 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_G_RP_MP]			   = g_pSettings->addFeature(-1, tunable, L"RP倍数", feat_slider,"RP", 1.f, 1000.f , (float)1.f / 9.f);
 	g_iFeature[FEATURE_G_MISSION_PAYOUT]   = g_pSettings->addFeature(-1, tunable, L"最小任务金额", feat_slider, "MinMissionPayout", 0.f, 100000.f);
 	int recovery = g_pSettings->addFeature(-1, olService, L"解锁&恢复 >>", feat_parent);
+	int rank = g_pSettings->addFeature(-1, recovery, L"修改等级(切换战局后生效) >>", feat_parent);
+
+	constexpr int rank_list[] = { 1,20,30,50,100,120,200,520,666,888,6666,8000 };
+	for (int i = 0; i < sizeof(rank_list)/ sizeof(*rank_list); i++)
+	{
+		g_pSettings->addFeature(-1, rank, std::to_wstring(rank_list[i]), feat_btn, &hack::setRank, rank_list[i]);
+	}
 	g_pSettings->addFeature(-1, recovery, L"角色属性全满", feat_btn, &hack::fillSkillLevels);
 	g_pSettings->addFeature(-1, recovery, L"补满零食、防弹衣", feat_btn, &hack::fillAllSnacks);
 	int casino = g_pSettings->addFeature(-1, recovery, L"赌场豪劫 >>", feat_parent);

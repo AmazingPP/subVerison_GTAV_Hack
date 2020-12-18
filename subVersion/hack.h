@@ -96,6 +96,7 @@ class hack : public trainer
 		void	unlockClothes();
 		void	intoPV();
 		void	loadSession(int id);
+		void	setRank(int rank);
 		void	forwardTeleport(float dist);
 		void	spawnVehicle(int vehTypeIndex, int vehIndex);
 		void	selfDropWeapon(int weaponTypeIndex, int weaponIndex);

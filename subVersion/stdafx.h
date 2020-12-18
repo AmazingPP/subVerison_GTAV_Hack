@@ -69,6 +69,7 @@
 #define OFFSET_ENTITY_HEALTH			0x280			//entity health (except for vehicles); float cur, float max
 #define OFFSET_ENTITY_HEALTH_MAX		0x2A0			//they moved this away from curHealth in 1.36 :(
 #define OFFSET_ENTITY_ATTACKER			0x2A8			//base to a list of the last 3 entities that attacked the current entity
+#define OFFSET_ENTITY_MODEL_INFO		0x20			//CBaseModelInfo
 
 //player (entity) offsets
 #define OFFSET_PLAYER_VEHICLE					0xD30			//ptr to last used vehicle
@@ -135,6 +136,7 @@
 #define	OFFSET_VEHICLE_CUSTOM_TYRE_SMOKE_G			0x3FD			//btTyreSmokeGreen
 #define	OFFSET_VEHICLE_CUSTOM_TYRE_SMOKE_B			0x3FE			//btTyreSmokeBlue
 #define	OFFSET_VEHICLE_CUSTOM_LIMO_WINDOWS			0x3FF			//btLimoWindows; 0x1 = on
+#define OFFSET_VEHICLE_MODEL_INFO_JUMP_ROCK			0x58B			//btJumpOrRock; 0x0 = off; 0x20 = JumpingCar; 0x40 = RocketBoot;  0x42 = Oppressor;
 
 //weapon offsets
 #define OFFSET_WEAPON_MANAGER			0x10D8			//from playerbase
@@ -164,19 +166,6 @@
 #define OFFSET_WEAPON_FORCE_ON_VEHICLE	0xE0			//fForceOnVehicle(Bullet Mass)
 #define OFFSET_WEAPON_FORCE_ON_HELI		0xE4			//fForceOnHeli
 
-
-//tunable offsets
-#define OFFSET_TUNABLE_RP_MULTIPLIER			0x10
-#define OFFSET_TUNABLE_AP_MULTIPLIER			0x30F80
-#define OFFSET_TUNABLE_MIN_MISSION_PAYOUT		0x4BC8			//fMinMissionPayout
-#define OFFSET_TUNABLE_ANTI_IDLE_KICK1			0x2C0			//AFK;DWORD;2000000000 = Anti idle kick
-#define OFFSET_TUNABLE_ANTI_IDLE_KICK2			0x2C8
-#define OFFSET_TUNABLE_ANTI_IDLE_KICK3			0x2D0
-#define OFFSET_TUNABLE_ANTI_IDLE_KICK4			0x2D8
-#define OFFSET_TUNABLE_ORBITAL_CANNON_COOLDOWN	0x2C188			//OrbitalCannonCooldown;DWORD
-#define OFFSET_TUNABLE_BUNKER_RESEARCH			0x29BB8			//UnlockAllBunkerResearch;DWORD
-
-
 #define OFFSET_ATTACKER_DISTANCE		0x18			//changed to 0x18, from 0x10
 
 //replay interface offsets
@@ -194,7 +183,7 @@
 //globals
 #define GLOBAL_TUNEABLES		0x40001
 #define GLOBAL_CREATE_VEHICLE		2462286
-#define GLOBAL_MERRYWEATHER		2537071
+#define GLOBAL_MERRYWEATHER		2540384
 #define GLOBAL_BLOCK_SCRIPT_EVENTS	1391942
 #define GLOBAL_BUSINESS			1590535
 #define GLOBAL_SESSION			1312443
