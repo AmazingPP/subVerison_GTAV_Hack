@@ -308,18 +308,6 @@ int		settings::addFeature(int cat, int parent, std::wstring name, featType type,
 	return id;
 }
 
-//template<typename ...TArgs>
-//int		settings::addFeature(int cat, int parent, std::wstring name, featType type, void(hack::* const func)(TArgs...), TArgs ...arg)
-//{
-//	//this->m_pCurrentFeatBtn = new featBtn<TArgs...>(func, arg...);
-//	return 0;
-//	//int id = this->addFeature(cat, parent, name, type);
-//	//if (id < 0)
-//	//	return id;
-//
-//	//return id;
-//}
-
 int settings::updataFeature(int id, int cat, int parent, std::wstring name, featType type)
 {
 	if (id >= MAX_MENU_FEATURES ||																//buffer overflow

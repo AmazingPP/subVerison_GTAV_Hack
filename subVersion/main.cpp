@@ -274,8 +274,8 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeature(-1, bitSet2, L"一键解锁、最高等级", feat_btn, &hack::casinoStatBitSet2, 11);
 	g_pSettings->addFeature(-1, bitSet2, L"削弱敌人装备", feat_btn, &hack::casinoStatBitSet2, 0);
 	g_pSettings->addFeature(-1, bitSet2, L"钥匙卡最高级", feat_btn, &hack::casinoStatBitSet2, 1);
-	g_pSettings->addFeature(-1, bitSet2, L"最高级枪手", feat_btn, &hack::casinoStatBitSet2, 2);
-	g_pSettings->addFeature(-1, bitSet2, L"最高级司机", feat_btn, &hack::casinoStatBitSet2, 3);
+	g_pSettings->addFeature(-1, bitSet2, L"最低分红枪手", feat_btn, &hack::casinoStatBitSet2, 2);
+	g_pSettings->addFeature(-1, bitSet2, L"最低分红司机", feat_btn, &hack::casinoStatBitSet2, 3);
 	g_pSettings->addFeature(-1, bitSet2, L"最高级黑客", feat_btn, &hack::casinoStatBitSet2, 4);
 	int vehs = g_pSettings->addFeature(-1, bitSet2, L"逃亡载具 >>", feat_parent);
 	g_pSettings->addFeature(-1, vehs, L"0", feat_btn, &hack::casinoStatBitSet2, 5);

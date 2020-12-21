@@ -82,21 +82,17 @@ class feat
 		virtual void	dec();
 };
 
-template<typename... TArgs>
+template<typename... Args>
 class featBtn : public feat
 {
 	public:
 		std::function<void()> m_Action;
 
-		featBtn(void(hack::* const func)(TArgs...), TArgs... args)
+		featBtn(void(hack::* const func)(Args...), Args... args)
 		{
 			m_Action = [=]()
 			{
-				std::thread t([=]()
-				{
-					(g_pHack->*func)(args...);
-				});
-				t.detach();
+				std::thread(func, g_pHack, args...).detach();
 			};
 		}
 		~featBtn() {};
@@ -239,10 +235,10 @@ class settings
 		int			addFeature(int cat, int parent, std::wstring name, featType type, teleType tpType);
 		int			addFeature(int cat, int parent, std::wstring name, featType type, teleType tpType, float x, float y, float z);
 
-		template	<typename... TArgs>
-		int			addFeature(int cat, int parent, std::wstring name, featType type, void(hack::* const func)(TArgs...), TArgs... arg)
+		template	<typename... Args>
+		int			addFeature(int cat, int parent, std::wstring name, featType type, void(hack::* const func)(Args...), Args... args)
 		{
-			this->m_pCurrentFeatBtn = new featBtn<TArgs...>(func, arg...);
+			this->m_pCurrentFeatBtn = new featBtn<Args...>(func, args...);
 			int id = this->addFeature(cat, parent, name, type);
 			if (id < 0)
 				return id;

@@ -484,10 +484,10 @@ void hack::casinoStatBitSet2(int type)
 		dStatPushBack(string_to_hash("H3OPT_KEYLEVELS"), 2);
 		break;
 	case 2:
-		dStatPushBack(string_to_hash("H3OPT_CREWWEAP"), 6);
+		dStatPushBack(string_to_hash("H3OPT_CREWWEAP"), 0);
 		break;
 	case 3:
-		dStatPushBack(string_to_hash("H3OPT_CREWDRIVER"), 6);
+		dStatPushBack(string_to_hash("H3OPT_CREWDRIVER"), 0);
 		break;
 	case 4:
 		dStatPushBack(string_to_hash("H3OPT_CREWHACKER"), 5);
@@ -513,8 +513,8 @@ void hack::casinoStatBitSet2(int type)
 	default:
 		dStatPushBack(string_to_hash("H3OPT_DISRUPTSHIP"), 3);
 		dStatPushBack(string_to_hash("H3OPT_KEYLEVELS"), 2);
-		dStatPushBack(string_to_hash("H3OPT_CREWWEAP"), 6);
-		dStatPushBack(string_to_hash("H3OPT_CREWDRIVER"), 6);
+		dStatPushBack(string_to_hash("H3OPT_CREWWEAP"), 0);
+		dStatPushBack(string_to_hash("H3OPT_CREWDRIVER"), 0);
 		dStatPushBack(string_to_hash("H3OPT_CREWHACKER"), 5);
 		dStatPushBack(string_to_hash("H3OPT_VEHS"), 3);
 		dStatPushBack(string_to_hash("H3OPT_WEAPS"), 0);
@@ -978,60 +978,59 @@ void hack::forwardTeleport(float dist)
 
 void hack::spawnVehicle(int vehTypeIndex, int vehIndex)
 {
-		m_player.getPos();
-		v3 v3Pos = m_player.m_v3Pos;
-		m_player.getCos();
-		m_player.getSin();
-		float fAngle = m_player.m_fCos;
-		float fAngle2 = m_player.m_fSin;
-		v3Pos.x += 6 * fAngle2;
-		v3Pos.y += 6 * fAngle;
+	scriptGlobal(4269479).as<bool*>() = true;
 
-		auto vehicle = vehiclePreview[vehTypeIndex].second[vehIndex];
+	m_player.getPos();
+	v3 v3Pos = m_player.m_v3Pos;
+	m_player.getCos();
+	m_player.getSin();
+	float fAngle = m_player.m_fCos;
+	float fAngle2 = m_player.m_fSin;
+	v3Pos.x += 6 * fAngle2;
+	v3Pos.y += 6 * fAngle;
 
-		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(66).as<unsigned int>() = joaat(vehicle.VCode);
-		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(94).as<int>() = 2;
-		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(95).as<int>() = 14;
-		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(5).as<BYTE>() = -1;
-		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(6).as<BYTE>() = -1;
-		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(7).at(0).as<float>() = v3Pos.x;
-		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(7).at(1).as<float>() = v3Pos.y;
-		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(7).at(2).as<float>() = -255.0f;
+	auto vehicle = vehiclePreview[vehTypeIndex].second[vehIndex];
 
-		if (true)
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(66).as<unsigned int>() = joaat(vehicle.VCode);
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(94).as<int>() = 2;
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(95).as<int>() = 14;
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(5).as<BYTE>() = -1;
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(6).as<BYTE>() = -1;
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(7).at(0).as<float>() = v3Pos.x;
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(7).at(1).as<float>() = v3Pos.y;
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(7).at(2).as<float>() = -255.0f;
+
+	int* pTemp = (int*)malloc(sizeof(vehicle.VMod));
+	memcpy(pTemp, &vehicle.VMod, sizeof(vehicle.VMod));
+
+	for (int i = 0; i < sizeof(vehicle.VMod) / sizeof(int); i++)
+	{
+		if (i < 17)
 		{
-			int* pTemp = (int*)malloc(sizeof(vehicle.VMod));
-			memcpy(pTemp, &vehicle.VMod, sizeof(vehicle.VMod));
-
-			for (int i = 0; i < sizeof(vehicle.VMod) / sizeof(int); i++)
-			{
-				if (i < 17)
-				{
-					scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(10 + i).as<BYTE>() = pTemp[i];
-				}
-				else if (pTemp[42] > 0 && i == 42)
-				{
-					scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(10 + 6 + i).as<BYTE>() = rand() % pTemp[i] + 1;
-				}
-				else if (i > 22)
-				{
-					scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(10 + 6 + i).as<BYTE>() = pTemp[i];
-				}
-				else
-				{
-					continue;
-				}
-			}
-			free(pTemp);
-			scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(28).as<BYTE>() = 1;
-			scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(30).as<BYTE>() = 1;
-			scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(32).as<BYTE>() = 1;
-			scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(65).as<BYTE>() = 1;
-			scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(77).as<int>() = 0xF0400200;
+			scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(10 + i).as<BYTE>() = pTemp[i];
 		}
+		else if (pTemp[42] > 0 && i == 42)
+		{
+			scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(10 + 6 + i).as<BYTE>() = rand() % pTemp[i] + 1;
+		}
+		else if (i > 22)
+		{
+			scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(10 + 6 + i).as<BYTE>() = pTemp[i];
+		}
+		else
+		{
+			continue;
+		}
+	}
+	free(pTemp);
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(28).as<BYTE>() = 1;
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(30).as<BYTE>() = 1;
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(32).as<BYTE>() = 1;
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(65).as<BYTE>() = 1;
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(27).at(77).as<int>() = 0xF0400200;
 
-		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(5).as<int>() = 1;
-		scriptGlobal(GLOBAL_CREATE_VEHICLE).at(2).as<int>() = 1;
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(5).as<int>() = 1;
+	scriptGlobal(GLOBAL_CREATE_VEHICLE).at(2).as<int>() = 1;
 }
 
 void hack::selfDropWeapon(int weaponTypeIndex, int weaponIndex)
