@@ -20,6 +20,7 @@
 #pragma once
 #ifndef MEMMANAGER_H
 #define MEMMANAGER_H
+
 class memManager
 {
 	public:
@@ -27,11 +28,19 @@ class memManager
 				memManager(LPCSTR name);
 				~memManager();
 		bool	attach();
-		HMODULE	getModuleAddress(char* moduleName);
+MODULEENTRY32	getModule(const std::string& moduleName = "GTA5.exe");
 		bool	findWindow();
 		HWND	getWindow();
 		void	setWindowName(LPCSTR str);
 		void	initPtr();
+
+		template <typename rT>
+		inline rT readMem(DWORD_PTR address)
+		{
+			rT out;
+			ReadProcessMemory(m_hProc, (LPVOID)address, &out, sizeof(rT), nullptr);
+			return out;
+		}
 
 		template <typename rT>
 		inline void	readMem(DWORD_PTR address, rT* output, DWORD size = NULL, DWORD prot = NULL)

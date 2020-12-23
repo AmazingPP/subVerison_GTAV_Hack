@@ -18,6 +18,7 @@
 */
 
 #include "stdafx.h"
+#include <sstream>
 
 memManager::memManager() {}
 
@@ -52,26 +53,30 @@ bool	memManager::attach()
 	return 1;
 }
 
-HMODULE memManager::getModuleAddress(char* moduleName)
+MODULEENTRY32 memManager::getModule(const std::string& moduleName)
 {
-	HMODULE	hModBuf[0xff];
-	DWORD	bN;
-	UINT	i;
-	
-	if(EnumProcessModulesEx(m_hProc, hModBuf, sizeof(hModBuf), &bN, LIST_MODULES_64BIT))
+	DWORD dwProcId;
+	GetWindowThreadProcessId(m_hWndTarget, &dwProcId);
+
+	HANDLE hModuleSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, dwProcId);
+	MODULEENTRY32 mEntry;
+
+	if (hModuleSnapshot == INVALID_HANDLE_VALUE)
+		return MODULEENTRY32();
+
+	mEntry.dwSize = sizeof(mEntry);
+
+	if (!Module32First(hModuleSnapshot, &mEntry))
+		CloseHandle(hModuleSnapshot);
+
+	do
 	{
-		for(i = 0; i < (bN / sizeof(HMODULE)); i++)
-		{
-			TCHAR szPath[MAX_PATH];
-			if(GetModuleFileNameEx(m_hProc, hModBuf[i], szPath, sizeof(szPath) / sizeof(TCHAR)))
-			{
-				std::string szName = szPath;
-				if(szName.find(moduleName) != std::string::npos)
-					return hModBuf[i];
-			}
-		}
-	}
-	return 0;
+		if (std::string(mEntry.szModule) == moduleName)
+			return mEntry;
+	} while (Module32Next(hModuleSnapshot, &mEntry));
+
+	CloseHandle(hModuleSnapshot);
+	return MODULEENTRY32();
 }
 
 bool	memManager::findWindow()
@@ -94,33 +99,64 @@ void	memManager::setWindowName(LPCSTR str)
 
 void	memManager::initPtr()
 {
-	HMODULE hModule = memManager::getModuleAddress("steam_api64.dll");
-	if (hModule != 0)
+	auto base = getModule();
+
+	auto rip = [&](uintptr_t offset)
 	{
-		//Steam
-		ADDRESS_WORLD = 0x24E9E50;
-		ADDRESS_BLIP = 0x1F73420;
-		ADDRESS_AMMO = 0x1030A35;
-		ADDRESS_MAGAZINE = 0x10309F0;
-		ADDRESS_TRIGGER = 0x1F7FEE0;
-		ADDRESS_GLOBAL = 0x2DA0A60;
-		ADDRESS_PLAYER_LIST = 0x1DB57F0;
-		ADDRESS_REPLAY_INTERFACE = 0x1EE4CC0;
-		ADDRESS_UNK_MODEL = 0x250D560;
-		ADDRESS_FRAME_FLAGS = 0x6E39A0;
-	}
-	else
+		return readMem<int>((uintptr_t)base.modBaseAddr + offset + 3) + 7 + offset;
+	};
+
+	patternBatch patternMain(base);
+
+	patternMain.add("World", "48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07", [&](uintptr_t offset)
 	{
-		//Epic
-		ADDRESS_WORLD = 0x24E6D90;
-		ADDRESS_BLIP = 0x1F6EF80;
-		ADDRESS_AMMO = 0x102F8E9;
-		ADDRESS_MAGAZINE = 0x102F8A4;
-		ADDRESS_TRIGGER = 0x1F7CBE0;
-		ADDRESS_GLOBAL = 0x2D9C4A0;
-		ADDRESS_PLAYER_LIST = 0x1DB2648;
-		ADDRESS_REPLAY_INTERFACE = 0x1EE18A8;
-		ADDRESS_UNK_MODEL = 0x250A280;
-		ADDRESS_FRAME_FLAGS = 0x6E2DD0;
-	}
+		ADDRESS_WORLD = rip(offset);
+	});
+
+	patternMain.add("Blip", "4C 8D 05 ? ? ? ? 0F B7 C1", [&](uintptr_t offset)
+	{
+		ADDRESS_BLIP = rip(offset);
+	});
+
+	patternMain.add("Ammo dec code", "41 2B D1 E8", [](uintptr_t offset)
+	{
+		ADDRESS_AMMO = offset;
+	});
+
+	patternMain.add("Magazine dec code", "41 2B C9 3B C8 0F", [](uintptr_t offset)
+	{
+		ADDRESS_MAGAZINE = offset;
+	});
+
+	patternMain.add("Aiming ped", "48 8B 0D ? ? ? ? 48 85 C9 74 0C 48 8D 15 ? ? ? ? E8 ? ? ? ? 48 89 1D ? ? ? ?", [&](uintptr_t offset)
+	{
+		ADDRESS_AIMING_PED = rip(offset);
+	});
+
+	patternMain.add("Script Global", "4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11", [&](uintptr_t offset)
+	{
+		ADDRESS_GLOBAL = rip(offset);
+	});
+
+	patternMain.add("Player list", "48 8B 0D ? ? ? ? E8 ? ? ? ? 48 8B C8 E8 ? ? ? ? 48 8B CF", [&](uintptr_t offset)
+	{
+		ADDRESS_PLAYER_LIST = rip(offset);
+	});
+
+	patternMain.add("Replay interface", "48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D ? ? ? ?", [&](uintptr_t offset)
+	{
+		ADDRESS_REPLAY_INTERFACE = rip(offset);
+	});
+
+	patternMain.add("Unk model", "4C 8B 15 ? ? ? ? 49 8B 04 D2 44 39 40 08", [&](uintptr_t offset)
+	{
+		ADDRESS_UNK_MODEL = rip(offset);
+	});
+
+	patternMain.add("Frame flags zero writer dec code", "89 0B 48 8B 7B 10 32 D2 EB 19 39 0F 74 11 84 D2 75 09 8B 17 E8 47 C8 FF FF", [](uintptr_t offset)
+	{
+		ADDRESS_FRAME_FLAGS = offset;
+	});
+
+	patternMain.run();
 }

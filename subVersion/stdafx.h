@@ -32,9 +32,12 @@
 #include <string>
 #include <map>
 #include <thread>
+#include <future>
 #include <deque>
 #include <cmath>
 #include <tchar.h>
+#include <TlHelp32.h>
+#include <functional>
 
 #include <Dwmapi.h>
 #pragma comment(lib,"Dwmapi.lib")
@@ -48,6 +51,7 @@
 
 #include "vector.h"
 #include "memManager.h"
+#include "patternBatch.h"
 #include "D3D9Render.h"
 #include "settings.h"
 #include "entity.h"
@@ -323,14 +327,14 @@ extern bool		g_bKillAttach;
 extern bool		g_bKillHack;
 extern bool		g_bKillKeys;
 //Addresses from GTAV.exe module
-extern long     ADDRESS_WORLD;				//48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07
-extern long		ADDRESS_BLIP;				//4C 8D 05 ? ? ? ? 0F B7 C1
-extern long		ADDRESS_AMMO;				//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
-extern long		ADDRESS_MAGAZINE;			//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
-extern long		ADDRESS_TRIGGER;
-extern long		ADDRESS_GLOBAL;				//4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11
-extern long		ADDRESS_PLAYER_LIST;		//48 8B 0D ? ? ? ? E8 ? ? ? ? 48 8B C8 E8 ? ? ? ? 48 8B CF
-extern long		ADDRESS_REPLAY_INTERFACE;	//48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D ? ? ? ?
-extern long		ADDRESS_UNK_MODEL;			//4C 8B 15 ? ? ? ? 49 8B 04 D2 44 39 40 08
-extern long		ADDRESS_FRAME_FLAGS;		//Frame flags 0 writer dec code; 89 0B 48 8B 7B 10 32 D2 EB 19 39 0F 74 11 84 D2 75 09 8B 17 E8 47 C8 FF FF; 90 90
+extern uintptr_t    ADDRESS_WORLD;				//48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07
+extern uintptr_t	ADDRESS_BLIP;				//4C 8D 05 ? ? ? ? 0F B7 C1
+extern uintptr_t	ADDRESS_AMMO;				//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
+extern uintptr_t	ADDRESS_MAGAZINE;			//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
+extern uintptr_t	ADDRESS_AIMING_PED;			//48 8B 0D ? ? ? ? 48 85 C9 74 0C 48 8D 15 ? ? ? ? E8 ? ? ? ? 48 89 1D ? ? ? ?
+extern uintptr_t	ADDRESS_GLOBAL;				//4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11
+extern uintptr_t	ADDRESS_PLAYER_LIST;		//48 8B 0D ? ? ? ? E8 ? ? ? ? 48 8B C8 E8 ? ? ? ? 48 8B CF
+extern uintptr_t	ADDRESS_REPLAY_INTERFACE;	//48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D ? ? ? ?
+extern uintptr_t	ADDRESS_UNK_MODEL;			//4C 8B 15 ? ? ? ? 49 8B 04 D2 44 39 40 08
+extern uintptr_t	ADDRESS_FRAME_FLAGS;		//Frame flags 0 writer dec code; 89 0B 48 8B 7B 10 32 D2 EB 19 39 0F 74 11 84 D2 75 09 8B 17 E8 47 C8 FF FF; 90 90
 #endif

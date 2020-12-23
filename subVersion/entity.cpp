@@ -1087,7 +1087,6 @@ void replayInterface::initPeds()
 	for (size_t i = 0; i < dw_curPedNum; i++)
 	{
 		delete g_pPedList[i];
-		g_pPedList[i] = nullptr;
 	}
 	dw_curPedNum = 256;
 	//g_pMemMan->readMem<DWORD>((DWORD_PTR)m_dwpPedInterface + OFFSET_INTERFACE_CUR_NUMS, &dw_curPedNum);

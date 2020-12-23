@@ -39,6 +39,9 @@
     <ClCompile Include="scriptGlobal.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="patternBatch.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3D9Render.h">
@@ -75,6 +78,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="WeaponPreview.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="patternBatch.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

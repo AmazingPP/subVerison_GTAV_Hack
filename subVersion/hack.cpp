@@ -2201,13 +2201,13 @@ void hack::tunableBunkerResearch(feat* feature)
 	{
 		if (!feature->m_bRestored)
 		{
-			scriptGlobal(GLOBAL_TUNEABLES).at(21377).as<int>() = 0;
+			scriptGlobal(GLOBAL_TUNEABLES).at(21389).as<int>() = 0;
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if (scriptGlobal(GLOBAL_TUNEABLES).at(21377).as<int>() != 1)
-		scriptGlobal(GLOBAL_TUNEABLES).at(21377).as<int>() = 1;
+	if (scriptGlobal(GLOBAL_TUNEABLES).at(21389).as<int>() != 1)
+		scriptGlobal(GLOBAL_TUNEABLES).at(21389).as<int>() = 1;
 	return;
 }
 
@@ -2370,11 +2370,8 @@ void hack::disableThePhone(feat* feature)
 		}
 		return;
 	}
-	if (scriptGlobal(6866).as<int>() > 0)
-	{
-		scriptGlobal(2547059).at(37).as<int>() = 1;
-		scriptGlobal(6866).as<int>() = 0;
-	}
+	
+	scriptGlobal(19681).at(1).as<int>() = 3;
 
 	return;
 }
@@ -2452,23 +2449,17 @@ void hack::triggerBot(feat* feature)
 		}
 		return;
 	}
-	DWORD dwTrigger;// 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
-	g_pMemMan->readMem<DWORD>((DWORD_PTR)m_hModule + ADDRESS_TRIGGER, &dwTrigger);
-	if (dwTrigger == 1 || dwTrigger == 2)
+	uintptr_t pPed = g_pMemMan->readMem<uintptr_t>((DWORD_PTR)m_hModule + ADDRESS_AIMING_PED);
+	if (pPed != NULL && g_pMemMan->readMem<float>(pPed + OFFSET_ENTITY_HEALTH) > 0 && !m_bMouseDown)
 	{
-		if (!m_bMouseDown)
-		{
-			LMouseDown();
-			m_bMouseDown = true;
-		}
+
+		LMouseDown();
+		m_bMouseDown = true;
 	}
-	else
+	else if(m_bMouseDown)
 	{
-		if (m_bMouseDown)
-		{
-			LMouseUp();
-			m_bMouseDown = false;
-		}
+		LMouseUp();
+		m_bMouseDown = false;
 	}
 
 	return;

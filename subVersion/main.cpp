@@ -40,16 +40,16 @@ bool		g_bKillAttach	= false;
 bool		g_bKillHack		= false;
 bool		g_bKillKeys		= false;
 
-long		ADDRESS_WORLD		= 0;
-long		ADDRESS_BLIP		= 0;
-long		ADDRESS_AMMO		= 0;
-long		ADDRESS_MAGAZINE	= 0;
-long		ADDRESS_TRIGGER		= 0;
-long		ADDRESS_GLOBAL		= 0;
-long		ADDRESS_PLAYER_LIST = 0;
-long		ADDRESS_REPLAY_INTERFACE = 0;
-long		ADDRESS_UNK_MODEL	= 0;
-long		ADDRESS_FRAME_FLAGS = 0;
+uintptr_t	ADDRESS_WORLD		= 0;
+uintptr_t	ADDRESS_BLIP		= 0;
+uintptr_t	ADDRESS_AMMO		= 0;
+uintptr_t	ADDRESS_MAGAZINE	= 0;
+uintptr_t	ADDRESS_AIMING_PED	= 0;
+uintptr_t	ADDRESS_GLOBAL		= 0;
+uintptr_t	ADDRESS_PLAYER_LIST = 0;
+uintptr_t	ADDRESS_REPLAY_INTERFACE = 0;
+uintptr_t	ADDRESS_UNK_MODEL	= 0;
+uintptr_t	ADDRESS_FRAME_FLAGS = 0;
 //fuction prototypes
 LRESULT	__stdcall	WindowProc(	HWND	hWnd,
 								UINT	message,
@@ -366,6 +366,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 
 	ShowWindow(g_hWnd, SW_SHOWNORMAL);
 
+	g_pMemMan->attach();
 	CreateThread(	NULL,
 					0,
 					threadAttach,
@@ -489,7 +490,7 @@ DWORD __stdcall	threadKeys(LPVOID lpParam)
 
 DWORD __stdcall threadHack(LPVOID lpParam)
 {
-	g_pHack->m_hModule = g_pMemMan->getModuleAddress("GTA5.exe");
+	g_pHack->m_hModule = g_pMemMan->getModule().hModule;
 	while(!g_bKillSwitch)
 	{
 		BYTE btInit	= g_pHack->initPointers();
@@ -604,7 +605,7 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->consumeStatQueue();
 			}
 		}
-		Sleep(1);
+		Sleep(10);
 	}
 	g_bKillHack = true;
 	return 0;
