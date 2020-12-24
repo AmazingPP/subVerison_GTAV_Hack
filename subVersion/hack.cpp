@@ -1250,7 +1250,7 @@ void hack::blockScriptEvents(feat* feature, std::ptrdiff_t index)
 
 unsigned int hack::joaat_with_mp_index(std::string input, std::string pre)
 {
-	return joaat(pre.empty() ? m_mpId : pre + input);
+	return joaat((pre.empty() ? m_mpId : pre) + input);
 }
 
 void hack::consumeStatQueue()
