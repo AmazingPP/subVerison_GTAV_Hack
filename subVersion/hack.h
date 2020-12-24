@@ -88,6 +88,9 @@ class hack : public trainer
 		void	casinoStatBitSet1(int type);
 		void	casinoStatBitSet2(int type);
 		void	casinoHeistCut(feat* feature, int playerIndex);
+		void	pericoStat();
+		void	pericoStatBitSet1(int type);
+		void	pericoStatBitSet2(int type);
 		void	unlockHeistCars();
 		void	unlockLSC();
 		void	unlockWeaponCamos();
@@ -172,6 +175,7 @@ class hack : public trainer
 		void	antiRemoteVehicleKick(feat* feature);
 		void	antiRemoteForceMission(feat* feature);
 		void	triggerBot(feat* feature);
+		void	mpIndex(feat* feature);
 		void	about(int arg);
 
 	private:
@@ -200,7 +204,7 @@ class hack : public trainer
 		void	createAmbientPickup(unsigned int pickupHash, float posX, float posY, float posZ, int value, unsigned int modelHash);
 		void	blockScriptEvents(feat* feature, std::ptrdiff_t index);
 
-		unsigned int string_to_hash(std::string input, std::string pre = "MP0_");
+		unsigned int joaat_with_mp_index(std::string input, std::string pre = "");
 };
 
 extern hack*		g_pHack;

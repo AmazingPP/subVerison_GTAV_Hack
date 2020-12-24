@@ -88,7 +88,7 @@
 #define OFFSET_PLAYER_INFO_WANTED				0x868			//wanted level; DWORD
 #define OFFSET_PLAYER_INFO_STAMINA				0xCD4			//fStamina, fStaminaMax
 #define OFFSET_PLAYER_RAGDOLL					0x10B8			//byte; CPed.noRagdoll: 0x20 = off; 0x00/0x01 = on
-#define OFFSET_PLAYER_SEATBELT					0xC00			//byte; CPed.seatBelt: 0xC8 = off; 0xC9 = on
+#define OFFSET_PLAYER_SEATBELT					0x140C			//byte; CPed.seatBelt: 0xC8 = off; 0xC9 = on
 #define OFFSET_PLAYER_INVEHICLE					0x1477
 #define OFFSET_PLAYER_ARMOR						0x14E0			//armour
 #define OFFSET_PLAYER_WATER_PROOF				0x188			//water proof; DWORD; +0x1000000 = on
@@ -245,6 +245,7 @@
 #define FEATURE_V_RECHARGE_SPEED	0x33
 #define FEATURE_V_HEAL				0x34
 #define FEATURE_G_RP_MP				0x35
+#define FEATURE_R_MP_INDEX			0x36
 #define FEATURE_G_MISSION_PAYOUT	0x37
 #define FEATURE_W_FILL_ALL_AMMO		0x38
 #define FEATURE_W_FORCE_ON_PED		0x39
@@ -276,7 +277,8 @@
 #define FEATURE_T_SUICIDE_CD		0x53
 #define FEATURE_W_TRIGGER_BOT		0x54
 
-static std::wstring StringToWString(const std::string& str) {
+static std::wstring StringToWString(const std::string& str)
+{
 	int num = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
 	wchar_t* wide = new wchar_t[num];
 	MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, wide, num);
@@ -302,14 +304,16 @@ static unsigned int joaat(std::string input)
 void	killProgram	();
 DWORD	strToVk(std::string str);
 
-static void LMouseDown(){
+static void LMouseDown()
+{
 	INPUT    Input = { 0 };
 	Input.type = INPUT_MOUSE;
 	Input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
 	::SendInput(1, &Input, sizeof(INPUT));
 }
 
-static void LMouseUp() {
+static void LMouseUp()
+{
 	INPUT    Input = { 0 };
 	Input.type = INPUT_MOUSE;
 	Input.mi.dwFlags = MOUSEEVENTF_LEFTUP;

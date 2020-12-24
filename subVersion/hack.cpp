@@ -46,8 +46,9 @@ bool	trainer::checkKeyState(int key)
 */
 
 
-hack::hack() 
-	:m_explosion(ImpactExplosionEnum::DefaultBullets)
+hack::hack() :
+	m_explosion(ImpactExplosionEnum::DefaultBullets),
+	m_mpId("MP0_")
 {}
 
 hack::~hack() {}
@@ -160,7 +161,6 @@ BYTE hack::initPointers()
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_hModule + ADDRESS_GLOBAL, &m_dwpGlobalBase);
 	if (m_dwpGlobalBase == 0)
 		return INITPTR_INVALID_GLOBAL;
-	m_mpId = "MP0_";
 
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR)m_hModule + ADDRESS_REPLAY_INTERFACE, &m_dwpReplayInterfaceBase);
 	if (m_dwpReplayInterfaceBase == 0)
@@ -409,118 +409,118 @@ void hack::suicide()
 
 void hack::fillSkillLevels()
 {
-	dStatPushBack(string_to_hash("SCRIPT_INCREASE_STAM"), 100);
-	dStatPushBack(string_to_hash("SCRIPT_INCREASE_SHO"), 100);
-	dStatPushBack(string_to_hash("SCRIPT_INCREASE_STRN"), 100);
-	dStatPushBack(string_to_hash("SCRIPT_INCREASE_STL"), 100);
-	dStatPushBack(string_to_hash("SCRIPT_INCREASE_FLY"), 100);
-	dStatPushBack(string_to_hash("SCRIPT_INCREASE_DRIV"), 100);
-	dStatPushBack(string_to_hash("SCRIPT_INCREASE_LUNG"), 100);
+	dStatPushBack(joaat_with_mp_index("SCRIPT_INCREASE_STAM"), 100);
+	dStatPushBack(joaat_with_mp_index("SCRIPT_INCREASE_SHO"), 100);
+	dStatPushBack(joaat_with_mp_index("SCRIPT_INCREASE_STRN"), 100);
+	dStatPushBack(joaat_with_mp_index("SCRIPT_INCREASE_STL"), 100);
+	dStatPushBack(joaat_with_mp_index("SCRIPT_INCREASE_FLY"), 100);
+	dStatPushBack(joaat_with_mp_index("SCRIPT_INCREASE_DRIV"), 100);
+	dStatPushBack(joaat_with_mp_index("SCRIPT_INCREASE_LUNG"), 100);
 }
 
 void hack::fillAllSnacks()
 {
-	dStatPushBack(string_to_hash("NO_BOUGHT_YUM_SNACKS"), 30);
-	dStatPushBack(string_to_hash("NO_BOUGHT_HEALTH_SNACKS"), 15);
-	dStatPushBack(string_to_hash("NO_BOUGHT_EPIC_SNACKS"), 5);
-	dStatPushBack(string_to_hash("NUMBER_OF_ORANGE_BOUGHT"), 10);
-	dStatPushBack(string_to_hash("NUMBER_OF_BOURGE_BOUGHT"), 10);
-	dStatPushBack(string_to_hash("CIGARETTES_BOUGHT"), 20);
-	dStatPushBack(string_to_hash("MP_CHAR_ARMOUR_5_COUNT"), 10);
+	dStatPushBack(joaat_with_mp_index("NO_BOUGHT_YUM_SNACKS"), 30);
+	dStatPushBack(joaat_with_mp_index("NO_BOUGHT_HEALTH_SNACKS"), 15);
+	dStatPushBack(joaat_with_mp_index("NO_BOUGHT_EPIC_SNACKS"), 5);
+	dStatPushBack(joaat_with_mp_index("NUMBER_OF_ORANGE_BOUGHT"), 10);
+	dStatPushBack(joaat_with_mp_index("NUMBER_OF_BOURGE_BOUGHT"), 10);
+	dStatPushBack(joaat_with_mp_index("CIGARETTES_BOUGHT"), 20);
+	dStatPushBack(joaat_with_mp_index("MP_CHAR_ARMOUR_5_COUNT"), 10);
 }
 
 void hack::casinoStat()
 {
-	dStatPushBack(string_to_hash("H3_COMPLETEDPOSIX"), -1);
+	dStatPushBack(joaat_with_mp_index("H3_COMPLETEDPOSIX"), -1);
 }
 
 void hack::casinoStatBitSet1(int type)
 {
-	dStatPushBack(string_to_hash("H3OPT_BITSET1"), 0);
+	dStatPushBack(joaat_with_mp_index("H3OPT_BITSET1"), 0);
 	switch (type)
 	{
 	case 0:
-		dStatPushBack(string_to_hash("H3OPT_APPROACH"), 1);
+		dStatPushBack(joaat_with_mp_index("H3OPT_APPROACH"), 1);
 		break;
 	case 1:
-		dStatPushBack(string_to_hash("H3OPT_APPROACH"), 2);
+		dStatPushBack(joaat_with_mp_index("H3OPT_APPROACH"), 2);
 		break;
 	case 2:
-		dStatPushBack(string_to_hash("H3OPT_APPROACH"), 3);
+		dStatPushBack(joaat_with_mp_index("H3OPT_APPROACH"), 3);
 		break;
 	case 3:
-		dStatPushBack(string_to_hash("H3OPT_TARGET"), 0);
+		dStatPushBack(joaat_with_mp_index("H3OPT_TARGET"), 0);
 		break;
 	case 4:
-		dStatPushBack(string_to_hash("H3OPT_TARGET"), 1);
+		dStatPushBack(joaat_with_mp_index("H3OPT_TARGET"), 1);
 		break;
 	case 5:
-		dStatPushBack(string_to_hash("H3OPT_TARGET"), 2);
+		dStatPushBack(joaat_with_mp_index("H3OPT_TARGET"), 2);
 		break;
 	case 6:
-		dStatPushBack(string_to_hash("H3OPT_TARGET"), 3);
+		dStatPushBack(joaat_with_mp_index("H3OPT_TARGET"), 3);
 		break;
 	case 7:
-		dStatPushBack(string_to_hash("H3OPT_ACCESSPOINTS"), -1);
+		dStatPushBack(joaat_with_mp_index("H3OPT_ACCESSPOINTS"), -1);
 		break;
 	case 8:
-		dStatPushBack(string_to_hash("H3OPT_POI"), -1);
+		dStatPushBack(joaat_with_mp_index("H3OPT_POI"), -1);
 		break;
 	default:
 		break;
 	}
-	dStatPushBack(string_to_hash("H3OPT_BITSET1"), -1);
+	dStatPushBack(joaat_with_mp_index("H3OPT_BITSET1"), -1);
 }
 
 void hack::casinoStatBitSet2(int type)
 {
-	dStatPushBack(string_to_hash("H3OPT_BITSET0"), 0);
+	dStatPushBack(joaat_with_mp_index("H3OPT_BITSET0"), 0);
 	switch (type)
 	{
 	case 0:
-		dStatPushBack(string_to_hash("H3OPT_DISRUPTSHIP"), 3);
+		dStatPushBack(joaat_with_mp_index("H3OPT_DISRUPTSHIP"), 3);
 		break;
 	case 1:
-		dStatPushBack(string_to_hash("H3OPT_KEYLEVELS"), 2);
+		dStatPushBack(joaat_with_mp_index("H3OPT_KEYLEVELS"), 2);
 		break;
 	case 2:
-		dStatPushBack(string_to_hash("H3OPT_CREWWEAP"), 0);
+		dStatPushBack(joaat_with_mp_index("H3OPT_CREWWEAP"), 0);
 		break;
 	case 3:
-		dStatPushBack(string_to_hash("H3OPT_CREWDRIVER"), 0);
+		dStatPushBack(joaat_with_mp_index("H3OPT_CREWDRIVER"), 0);
 		break;
 	case 4:
-		dStatPushBack(string_to_hash("H3OPT_CREWHACKER"), 5);
+		dStatPushBack(joaat_with_mp_index("H3OPT_CREWHACKER"), 5);
 		break;
 	case 5:
-		dStatPushBack(string_to_hash("H3OPT_VEHS"), 0);
+		dStatPushBack(joaat_with_mp_index("H3OPT_VEHS"), 0);
 		break;
 	case 6:
-		dStatPushBack(string_to_hash("H3OPT_VEHS"), 1);
+		dStatPushBack(joaat_with_mp_index("H3OPT_VEHS"), 1);
 		break;
 	case 7:
-		dStatPushBack(string_to_hash("H3OPT_VEHS"), 2);
+		dStatPushBack(joaat_with_mp_index("H3OPT_VEHS"), 2);
 		break;
 	case 8:
-		dStatPushBack(string_to_hash("H3OPT_VEHS"), 3);
+		dStatPushBack(joaat_with_mp_index("H3OPT_VEHS"), 3);
 		break;
 	case 9:
-		dStatPushBack(string_to_hash("H3OPT_WEAPS"), 0);
+		dStatPushBack(joaat_with_mp_index("H3OPT_WEAPS"), 0);
 		break;
 	case 10:
-		dStatPushBack(string_to_hash("H3OPT_WEAPS"), 1);
+		dStatPushBack(joaat_with_mp_index("H3OPT_WEAPS"), 1);
 		break;
 	default:
-		dStatPushBack(string_to_hash("H3OPT_DISRUPTSHIP"), 3);
-		dStatPushBack(string_to_hash("H3OPT_KEYLEVELS"), 2);
-		dStatPushBack(string_to_hash("H3OPT_CREWWEAP"), 0);
-		dStatPushBack(string_to_hash("H3OPT_CREWDRIVER"), 0);
-		dStatPushBack(string_to_hash("H3OPT_CREWHACKER"), 5);
-		dStatPushBack(string_to_hash("H3OPT_VEHS"), 3);
-		dStatPushBack(string_to_hash("H3OPT_WEAPS"), 0);
+		dStatPushBack(joaat_with_mp_index("H3OPT_DISRUPTSHIP"), 3);
+		dStatPushBack(joaat_with_mp_index("H3OPT_KEYLEVELS"), 2);
+		dStatPushBack(joaat_with_mp_index("H3OPT_CREWWEAP"), 0);
+		dStatPushBack(joaat_with_mp_index("H3OPT_CREWDRIVER"), 0);
+		dStatPushBack(joaat_with_mp_index("H3OPT_CREWHACKER"), 5);
+		dStatPushBack(joaat_with_mp_index("H3OPT_VEHS"), 3);
+		dStatPushBack(joaat_with_mp_index("H3OPT_WEAPS"), 0);
 		break;
 	}
-	dStatPushBack(string_to_hash("H3OPT_BITSET0"), -1);
+	dStatPushBack(joaat_with_mp_index("H3OPT_BITSET0"), -1);
 }
 
 void hack::casinoHeistCut(feat* feature, int playerIndex)
@@ -540,65 +540,170 @@ void hack::casinoHeistCut(feat* feature, int playerIndex)
 	return;
 }
 
+void hack::pericoStat()
+{
+	dStatPushBack(joaat_with_mp_index("H4_MISSIONS"), -1);
+}
+
+void hack::pericoStatBitSet1(int type)
+{
+	switch (type)
+	{
+	case 0:
+		dStatPushBack(joaat_with_mp_index("H4LOOT_CASH_I_SCOPED"), -1);
+		dStatPushBack(joaat_with_mp_index("H4LOOT_CASH_C_SCOPED"), -1);
+		dStatPushBack(joaat_with_mp_index("H4LOOT_CASH_V_SCOPED"), -1);
+		break;
+	case 1:
+		dStatPushBack(joaat_with_mp_index("H4LOOT_GOLD_I_SCOPED"), -1);
+		dStatPushBack(joaat_with_mp_index("H4LOOT_GOLD_C_SCOPED"), -1);
+		dStatPushBack(joaat_with_mp_index("H4LOOT_GOLD_V_SCOPED"), -1);
+		break;
+	case 2:
+		dStatPushBack(joaat_with_mp_index("H4LOOT_WEED_I_SCOPED"), -1);
+		dStatPushBack(joaat_with_mp_index("H4LOOT_WEED_C_SCOPED"), -1);
+		dStatPushBack(joaat_with_mp_index("H4LOOT_WEED_V_SCOPED"), -1);
+		break;
+	case 3:
+		dStatPushBack(joaat_with_mp_index("H4LOOT_COKE_I_SCOPED"), -1);
+		dStatPushBack(joaat_with_mp_index("H4LOOT_COKE_C_SCOPED"), -1);
+		dStatPushBack(joaat_with_mp_index("H4LOOT_COKE_V_SCOPED"), -1);
+		break;
+	case 4:
+		dStatPushBack(joaat_with_mp_index("H4LOOT_PAINT_SCOPED"), -1);
+		break;
+	case 5:
+		dStatPushBack(joaat_with_mp_index("H4CNF_BS_GEN"), -1);
+		break;
+	case 6:
+		dStatPushBack(joaat_with_mp_index("H4CNF_BS_ENTR"), 63);
+		break;
+	case 7:
+		dStatPushBack(joaat_with_mp_index("H4CNF_BS_ABIL"), 63);
+		break;
+	case 8:
+		dStatPushBack(joaat_with_mp_index("H4CNF_APPROACH"), -1);
+		break;
+	case 9:
+		dStatPushBack(joaat_with_mp_index("H4CNF_TARGET"), 0);
+		break;
+	case 10:
+		dStatPushBack(joaat_with_mp_index("H4CNF_TARGET"), 1);
+		break;
+	case 11:
+		dStatPushBack(joaat_with_mp_index("H4CNF_TARGET"), 2);
+		break;
+	case 12:
+		dStatPushBack(joaat_with_mp_index("H4CNF_TARGET"), 3);
+		break;
+	case 13:
+		dStatPushBack(joaat_with_mp_index("H4CNF_TARGET"), 4);
+		break;
+	case 14:
+		dStatPushBack(joaat_with_mp_index("H4CNF_TARGET"), 5);
+		break;
+	}
+}
+
+void hack::pericoStatBitSet2(int type)
+{
+	switch (type)
+	{
+	case 1:
+		dStatPushBack(joaat_with_mp_index("H4CNF_WEAPONS"), 1);
+		break;
+	case 2:
+		dStatPushBack(joaat_with_mp_index("H4CNF_WEAPONS"), 2);
+		break;
+	case 3:
+		dStatPushBack(joaat_with_mp_index("H4CNF_WEAPONS"), 3);
+		break;
+	case 4:
+		dStatPushBack(joaat_with_mp_index("H4CNF_WEAPONS"), 4);
+		break;
+	case 5:
+		dStatPushBack(joaat_with_mp_index("H4CNF_WEAPONS"), 5);
+		break;
+	case 6:
+		dStatPushBack(joaat_with_mp_index("H4CNF_WEP_DISRP"), 3);
+		break;
+	case 7:
+		dStatPushBack(joaat_with_mp_index("H4CNF_ARM_DISRP"), 3);
+		break;
+	case 8:
+		dStatPushBack(joaat_with_mp_index("H4CNF_HEL_DISRP"), 3);
+		break;
+	case 9:
+		dStatPushBack(joaat_with_mp_index("H4CNF_GRAPPEL"), -1);
+		break;
+	case 10:
+		dStatPushBack(joaat_with_mp_index("H4CNF_UNIFORM"), -1);
+		break;
+	case 11:
+		dStatPushBack(joaat_with_mp_index("H4CNF_BOLTCUT"), -1);
+		break;
+	}
+}
+
 void hack::unlockHeistCars()
 {
-	dStatPushBack(string_to_hash("CHAR_FM_VEHICLE_1_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_VEHICLE_2_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_VEHICLE_1_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_VEHICLE_2_UNLCK"), -1);
 	for (size_t i = 1; i <= 7; i++)
 	{
-		dStatPushBack(string_to_hash("CHAR_FM_CARMOD_"+ std::to_string(i) +"_UNLCK"), -1);
+		dStatPushBack(joaat_with_mp_index("CHAR_FM_CARMOD_"+ std::to_string(i) +"_UNLCK"), -1);
 	}
 }
 
 void hack::unlockLSC()
 {
-	dStatPushBack(string_to_hash("RACES_WON"), 50);
-	dStatPushBack(string_to_hash("CHAR_FM_CARMOD_1_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CARMOD_2_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CARMOD_3_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CARMOD_4_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CARMOD_5_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CARMOD_6_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CARMOD_7_UNLCK"), -1);
-	dStatPushBack(string_to_hash("NUMBER_SLIPSTREAMS_IN_RACE"), 110);
-	dStatPushBack(string_to_hash("NUMBER_TURBO_STARTS_IN_RACE"), 90);
-	dStatPushBack(string_to_hash("USJS_FOUND"), 50);
-	dStatPushBack(string_to_hash("USJS_COMPLETED"), 50);
-	dStatPushBack(string_to_hash("TIMES_RACE_BEST_LAP", "MPPLY_"), 101);
-	dStatPushBack(string_to_hash("AWD_FMRALLYWONDRIVE"), 2);
-	dStatPushBack(string_to_hash("AWD_FMWINSEARACE"), 2);
-	dStatPushBack(string_to_hash("AWD_FMWINAIRRACE"), 2);
-	dStatPushBack(string_to_hash("AWD_FM_RACES_FASTEST_LAP"), 101);
+	dStatPushBack(joaat_with_mp_index("RACES_WON"), 50);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CARMOD_1_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CARMOD_2_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CARMOD_3_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CARMOD_4_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CARMOD_5_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CARMOD_6_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CARMOD_7_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("NUMBER_SLIPSTREAMS_IN_RACE"), 110);
+	dStatPushBack(joaat_with_mp_index("NUMBER_TURBO_STARTS_IN_RACE"), 90);
+	dStatPushBack(joaat_with_mp_index("USJS_FOUND"), 50);
+	dStatPushBack(joaat_with_mp_index("USJS_COMPLETED"), 50);
+	dStatPushBack(joaat_with_mp_index("TIMES_RACE_BEST_LAP", "MPPLY_"), 101);
+	dStatPushBack(joaat_with_mp_index("AWD_FMRALLYWONDRIVE"), 2);
+	dStatPushBack(joaat_with_mp_index("AWD_FMWINSEARACE"), 2);
+	dStatPushBack(joaat_with_mp_index("AWD_FMWINAIRRACE"), 2);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_RACES_FASTEST_LAP"), 101);
 }
 
 void hack::unlockWeaponCamos()
 {
-	dStatPushBack(string_to_hash("PISTOL_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("CMBTPISTOL_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("PISTOL50_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("APPISTOL_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("MICROSMG_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("SMG_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("ASLTSMG_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("ASLTRIFLE_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("CRBNRIFLE_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("ADVRIFLE_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("MG_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("CMBTMG_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("ASLTMG_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("PUMP_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("SAWNOFF_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("BULLPUP_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("ASLTSHTGN_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("SNIPERRFL_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("HVYSNIPER_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("GRNLAUNCH_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("RPG_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("MINIGUNS_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("GRENADE_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("SMKGRENADE_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("STKYBMB_ENEMY_KILLS"), 600);
-	dStatPushBack(string_to_hash("MOLOTOV_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("PISTOL_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("CMBTPISTOL_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("PISTOL50_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("APPISTOL_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("MICROSMG_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("SMG_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("ASLTSMG_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("ASLTRIFLE_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("CRBNRIFLE_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("ADVRIFLE_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("MG_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("CMBTMG_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("ASLTMG_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("PUMP_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("SAWNOFF_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("BULLPUP_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("ASLTSHTGN_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("SNIPERRFL_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("HVYSNIPER_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("GRNLAUNCH_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("RPG_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("MINIGUNS_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("GRENADE_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("SMKGRENADE_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("STKYBMB_ENEMY_KILLS"), 600);
+	dStatPushBack(joaat_with_mp_index("MOLOTOV_ENEMY_KILLS"), 600);
 }
 
 //void hack::unlockWeapon(float* arg)
@@ -620,317 +725,317 @@ void hack::unlockWeaponCamos()
 
 void hack::unlockAllAwards()
 {
-	dStatPushBack(string_to_hash("AWD_100_KILLS_PISTOL"), 500);
-	dStatPushBack(string_to_hash("AWD_100_KILLS_SNIPER"), 500);
-	dStatPushBack(string_to_hash("AWD_50_KILLS_GRENADES"), 500);
-	dStatPushBack(string_to_hash("AWD_100_KILLS_SHOTGUN"), 500);
-	dStatPushBack(string_to_hash("AWD_100_KILLS_SMG"), 500);
-	dStatPushBack(string_to_hash("AWD_50_KILLS_ROCKETLAUNCH"), 500);
-	dStatPushBack(string_to_hash("AWD_25_KILLS_STICKYBOMBS"), 500);
-	dStatPushBack(string_to_hash("AWD_20_KILLS_MELEE"), 500);
-	dStatPushBack(string_to_hash("AWD_100_HEADSHOTS"), 500);
-	dStatPushBack(string_to_hash("AWD_50_VEHICLES_BLOWNUP"), 500);
-	dStatPushBack(string_to_hash("AWD_ENEMYDRIVEBYKILLS"), 500);
-	dStatPushBack(string_to_hash("AWD_COPS_KILLED"), 500);
-	dStatPushBack(string_to_hash("AWD_BUY_EVERY_GUN"), 1);
-	dStatPushBack(string_to_hash("AWD_DRIVE_ALL_COP_CARS"), 1);
-	dStatPushBack(string_to_hash("AWD_VEHICLE_JUMP_OVER_40M"), 50);
-	dStatPushBack(string_to_hash("AWD_VEHICLE_JUMP0_OVER_40M"), 50);
-	dStatPushBack(string_to_hash("AWD_VEHICLE_JUMP1_OVER_40M"), 50);
-	dStatPushBack(string_to_hash("AWD_NO_ARMWRESTLING_WINS"), 50);
-	dStatPushBack(string_to_hash("AWD_KILLS_MACHINEGUN"), 50);
-	dStatPushBack(string_to_hash("AWD_ODD_JOBS"), 52);
-	dStatPushBack(string_to_hash("AWD_PREPARATION"), 50);
-	dStatPushBack(string_to_hash("AWD_ASLEEPONJOB"), 20);
-	dStatPushBack(string_to_hash("AWD_DAICASHCRAB"), 100000);
-	dStatPushBack(string_to_hash("AWD_BIGBRO"), 40);
-	dStatPushBack(string_to_hash("AWD_SHARPSHOOTER"), 40);
-	dStatPushBack(string_to_hash("AWD_RACECHAMP"), 40);
-	dStatPushBack(string_to_hash("AWD_BATSWORD"), 1000000);
-	dStatPushBack(string_to_hash("AWD_COINPURSE"), 950000);
-	dStatPushBack(string_to_hash("AWD_ASTROCHIMP"), 3000000);
-	dStatPushBack(string_to_hash("AWD_MASTERFUL"), 40000);
-	dStatPushBack(string_to_hash("AWD_5STAR_WANTED_AVOIDANCE"), 50);
-	dStatPushBack(string_to_hash("AWD_CAR_BOMBS_ENEMY_KILLS"), 50);
-	dStatPushBack(string_to_hash("AWD_CARS_EXPORTED"), 50);
-	dStatPushBack(string_to_hash("AWD_CONTROL_CROWDS"), 25);
-	dStatPushBack(string_to_hash("AWD_DAILYOBJCOMPLETED"), 100);
-	dStatPushBack(string_to_hash("AWD_DO_HEIST_AS_MEMBER"), 25);
-	dStatPushBack(string_to_hash("AWD_DO_HEIST_AS_THE_LEADER"), 25);
-	dStatPushBack(string_to_hash("AWD_DROPOFF_CAP_PACKAGES"), 100);
-	dStatPushBack(string_to_hash("AWD_FINISH_HEIST_SETUP_JOB"), 50);
-	dStatPushBack(string_to_hash("AWD_FINISH_HEISTS"), 50);
-	dStatPushBack(string_to_hash("AWD_FM_DM_3KILLSAMEGUY"), 50);
-	dStatPushBack(string_to_hash("AWD_FM_DM_KILLSTREAK"), 100);
-	dStatPushBack(string_to_hash("AWD_FM_DM_STOLENKILL"), 50);
-	dStatPushBack(string_to_hash("AWD_FM_DM_TOTALKILLS"), 500);
-	dStatPushBack(string_to_hash("AWD_FM_DM_WINS"), 50);
-	dStatPushBack(string_to_hash("AWD_FM_GOLF_HOLE_IN_1"), 300);
-	dStatPushBack(string_to_hash("AWD_FM_GOLF_BIRDIES"), 25);
-	dStatPushBack(string_to_hash("AWD_FM_GOLF_WON"), 25);
-	dStatPushBack(string_to_hash("AWD_FM_GTA_RACES_WON"), 50);
-	dStatPushBack(string_to_hash("AWD_FM_RACE_LAST_FIRST"), 25);
-	dStatPushBack(string_to_hash("AWD_FM_RACES_FASTEST_LAP"), 50);
-	dStatPushBack(string_to_hash("AWD_FM_SHOOTRANG_CT_WON"), 25);
-	dStatPushBack(string_to_hash("AWD_FM_SHOOTRANG_RT_WON"), 25);
-	dStatPushBack(string_to_hash("AWD_FM_SHOOTRANG_TG_WON"), 25);
-	dStatPushBack(string_to_hash("AWD_FM_TDM_MVP"), 50);
-	dStatPushBack(string_to_hash("AWD_FM_TDM_WINS"), 50);
-	dStatPushBack(string_to_hash("AWD_FM_TENNIS_ACE"), 25);
-	dStatPushBack(string_to_hash("AWD_FM_TENNIS_WON"), 25);
-	dStatPushBack(string_to_hash("AWD_FMBASEJMP"), 25);
-	dStatPushBack(string_to_hash("AWD_FMBBETWIN"), 50000);
-	dStatPushBack(string_to_hash("AWD_FMCRATEDROPS"), 25);
-	dStatPushBack(string_to_hash("AWD_FMDRIVEWITHOUTCRASH"), 30);
-	dStatPushBack(string_to_hash("AWD_FMHORDWAVESSURVIVE"), 10);
-	dStatPushBack(string_to_hash("AWD_FMKILLBOUNTY"), 25);
-	dStatPushBack(string_to_hash("AWD_FMRALLYWONDRIVE"), 25);
-	dStatPushBack(string_to_hash("AWD_FMRALLYWONNAV"), 25);
-	dStatPushBack(string_to_hash("AWD_FMREVENGEKILLSDM"), 50);
-	dStatPushBack(string_to_hash("AWD_FMSHOOTDOWNCOPHELI"), 25);
-	dStatPushBack(string_to_hash("AWD_FMWINAIRRACE"), 25);
-	dStatPushBack(string_to_hash("AWD_FMWINRACETOPOINTS"), 25);
-	dStatPushBack(string_to_hash("AWD_FMWINSEARACE"), 25);
-	dStatPushBack(string_to_hash("AWD_HOLD_UP_SHOPS"), 20);
-	dStatPushBack(string_to_hash("AWD_KILL_CARRIER_CAPTURE"), 100);
-	dStatPushBack(string_to_hash("AWD_KILL_PSYCHOPATHS"), 100);
-	dStatPushBack(string_to_hash("AWD_KILL_TEAM_YOURSELF_LTS"), 25);
-	dStatPushBack(string_to_hash("AWD_LAPDANCES"), 25);
-	dStatPushBack(string_to_hash("AWD_LESTERDELIVERVEHICLES"), 25);
-	dStatPushBack(string_to_hash("AWD_MENTALSTATE_TO_NORMAL"), 50);
-	dStatPushBack(string_to_hash("AWD_NIGHTVISION_KILLS"), 100);
-	dStatPushBack(string_to_hash("AWD_NO_HAIRCUTS"), 25);
-	dStatPushBack(string_to_hash("AWD_ODISTRACTCOPSNOEATH"), 25);
-	dStatPushBack(string_to_hash("AWD_ONLY_PLAYER_ALIVE_LTS"), 50);
-	dStatPushBack(string_to_hash("AWD_PARACHUTE_JUMPS_20M"), 50);
-	dStatPushBack(string_to_hash("AWD_PARACHUTE_JUMPS_50M"), 50);
-	dStatPushBack(string_to_hash("AWD_PASSENGERTIME"), 4);
-	dStatPushBack(string_to_hash("AWD_PICKUP_CAP_PACKAGES"), 100);
-	dStatPushBack(string_to_hash("AWD_RACES_WON"), 50);
-	dStatPushBack(string_to_hash("AWD_SECURITY_CARS_ROBBED"), 25);
-	dStatPushBack(string_to_hash("AWD_TAKEDOWNSMUGPLANE"), 50);
-	dStatPushBack(string_to_hash("AWD_TIME_IN_HELICOPTER"), 4);
-	dStatPushBack(string_to_hash("AWD_TRADE_IN_YOUR_PROPERTY"), 25);
-	dStatPushBack(string_to_hash("AWD_VEHICLES_JACKEDR"), 500);
-	dStatPushBack(string_to_hash("AWD_WIN_AT_DARTS"), 25);
-	dStatPushBack(string_to_hash("AWD_WIN_CAPTURE_DONT_DYING"), 25);
-	dStatPushBack(string_to_hash("AWD_WIN_CAPTURES"), 50);
-	dStatPushBack(string_to_hash("AWD_WIN_GOLD_MEDAL_HEISTS"), 25);
-	dStatPushBack(string_to_hash("AWD_WIN_LAST_TEAM_STANDINGS"), 50);
-	dStatPushBack(string_to_hash("AWD_DANCE_TO_SOLOMUN"), 100);
-	dStatPushBack(string_to_hash("AWD_DANCE_TO_TALEOFUS"), 100);
-	dStatPushBack(string_to_hash("AWD_DANCE_TO_DIXON"), 100);
-	dStatPushBack(string_to_hash("AWD_DANCE_TO_BLKMAD"), 100);
-	dStatPushBack(string_to_hash("AWD_CLUB_DRUNK"), 200);
-	dStatPushBack(string_to_hash("AWD_WATCH_YOUR_STEP"), 50);
-	dStatPushBack(string_to_hash("AWD_TOWER_OFFENSE"), 50);
-	dStatPushBack(string_to_hash("AWD_READY_FOR_WAR"), 50);
-	dStatPushBack(string_to_hash("AWD_THROUGH_A_LENS"), 50);
-	dStatPushBack(string_to_hash("AWD_SPINNER"), 50);
-	dStatPushBack(string_to_hash("AWD_YOUMEANBOOBYTRAPS"), 50);
-	dStatPushBack(string_to_hash("AWD_MASTER_BANDITO"), 50);
-	dStatPushBack(string_to_hash("AWD_SITTING_DUCK"), 50);
-	dStatPushBack(string_to_hash("AWD_CROWDPARTICIPATION"), 50);
-	dStatPushBack(string_to_hash("AWD_KILL_OR_BE_KILLED"), 50);
-	dStatPushBack(string_to_hash("AWD_MASSIVE_SHUNT"), 25);
-	dStatPushBack(string_to_hash("AWD_YOURE_OUTTA_HERE"), 200);
-	dStatPushBack(string_to_hash("AWD_WEVE_GOT_ONE"), 50);
-	dStatPushBack(string_to_hash("AWD_ARENA_WAGEWORKER"), 20000000);
-	dStatPushBack(string_to_hash("AWD_TIME_SERVED"), 1000);
-	dStatPushBack(string_to_hash("AWD_TOP_SCORE"), 500000);
-	dStatPushBack(string_to_hash("AWD_CAREER_WINNER"), 1000);
+	dStatPushBack(joaat_with_mp_index("AWD_100_KILLS_PISTOL"), 500);
+	dStatPushBack(joaat_with_mp_index("AWD_100_KILLS_SNIPER"), 500);
+	dStatPushBack(joaat_with_mp_index("AWD_50_KILLS_GRENADES"), 500);
+	dStatPushBack(joaat_with_mp_index("AWD_100_KILLS_SHOTGUN"), 500);
+	dStatPushBack(joaat_with_mp_index("AWD_100_KILLS_SMG"), 500);
+	dStatPushBack(joaat_with_mp_index("AWD_50_KILLS_ROCKETLAUNCH"), 500);
+	dStatPushBack(joaat_with_mp_index("AWD_25_KILLS_STICKYBOMBS"), 500);
+	dStatPushBack(joaat_with_mp_index("AWD_20_KILLS_MELEE"), 500);
+	dStatPushBack(joaat_with_mp_index("AWD_100_HEADSHOTS"), 500);
+	dStatPushBack(joaat_with_mp_index("AWD_50_VEHICLES_BLOWNUP"), 500);
+	dStatPushBack(joaat_with_mp_index("AWD_ENEMYDRIVEBYKILLS"), 500);
+	dStatPushBack(joaat_with_mp_index("AWD_COPS_KILLED"), 500);
+	dStatPushBack(joaat_with_mp_index("AWD_BUY_EVERY_GUN"), 1);
+	dStatPushBack(joaat_with_mp_index("AWD_DRIVE_ALL_COP_CARS"), 1);
+	dStatPushBack(joaat_with_mp_index("AWD_VEHICLE_JUMP_OVER_40M"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_VEHICLE_JUMP0_OVER_40M"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_VEHICLE_JUMP1_OVER_40M"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_NO_ARMWRESTLING_WINS"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_KILLS_MACHINEGUN"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_ODD_JOBS"), 52);
+	dStatPushBack(joaat_with_mp_index("AWD_PREPARATION"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_ASLEEPONJOB"), 20);
+	dStatPushBack(joaat_with_mp_index("AWD_DAICASHCRAB"), 100000);
+	dStatPushBack(joaat_with_mp_index("AWD_BIGBRO"), 40);
+	dStatPushBack(joaat_with_mp_index("AWD_SHARPSHOOTER"), 40);
+	dStatPushBack(joaat_with_mp_index("AWD_RACECHAMP"), 40);
+	dStatPushBack(joaat_with_mp_index("AWD_BATSWORD"), 1000000);
+	dStatPushBack(joaat_with_mp_index("AWD_COINPURSE"), 950000);
+	dStatPushBack(joaat_with_mp_index("AWD_ASTROCHIMP"), 3000000);
+	dStatPushBack(joaat_with_mp_index("AWD_MASTERFUL"), 40000);
+	dStatPushBack(joaat_with_mp_index("AWD_5STAR_WANTED_AVOIDANCE"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_CAR_BOMBS_ENEMY_KILLS"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_CARS_EXPORTED"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_CONTROL_CROWDS"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_DAILYOBJCOMPLETED"), 100);
+	dStatPushBack(joaat_with_mp_index("AWD_DO_HEIST_AS_MEMBER"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_DO_HEIST_AS_THE_LEADER"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_DROPOFF_CAP_PACKAGES"), 100);
+	dStatPushBack(joaat_with_mp_index("AWD_FINISH_HEIST_SETUP_JOB"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_FINISH_HEISTS"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_DM_3KILLSAMEGUY"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_DM_KILLSTREAK"), 100);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_DM_STOLENKILL"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_DM_TOTALKILLS"), 500);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_DM_WINS"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_GOLF_HOLE_IN_1"), 300);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_GOLF_BIRDIES"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_GOLF_WON"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_GTA_RACES_WON"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_RACE_LAST_FIRST"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_RACES_FASTEST_LAP"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_SHOOTRANG_CT_WON"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_SHOOTRANG_RT_WON"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_SHOOTRANG_TG_WON"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_TDM_MVP"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_TDM_WINS"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_TENNIS_ACE"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FM_TENNIS_WON"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FMBASEJMP"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FMBBETWIN"), 50000);
+	dStatPushBack(joaat_with_mp_index("AWD_FMCRATEDROPS"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FMDRIVEWITHOUTCRASH"), 30);
+	dStatPushBack(joaat_with_mp_index("AWD_FMHORDWAVESSURVIVE"), 10);
+	dStatPushBack(joaat_with_mp_index("AWD_FMKILLBOUNTY"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FMRALLYWONDRIVE"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FMRALLYWONNAV"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FMREVENGEKILLSDM"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_FMSHOOTDOWNCOPHELI"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FMWINAIRRACE"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FMWINRACETOPOINTS"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_FMWINSEARACE"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_HOLD_UP_SHOPS"), 20);
+	dStatPushBack(joaat_with_mp_index("AWD_KILL_CARRIER_CAPTURE"), 100);
+	dStatPushBack(joaat_with_mp_index("AWD_KILL_PSYCHOPATHS"), 100);
+	dStatPushBack(joaat_with_mp_index("AWD_KILL_TEAM_YOURSELF_LTS"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_LAPDANCES"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_LESTERDELIVERVEHICLES"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_MENTALSTATE_TO_NORMAL"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_NIGHTVISION_KILLS"), 100);
+	dStatPushBack(joaat_with_mp_index("AWD_NO_HAIRCUTS"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_ODISTRACTCOPSNOEATH"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_ONLY_PLAYER_ALIVE_LTS"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_PARACHUTE_JUMPS_20M"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_PARACHUTE_JUMPS_50M"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_PASSENGERTIME"), 4);
+	dStatPushBack(joaat_with_mp_index("AWD_PICKUP_CAP_PACKAGES"), 100);
+	dStatPushBack(joaat_with_mp_index("AWD_RACES_WON"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_SECURITY_CARS_ROBBED"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_TAKEDOWNSMUGPLANE"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_TIME_IN_HELICOPTER"), 4);
+	dStatPushBack(joaat_with_mp_index("AWD_TRADE_IN_YOUR_PROPERTY"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_VEHICLES_JACKEDR"), 500);
+	dStatPushBack(joaat_with_mp_index("AWD_WIN_AT_DARTS"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_WIN_CAPTURE_DONT_DYING"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_WIN_CAPTURES"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_WIN_GOLD_MEDAL_HEISTS"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_WIN_LAST_TEAM_STANDINGS"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_DANCE_TO_SOLOMUN"), 100);
+	dStatPushBack(joaat_with_mp_index("AWD_DANCE_TO_TALEOFUS"), 100);
+	dStatPushBack(joaat_with_mp_index("AWD_DANCE_TO_DIXON"), 100);
+	dStatPushBack(joaat_with_mp_index("AWD_DANCE_TO_BLKMAD"), 100);
+	dStatPushBack(joaat_with_mp_index("AWD_CLUB_DRUNK"), 200);
+	dStatPushBack(joaat_with_mp_index("AWD_WATCH_YOUR_STEP"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_TOWER_OFFENSE"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_READY_FOR_WAR"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_THROUGH_A_LENS"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_SPINNER"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_YOUMEANBOOBYTRAPS"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_MASTER_BANDITO"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_SITTING_DUCK"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_CROWDPARTICIPATION"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_KILL_OR_BE_KILLED"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_MASSIVE_SHUNT"), 25);
+	dStatPushBack(joaat_with_mp_index("AWD_YOURE_OUTTA_HERE"), 200);
+	dStatPushBack(joaat_with_mp_index("AWD_WEVE_GOT_ONE"), 50);
+	dStatPushBack(joaat_with_mp_index("AWD_ARENA_WAGEWORKER"), 20000000);
+	dStatPushBack(joaat_with_mp_index("AWD_TIME_SERVED"), 1000);
+	dStatPushBack(joaat_with_mp_index("AWD_TOP_SCORE"), 500000);
+	dStatPushBack(joaat_with_mp_index("AWD_CAREER_WINNER"), 1000);
 }
 
 void hack::unlockClothes()
 {
-	dStatPushBack(string_to_hash("CHAR_FM_CLOTHES_1_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CLOTHES_2_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CLOTHES_3_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CLOTHES_4_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CLOTHES_5_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CLOTHES_6_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CLOTHES_7_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CLOTHES_8_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CLOTHES_9_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CLOTHES_10_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CHAR_FM_CLOTHES_11_UNLCK"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_OUTFIT"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_OUTFIT"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_JBIB"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_JBIB_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_JBIB_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_JBIB_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_JBIB_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_JBIB_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_JBIB_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_HAIR_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_OUTFIT"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_OUTFIT"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_JBIB_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_JBIB"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_JBIB_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_JBIB_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_JBIB_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_JBIB_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_JBIB_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_JBIB_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_LEGS_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_LEGS_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_FEET_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_FEET_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_PROPS"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_PROPS_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_PROPS_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_PROPS_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_PROPS_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_PROPS_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_PROPS_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_PROPS_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_PROPS_8"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_PROPS_9"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_PROPS_10"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_TEETH"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_TEETH_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_TEETH_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_TEETH"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_TEETH_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_TEETH_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_BERD"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_BERD_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_BERD_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_BERD_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_BERD_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_BERD_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_BERD_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_BERD_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_BERD"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_BERD_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_BERD_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_BERD_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_BERD_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_BERD_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_BERD_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_BERD_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_TORSO"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_TORSO"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_SPECIAL"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_SPECIAL_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_SPECIAL_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_SPECIAL_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_SPECIAL_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_SPECIAL_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_SPECIAL_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_SPECIAL_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_SPECIAL2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_SPECIAL2_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_SPECIAL"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_SPECIAL_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_SPECIAL_2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_SPECIAL_3"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_SPECIAL_4"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_SPECIAL_5"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_SPECIAL_6"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_SPECIAL_7"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_SPECIAL2"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_SPECIAL2_1"), -1);
-	dStatPushBack(string_to_hash("CLTHS_AVAILABLE_DECL"), -1);
-	dStatPushBack(string_to_hash("CLTHS_ACQUIRED_DECL"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CLOTHES_1_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CLOTHES_2_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CLOTHES_3_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CLOTHES_4_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CLOTHES_5_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CLOTHES_6_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CLOTHES_7_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CLOTHES_8_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CLOTHES_9_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CLOTHES_10_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CHAR_FM_CLOTHES_11_UNLCK"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_OUTFIT"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_OUTFIT"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_JBIB"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_JBIB_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_JBIB_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_JBIB_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_JBIB_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_JBIB_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_JBIB_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_HAIR_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_OUTFIT"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_OUTFIT"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_JBIB_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_JBIB"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_JBIB_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_JBIB_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_JBIB_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_JBIB_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_JBIB_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_JBIB_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_LEGS_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_LEGS_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_FEET_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_FEET_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_PROPS"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_PROPS_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_PROPS_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_PROPS_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_PROPS_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_PROPS_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_PROPS_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_PROPS_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_PROPS_8"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_PROPS_9"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_PROPS_10"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_TEETH"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_TEETH_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_TEETH_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_TEETH"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_TEETH_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_TEETH_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_BERD"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_BERD_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_BERD_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_BERD_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_BERD_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_BERD_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_BERD_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_BERD_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_BERD"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_BERD_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_BERD_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_BERD_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_BERD_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_BERD_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_BERD_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_BERD_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_TORSO"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_TORSO"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_SPECIAL"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_SPECIAL_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_SPECIAL_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_SPECIAL_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_SPECIAL_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_SPECIAL_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_SPECIAL_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_SPECIAL_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_SPECIAL2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_SPECIAL2_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_SPECIAL"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_SPECIAL_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_SPECIAL_2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_SPECIAL_3"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_SPECIAL_4"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_SPECIAL_5"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_SPECIAL_6"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_SPECIAL_7"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_SPECIAL2"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_SPECIAL2_1"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_AVAILABLE_DECL"), -1);
+	dStatPushBack(joaat_with_mp_index("CLTHS_ACQUIRED_DECL"), -1);
 	for (size_t i = 0; i <= 205; i++)
 	{
-		dStatPushBack(string_to_hash("DLC_APPAREL_ACQUIRED_" + std::to_string(i)), -1);
+		dStatPushBack(joaat_with_mp_index("DLC_APPAREL_ACQUIRED_" + std::to_string(i)), -1);
 	}
 	for (size_t i = 0; i <= 31; i++)
 	{
-		dStatPushBack(string_to_hash("ADMIN_CLOTHES_GV_BS_" + std::to_string(i)), -1);
+		dStatPushBack(joaat_with_mp_index("ADMIN_CLOTHES_GV_BS_" + std::to_string(i)), -1);
 	}
 }
 
@@ -960,7 +1065,7 @@ void hack::loadSession(int id)
 
 void hack::setRank(int rank)
 {
-	dStatPushBack(string_to_hash("CHAR_SET_RP_GIFT_ADMIN"), scriptGlobal(292402).at(rank + 1).as<int>().value());
+	dStatPushBack(joaat_with_mp_index("CHAR_SET_RP_GIFT_ADMIN"), scriptGlobal(292402).at(rank + 1).as<int>().value());
 }
 
 void hack::forwardTeleport(float dist)
@@ -1143,9 +1248,9 @@ void hack::blockScriptEvents(feat* feature, std::ptrdiff_t index)
 	return;
 }
 
-unsigned int hack::string_to_hash(std::string input, std::string pre)
+unsigned int hack::joaat_with_mp_index(std::string input, std::string pre)
 {
-	return joaat(pre + input);
+	return joaat(pre.empty() ? m_mpId : pre + input);
 }
 
 void hack::consumeStatQueue()
@@ -2462,6 +2567,25 @@ void hack::triggerBot(feat* feature)
 		m_bMouseDown = false;
 	}
 
+	return;
+}
+
+void hack::mpIndex(feat* feature)
+{
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			m_mpId = "MP0_";
+			feature->m_szName = L"切换角色 [当前：1]";
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+
+	m_mpId = "MP1_";
+	feature->m_szName = L"切换角色 [当前：2]";
+	
 	return;
 }
 
