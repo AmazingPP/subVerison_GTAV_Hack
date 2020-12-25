@@ -46,6 +46,8 @@ Steam版
 
 Epic Game版
 
+Social Club版
+
 ## 功能
 <details>
 <summary>玩家</summary>
@@ -395,6 +397,6 @@ F8       | 补满所有武器弹药
 
 再次感谢您的支持。
 
-[点击捐赠](https://www.zhaofupeng.com/uploads/donate.jpg)
+[点击捐赠](https://www.zhaofupeng.com/2018/12/25/donate/)
 
 <img src="https://github.com/AmazingPP/subVerison_GTAV_Hack/blob/master/Donate/QRCode.jpg" width="30%" height="30%"/>
