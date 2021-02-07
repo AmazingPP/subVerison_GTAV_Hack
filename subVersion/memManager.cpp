@@ -45,6 +45,7 @@ bool	memManager::attach()
 	if(!dwProcId)
 		return 0;
 
+	auto a = PROCESS_ALL_ACCESS;
 	m_hProc = OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_QUERY_INFORMATION, 0, dwProcId);
 	if(m_hProc == nullptr)
 		return 0;

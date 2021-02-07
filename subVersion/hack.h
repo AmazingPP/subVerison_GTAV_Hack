@@ -53,6 +53,7 @@ class hack : public trainer
 		std::string m_mpId;
 		std::deque<std::pair<unsigned int,int>> m_dStat;
 		ImpactExplosionEnum m_explosion;
+		std::mutex m_mutex;
 
 		HMODULE	m_hModule;
 

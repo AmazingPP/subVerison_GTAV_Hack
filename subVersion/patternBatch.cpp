@@ -60,6 +60,8 @@ inline bool patternBatch::compareBytes(const unsigned char* bytes, const char* p
         if (*pattern == ' ' || *pattern == '?')
             continue;
 
+        auto a = *bytes;
+        auto b = getByte(pattern);
         if (*bytes != getByte(pattern))
             return false;
 

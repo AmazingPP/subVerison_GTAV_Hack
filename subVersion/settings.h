@@ -92,7 +92,12 @@ class featBtn : public feat
 		{
 			m_Action = [=]()
 			{
-				std::thread(func, g_pHack, args...).detach();
+				std::thread t([=]()
+				{
+					std::lock_guard<std::mutex> lock(g_pHack->m_mutex);
+					(g_pHack->*func)(args...);
+				});
+				t.detach();
 			};
 		}
 		~featBtn() {};
