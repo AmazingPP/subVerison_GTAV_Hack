@@ -46,6 +46,8 @@ Steam版
 
 Epic Game版
 
+Social Club版
+
 ## 功能
 <details>
 <summary>玩家</summary>
@@ -76,6 +78,7 @@ NPC无视玩家
 ```
 补满所有武器弹药
 补满当前武器弹药
+自动射击
 无扩散
 无后座
 无需换弹
@@ -368,10 +371,10 @@ F8       | 补满所有武器弹药
 - 一小部分电脑开启`超级跳跃`、`爆炸近战`、`爆炸子弹`和`燃烧子弹`中的功能时会崩溃。
 ## TODO
 
-1. 一个更好，更易用的**UI**。
-2. 更多**功能特性**。
-3. 实现**AoBScan**，使用特征码定位基址。
-4. 支持Social Club版
+- [ ] 一个更好，更易用的**UI**。
+- [x] 更多**功能特性**。
+- [x] 实现**AoBScan**，使用特征码定位基址。
+- [x] 支持Social Club版
 
 
 ## 相关仓库
@@ -394,6 +397,6 @@ F8       | 补满所有武器弹药
 
 再次感谢您的支持。
 
-[点击捐赠](https://www.zhaofupeng.com/zb_users/upload/2020/09/202009031609168443683.png)
+[点击捐赠](https://www.zhaofupeng.com/2018/12/25/donate/)
 
 <img src="https://github.com/AmazingPP/subVerison_GTAV_Hack/blob/master/Donate/QRCode.jpg" width="30%" height="30%"/>
