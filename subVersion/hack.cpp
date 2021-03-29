@@ -232,13 +232,13 @@ void hack::getWaypoint()
 
 void hack::getObjective()
 {
-	static int ColorYellowMission = 66;
-	static int ColorYellow = 5;
-	static int ColorWhite = 0;
-	static int ColorGreen = 2;
-	static int SpriteCrateDrop = 306;
-	static int SpriteStandard = 1;
-	static int SpriteRaceFinish = 38;
+	constexpr static int ColorYellowMission = 66;
+	constexpr static int ColorYellow = 5;
+	constexpr static int ColorWhite = 0;
+	constexpr static int ColorGreen = 2;
+	constexpr static int SpriteCrateDrop = 306;
+	constexpr static int SpriteStandard = 1;
+	constexpr static int SpriteRaceFinish = 38;
 
 	DWORD_PTR a = (DWORD_PTR)m_hModule + ADDRESS_BLIP;
 	for (size_t i = 2000; i > 1; i--)
@@ -1041,7 +1041,7 @@ void hack::unlockClothes()
 
 void hack::intoPV()
 {
-	if (scriptGlobal(2540384).at(298).as<int>() != -1)
+	if (scriptGlobal(GLOBAL_MERRYWEATHER).at(298).as<int>() != -1)
 		scriptGlobal(2409291).at(8).as<int>() = 1;
 }
 
@@ -1181,7 +1181,7 @@ void hack::callMerryweather(std::ptrdiff_t index)
 
 int hack::getPlayerId()
 {
-	return scriptGlobal(2440049).as<int>().value();
+	return scriptGlobal(2440277).as<int>().value();
 }
 
 int hack::getNetworkTime()
@@ -1191,22 +1191,22 @@ int hack::getNetworkTime()
 
 void hack::setCasinoHeistCut(int playerIndex, int cut)
 {
-	scriptGlobal(1701666).at(getPlayerId(), 68).at(12).at(1).at(playerIndex).as<int>() = cut;
+	scriptGlobal(1701669).at(getPlayerId(), 68).at(12).at(1).at(playerIndex).as<int>() = cut;
 }
 
 int hack::getCasinoHeistCut(int playerIndex)
 {
-	return scriptGlobal(1701666).at(getPlayerId(), 68).at(12).at(1).at(playerIndex).as<int>().value();
+	return scriptGlobal(1701669).at(getPlayerId(), 68).at(12).at(1).at(playerIndex).as<int>().value();
 }
 
 void hack::createAmbientPickup(unsigned int pickupHash, float posX, float posY, float posZ, int value, unsigned int modelHash)
 {
-	scriptGlobal(2515202).at(1).as<int>() = value;
-	scriptGlobal(2515202).at(3).as<float>() = posX;
-	scriptGlobal(2515202).at(4).as<float>() = posY;
-	scriptGlobal(2515202).at(5).as<float>() = posZ;
-	scriptGlobal(4264051).at(scriptGlobal(2515202).as<int>().value(), 85).at(66).at(2).as<int>() = 2;
-	scriptGlobal(2515208).as<int>() = 1;
+	scriptGlobal(2515430).at(1).as<int>() = value;
+	scriptGlobal(2515430).at(3).as<float>() = posX;
+	scriptGlobal(2515430).at(4).as<float>() = posY;
+	scriptGlobal(2515430).at(5).as<float>() = posZ;
+	scriptGlobal(4264051).at(scriptGlobal(2515430).as<int>().value(), 85).at(66).at(2).as<int>() = 2;
+	scriptGlobal(2515436).as<int>() = 1;
 
 	m_unkModel.getModelHash();
 	if (m_unkModel.m_dwModelHash != modelHash)
@@ -1282,7 +1282,7 @@ void hack::consumeStatQueue()
 				{
 					g_pD3D9Render->m_bMBShowing = false;
 				}
-				Sleep(1);
+				Sleep(500);
 			}
 		});
 		tConsumeStatQueue.detach();
@@ -1709,15 +1709,15 @@ void hack::godMode(feat* feature)
 
 void hack::frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featFireAmmo, feat* featExplosiveAmmo)
 {
-	BYTE	cur[2] = {};
+	BYTE cur[5] = {};
 	if (!featSuperJump->m_bOn && !featExplosiveMelee->m_bOn && !featFireAmmo->m_bOn && !featExplosiveAmmo->m_bOn)
 	{
 		if (!featSuperJump->m_bRestored || !featExplosiveMelee->m_bRestored || !featFireAmmo->m_bRestored || !featExplosiveAmmo->m_bRestored)
 		{
-			g_pMemMan->readMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, cur, sizeof(BYTE) * 2, PAGE_EXECUTE_READWRITE);
-			BYTE	value[2] = { 0x89, 0x0B };
+			g_pMemMan->readMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, cur, sizeof(cur), PAGE_EXECUTE_READWRITE);
+			BYTE value[5] = { 0xE8, 0x90, 0x7B, 0xF3, 0xFF };
 			if (cur[0] != value[0])
-				g_pMemMan->writeMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, value, sizeof(BYTE) * 2, PAGE_EXECUTE_READWRITE);
+				g_pMemMan->writeMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, value, sizeof(value), PAGE_EXECUTE_READWRITE);
 
 			featSuperJump->m_bRestored = true;
 			featExplosiveMelee->m_bRestored = true;
@@ -1736,10 +1736,10 @@ void hack::frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featF
 	if (featExplosiveAmmo->m_bOn)
 		dwValue += 8;
 
-	g_pMemMan->readMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, cur, sizeof(BYTE) * 2, PAGE_EXECUTE_READWRITE);
-	BYTE	value[2] = { 0x90, 0x90 };
+	g_pMemMan->readMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, cur, sizeof(cur), PAGE_EXECUTE_READWRITE);
+	BYTE value[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 };
 	if (cur[0] != value[0])
-		g_pMemMan->writeMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, value, sizeof(BYTE) * 2, PAGE_EXECUTE_READWRITE);
+		g_pMemMan->writeMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, value, sizeof(value), PAGE_EXECUTE_READWRITE);
 	m_player.getFrameFlags();
 	if (m_player.m_dwFrameFlags != dwValue)
 		m_player.setFrameFlags(dwValue);
@@ -2352,8 +2352,8 @@ void hack::removeSuicideCooldown(feat* feature)
 		}
 		return;
 	}
-	if (scriptGlobal(2540384).at(6672).as<int>() != -1)
-		scriptGlobal(2540384).at(6672).as<int>() = -1;
+	if (scriptGlobal(GLOBAL_MERRYWEATHER).at(6672).as<int>() != -1)
+		scriptGlobal(GLOBAL_MERRYWEATHER).at(6672).as<int>() = -1;
 
 	return;
 }
@@ -2368,8 +2368,8 @@ void hack::removePassiveModeCooldown(feat* feature)
 		}
 		return;
 	}
-	if (scriptGlobal(2540384).at(4456).as<int>() != 0)
-		scriptGlobal(2540384).at(4456).as<int>() = 0;
+	if (scriptGlobal(GLOBAL_MERRYWEATHER).at(4456).as<int>() != 0)
+		scriptGlobal(GLOBAL_MERRYWEATHER).at(4456).as<int>() = 0;
 	if (scriptGlobal(1697106).as<int>() != 0)
 		scriptGlobal(1697106).as<int>() = 0;
 
@@ -2382,13 +2382,13 @@ void hack::allowSellOnNonPublic(feat* feature)
 	{
 		if (!feature->m_bRestored)
 		{
-			scriptGlobal(2451787).at(742).as<int>() = 1;
+			scriptGlobal(2452015).at(742).as<int>() = 1;
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if (scriptGlobal(2451787).at(742).as<int>() != 0)
-		scriptGlobal(2451787).at(742).as<int>() = 0;
+	if (scriptGlobal(2452015).at(742).as<int>() != 0)
+		scriptGlobal(2452015).at(742).as<int>() = 0;
 
 	return;
 }
@@ -2399,13 +2399,13 @@ void hack::instantBullShark(feat* feature)
 	{
 		if (!feature->m_bRestored)
 		{
-			scriptGlobal(2440049).at(4006).as<int>() = 5;
+			scriptGlobal(2440277).at(4006).as<int>() = 5;
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if (scriptGlobal(2440049).at(4006).as<int>() == 0)
-		scriptGlobal(2440049).at(4006).as<int>() = 5;
+	if (scriptGlobal(2440277).at(4006).as<int>() == 0)
+		scriptGlobal(2440277).at(4006).as<int>() = 5;
 
 	return;
 }
@@ -2451,15 +2451,15 @@ void hack::offRadar(feat* feature)
 	{
 		if (!feature->m_bRestored)
 		{
-			scriptGlobal(2425869).at(getPlayerId(), 443).at(204).as<int>() = 0;
+			scriptGlobal(2426097).at(getPlayerId(), 443).at(204).as<int>() = 0;
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if (scriptGlobal(2425869).at(getPlayerId(), 443).at(204).as<int>() == 0)
+	if (scriptGlobal(2426097).at(getPlayerId(), 443).at(204).as<int>() == 0)
 	{
-		scriptGlobal(2425869).at(getPlayerId(), 443).at(204).as<int>() = 1;
-		scriptGlobal(2440049).at(70).as<int>() = getNetworkTime();
+		scriptGlobal(2426097).at(getPlayerId(), 443).at(204).as<int>() = 1;
+		scriptGlobal(2440277).at(70).as<int>() = getNetworkTime();
 	}
 
 	return;

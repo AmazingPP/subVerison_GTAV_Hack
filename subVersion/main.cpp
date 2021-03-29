@@ -78,7 +78,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pHack			= new hack;
 
 	LPCSTR	szWindowTitleTarget	= "Grand Theft Auto V";
-	LPCWSTR	szWindowTitle		= L"subVersion mAsk°重制版 v1.3.5.2";
+	LPCWSTR	szWindowTitle		= L"subVersion mAsk°重制版 v1.3.6";
 	g_pMemMan->setWindowName(szWindowTitleTarget);
 	g_pD3D9Render->m_szWindowTitle = szWindowTitle;
 
@@ -643,7 +643,7 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->consumeStatQueue();
 			}
 		}
-		Sleep(10);
+		Sleep(100);
 	}
 	g_bKillHack = true;
 	return 0;

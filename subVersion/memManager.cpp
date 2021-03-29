@@ -154,9 +154,9 @@ void	memManager::initPtr()
 		ADDRESS_UNK_MODEL = rip(offset);
 	});
 
-	patternMain.add("Frame flags zero writer dec code", "89 0B 48 8B 7B 10 32 D2 EB 19 39 0F 74 11 84 D2 75 09 8B 17 E8 47 C8 FF FF", [](uintptr_t offset)
+	patternMain.add("Frame flags zero writer dec code", "48 81 C1 ? ? ? ? E8 ? ? ? ? 48 8B 5C 24 ? 0F 28 74 24 ?", [](uintptr_t offset)
 	{
-		ADDRESS_FRAME_FLAGS = offset;
+		ADDRESS_FRAME_FLAGS = offset + 0x7;
 	});
 
 	patternMain.run();

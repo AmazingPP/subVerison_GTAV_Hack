@@ -79,20 +79,20 @@
 #define OFFSET_PLAYER_VEHICLE					0xD30			//ptr to last used vehicle
 #define OFFSET_NET_PLAYER_INFO					0xB0
 #define OFFSET_PLAYER_INFO						0x10C8			//playerInfo struct
-#define OFFSET_PLAYER_INFO_NAME					0x84
-#define OFFSET_PLAYER_INFO_SWIM_SPD				0x150			//swim speed; def 1; float
-#define	OFFSET_PLAYER_INFO_RUN_SPD				0xCD0			//run speed; def 1; float
-#define OFFSET_PLAYER_INFO_FRAMEFLAGS			0x1F9			//frame flags; DWORD
-#define OFFSET_PLAYER_INFO_WANTED_CAN_CHANGE	0x71C			//fWantedCanChange
+#define OFFSET_PLAYER_INFO_NAME					0xA4
+#define OFFSET_PLAYER_INFO_SWIM_SPD				0x170			//swim speed; def 1; float
+#define	OFFSET_PLAYER_INFO_RUN_SPD				0xCF0			//run speed; def 1; float
+#define OFFSET_PLAYER_INFO_FRAMEFLAGS			0x219			//frame flags; DWORD
+#define OFFSET_PLAYER_INFO_WANTED_CAN_CHANGE	0x73C			//fWantedCanChange
 #define OFFSET_PLAYER_INFO_NPC_IGNORE			0x850			//npc ignore; DWORD; everyone = 0x450000;
-#define OFFSET_PLAYER_INFO_WANTED				0x868			//wanted level; DWORD
+#define OFFSET_PLAYER_INFO_WANTED				0x888			//wanted level; DWORD
 #define OFFSET_PLAYER_INFO_STAMINA				0xCD4			//fStamina, fStaminaMax
 #define OFFSET_PLAYER_RAGDOLL					0x10B8			//byte; CPed.noRagdoll: 0x20 = off; 0x00/0x01 = on
 #define OFFSET_PLAYER_SEATBELT					0x140C			//byte; CPed.seatBelt: 0xC8 = off; 0xC9 = on
 #define OFFSET_PLAYER_INVEHICLE					0x1477
 #define OFFSET_PLAYER_ARMOR						0x14E0			//armour
 #define OFFSET_PLAYER_WATER_PROOF				0x188			//water proof; DWORD; +0x1000000 = on
-#define OFFSET_PLAYER_VEHICLE_DAMAGE_MP			0xCFC			//super punck/kick;float;
+#define OFFSET_PLAYER_VEHICLE_DAMAGE_MP			0xD1C			//super punck/kick;float;
 
 //vehicle offsets
 #define OFFSET_VEHICLE_HEALTH						0x908			//vehicle health; 0.f-1000.f
@@ -186,11 +186,9 @@
 
 //globals
 #define GLOBAL_TUNEABLES		0x40001
-#define GLOBAL_CREATE_VEHICLE		2462286
-#define GLOBAL_MERRYWEATHER		2540384
+#define GLOBAL_CREATE_VEHICLE		2462514
+#define GLOBAL_MERRYWEATHER		2540612
 #define GLOBAL_BLOCK_SCRIPT_EVENTS	1391942
-#define GLOBAL_BUSINESS			1590535
-#define GLOBAL_SESSION			1312443
 
 //feature indexing
 #define FEATURE_P_GOD				0x00
@@ -340,5 +338,5 @@ extern uintptr_t	ADDRESS_GLOBAL;				//4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11
 extern uintptr_t	ADDRESS_PLAYER_LIST;		//48 8B 0D ? ? ? ? E8 ? ? ? ? 48 8B C8 E8 ? ? ? ? 48 8B CF
 extern uintptr_t	ADDRESS_REPLAY_INTERFACE;	//48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D ? ? ? ?
 extern uintptr_t	ADDRESS_UNK_MODEL;			//4C 8B 15 ? ? ? ? 49 8B 04 D2 44 39 40 08
-extern uintptr_t	ADDRESS_FRAME_FLAGS;		//Frame flags 0 writer dec code; 89 0B 48 8B 7B 10 32 D2 EB 19 39 0F 74 11 84 D2 75 09 8B 17 E8 47 C8 FF FF; 90 90
+extern uintptr_t	ADDRESS_FRAME_FLAGS;		//Frame flags 0 writer call; (+0x7) 48 81 C1 ? ? ? ? E8 ? ? ? ? 48 8B 5C 24 ? 0F 28 74 24 ?; 90 90 90 90 90
 #endif
