@@ -2382,13 +2382,13 @@ void hack::allowSellOnNonPublic(feat* feature)
 	{
 		if (!feature->m_bRestored)
 		{
-			scriptGlobal(2453009).at(742).as<int>() = 1;
+			scriptGlobal(2453009).at(744).as<int>() = 1;
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if (scriptGlobal(2453009).at(742).as<int>() != 0)
-		scriptGlobal(2453009).at(742).as<int>() = 0;
+	if (scriptGlobal(2453009).at(744).as<int>() != 0)
+		scriptGlobal(2453009).at(744).as<int>() = 0;
 
 	return;
 }
@@ -2399,13 +2399,13 @@ void hack::instantBullShark(feat* feature)
 	{
 		if (!feature->m_bRestored)
 		{
-			scriptGlobal(2441237).at(4006).as<int>() = 5;
+			scriptGlobal(2441237).at(4013).as<int>() = 5;
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if (scriptGlobal(2441237).at(4006).as<int>() == 0)
-		scriptGlobal(2441237).at(4006).as<int>() = 5;
+	if (scriptGlobal(2441237).at(4013).as<int>() == 0)
+		scriptGlobal(2441237).at(4013).as<int>() = 5;
 
 	return;
 }
@@ -2451,14 +2451,14 @@ void hack::offRadar(feat* feature)
 	{
 		if (!feature->m_bRestored)
 		{
-			scriptGlobal(2426865).at(getPlayerId(), 443).at(204).as<int>() = 0;
+			scriptGlobal(2426865).at(getPlayerId(), 449).at(209).as<int>() = 0;
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if (scriptGlobal(2426865).at(getPlayerId(), 443).at(204).as<int>() == 0)
+	if (scriptGlobal(2426865).at(getPlayerId(), 449).at(209).as<int>() == 0)
 	{
-		scriptGlobal(2426865).at(getPlayerId(), 443).at(204).as<int>() = 1;
+		scriptGlobal(2426865).at(getPlayerId(), 449).at(209).as<int>() = 1;
 		scriptGlobal(2441237).at(70).as<int>() = getNetworkTime();
 	}
 

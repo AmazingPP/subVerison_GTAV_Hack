@@ -107,7 +107,6 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_P_SWIMSPD]			= g_pSettings->addFeature(0, -1, L"游泳速度", feat_slider, "swimSpd", 1.f, 5.f);
 	g_iFeature[FEATURE_P_SUPER_PUNCH]		= g_pSettings->addFeature(0, -1, L"近战击退倍数", feat_slider, "superPunch", 0.f, 1000.f, (float)1.f / 10.f);
 	g_iFeature[FEATURE_P_SUPERJUMP]			= g_pSettings->addFeature(0, -1, L"超级跳跃", feat_toggle, "superJump");
-	g_iFeature[FEATURE_P_EXPLOSIVEMELEE]	= g_pSettings->addFeature(0, -1, L"爆炸近战", feat_toggle, "explMelee");
 	g_iFeature[FEATURE_P_UNDEAD_OFFRADAR]	= g_pSettings->addFeature(0, -1, L"假死雷达隐匿", feat_toggle, "undeadOffradar");
 	g_iFeature[FEATURE_P_NORAGDOLL]			= g_pSettings->addFeature(0, -1, L"无布娃娃", feat_toggle, "noRagdoll");
 	g_iFeature[FEATURE_P_WATER_PROOF]		= g_pSettings->addFeature(0, -1, L"水下行走", feat_toggle, "waterProof");
