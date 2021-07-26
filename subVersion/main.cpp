@@ -78,7 +78,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pHack			= new hack;
 
 	LPCSTR	szWindowTitleTarget	= "Grand Theft Auto V";
-	LPCWSTR	szWindowTitle		= L"subVersion mAsk°重制版 v1.3.6";
+	LPCWSTR	szWindowTitle		= L"subVersion Hatano v2.0.0";
 	g_pMemMan->setWindowName(szWindowTitleTarget);
 	g_pD3D9Render->m_szWindowTitle = szWindowTitle;
 
@@ -362,9 +362,6 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_G_ANTI_WEATHER] = g_pSettings->addFeature(-1, protection, L"天气控制防护", feat_toggle, "antiWeatherControl");
 	g_iFeature[FEATURE_G_ANTI_VEH_KICK] = g_pSettings->addFeature(-1, protection, L"载具踢出防护", feat_toggle, "antiRemoteVehicleKick");
 	g_iFeature[FEATURE_G_ANTI_SEND_MISSION] = g_pSettings->addFeature(-1, protection, L"强制进任务防护", feat_toggle, "antiRemoteForceMission");
-	g_pSettings->addFeature(4, -1, L"GitHub - 关于", feat_btn, &hack::about, 0);
-	g_pSettings->addFeature(4, -1, L"检查更新", feat_btn, &hack::about, 1);
-	g_pSettings->addFeature(4, -1, L"捐赠 - 为我更好的开发提供动力", feat_btn, &hack::about, 2);
 
 
 	g_pSettings->setActiveCat(0);			//this needs to be called so we can fill the current feature buffer
