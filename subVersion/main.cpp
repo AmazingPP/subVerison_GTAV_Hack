@@ -361,6 +361,11 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_G_ANTI_WEATHER] = g_pSettings->addFeature(-1, protection, L"天气控制防护", feat_toggle, "antiWeatherControl");
 	g_iFeature[FEATURE_G_ANTI_VEH_KICK] = g_pSettings->addFeature(-1, protection, L"载具踢出防护", feat_toggle, "antiRemoteVehicleKick");
 	g_iFeature[FEATURE_G_ANTI_SEND_MISSION] = g_pSettings->addFeature(-1, protection, L"强制进任务防护", feat_toggle, "antiRemoteForceMission");
+	g_iFeature[FEATURE_G_ANTI_CEO_BAN] = g_pSettings->addFeature(-1, protection, L"CEO BAN防护", feat_toggle, "antiCEOban");
+	g_iFeature[FEATURE_G_ANTI_FORCE_CRASH] = g_pSettings->addFeature(-1, protection, L"崩溃防护", feat_toggle, "antiRemoteForcecrash");
+	g_iFeature[FEATURE_G_ANTI_CLUB_KICK] = g_pSettings->addFeature(-1, protection, L"移出建筑防护", feat_toggle, "antiRemoteForceclubkick");
+	g_iFeature[FEATURE_G_ANTI_FORCE_SPEC] = g_pSettings->addFeature(-1, protection, L"通知轰炸防护", feat_toggle, "antiRemoteForcespec");
+//	g_iFeature[FEATURE_G_ANTI_FORCE_CAMERA] = g_pSettings->addFeature(-1, protection, L"强制相机/APP防护", feat_toggle, "antiRemoteForcecamera");
 
 
 	g_pSettings->setActiveCat(0);			//this needs to be called so we can fill the current feature buffer
@@ -625,6 +630,11 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->antiRemoteBounty(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_BOUNTY]));
 				g_pHack->antiWeatherControl(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_WEATHER]));
 				g_pHack->antiRemoteVehicleKick(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_VEH_KICK]));
+				g_pHack->antiCEOban(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_CEO_BAN]));
+				g_pHack->antiRemoteForcecrash(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_FORCE_CRASH]));
+				g_pHack->antiRemoteForceclubkick(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_CLUB_KICK]));
+				g_pHack->antiRemoteForcespec(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_FORCE_SPEC]));
+				g_pHack->antiRemoteForcecamera(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_FORCE_CAMERA]));
 				g_pHack->antiRemoteForceMission(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_SEND_MISSION]));
 				g_pHack->offRadar(g_pSettings->getFeature(g_iFeature[FEATURE_G_OFF_RADAR]));
 				g_pHack->instantBullShark(g_pSettings->getFeature(g_iFeature[FEATURE_G_BULL_SHARK]));

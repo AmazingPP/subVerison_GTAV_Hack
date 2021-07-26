@@ -273,7 +273,12 @@
 #define FEATURE_G_BULL_SHARK		0x51
 #define FEATURE_G_ANTI_CEO_KICK		0x52
 #define FEATURE_T_SUICIDE_CD		0x53
-#define FEATURE_W_TRIGGER_BOT		0x54
+#define FEATURE_G_ANTI_CEO_BAN	    0x54
+#define FEATURE_G_ANTI_FORCE_CRASH	0x55
+#define FEATURE_G_ANTI_CLUB_KICK	0x56
+#define FEATURE_G_ANTI_FORCE_SPEC	0x57
+#define FEATURE_G_ANTI_FORCE_CAMERA	0x58
+#define FEATURE_W_TRIGGER_BOT		0x59
 
 static std::wstring StringToWString(const std::string& str)
 {

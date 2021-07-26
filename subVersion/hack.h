@@ -175,6 +175,11 @@ class hack : public trainer
 		void	antiWeatherControl(feat* feature);
 		void	antiRemoteVehicleKick(feat* feature);
 		void	antiRemoteForceMission(feat* feature);
+		void	antiCEOban(feat* feature);
+		void	antiRemoteForceclubkick(feat* feature);
+		void	antiRemoteForcecrash(feat* feature);
+		void	antiRemoteForcespec(feat* feature);
+		void	antiRemoteForcecamera(feat* feature);
 		void	triggerBot(feat* feature);
 		void	mpIndex(feat* feature);
 		void	about(int arg);

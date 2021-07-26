@@ -2481,6 +2481,57 @@ void hack::disableThePhone(feat* feature)
 	return;
 }
 
+void hack::antiCEOban(feat* feature)
+{
+	blockScriptEvents(feature, 609);
+	return;
+}
+
+void hack::antiRemoteForcecrash(feat* feature)
+{
+	blockScriptEvents(feature, 665);
+	blockScriptEvents(feature, 400);
+	return;
+}
+
+void hack::antiRemoteForceclubkick(feat* feature)
+{
+	blockScriptEvents(feature, 64);
+	return;
+}
+
+void hack::antiRemoteForcespec(feat* feature)
+{
+	constexpr ptrdiff_t offests[] = { 216, 161, 196, 160, 159, 154, 258  };
+	if (!feature->m_bOn)
+	{
+		if (!feature->m_bRestored)
+		{
+			for (auto index : offests) {
+				scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>() = 0;
+			}
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	for (auto index : offests) {
+		if (scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>() != 1)
+			scriptGlobal(GLOBAL_BLOCK_SCRIPT_EVENTS).at(index).as<int>() = 1;
+	}
+
+	return;
+}
+
+void hack::antiRemoteForcecamera(feat* feature)
+{
+	blockScriptEvents(feature, 2);
+	blockScriptEvents(feature, 584);
+	blockScriptEvents(feature, 584);
+	blockScriptEvents(feature, 584);
+	return;
+	// Wasted
+}
+
 void hack::antiCEOKick(feat* feature)
 {
 	blockScriptEvents(feature, 584);
