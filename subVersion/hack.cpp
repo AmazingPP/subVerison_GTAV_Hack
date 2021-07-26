@@ -2412,37 +2412,37 @@ void hack::instantBullShark(feat* feature)
 
 void hack::bullSharkDrop()
 {
-	callMerryweather(879);
+	callMerryweather(900);
 }
 
 void hack::ammoDrop()
 {
-	callMerryweather(871);
+	callMerryweather(874);
 }
 
 void hack::miniGunDrop()
 {
-	callMerryweather(881);
+	callMerryweather(876);
 }
 
 void hack::boatTaxi()
 {
-	callMerryweather(872);
+	callMerryweather(875);
 }
 
 void hack::heliTaxi()
 {
-	callMerryweather(873);
+	callMerryweather(876);
 }
 
 void hack::backupHeli()
 {
-	callMerryweather(4450);
+	callMerryweather(4453);
 }
 
 void hack::airstrike()
 {
-	callMerryweather(4451);
+	callMerryweather(4454);
 }
 
 void hack::offRadar(feat* feature)
