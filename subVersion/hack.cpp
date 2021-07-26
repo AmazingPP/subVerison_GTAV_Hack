@@ -1042,7 +1042,7 @@ void hack::unlockClothes()
 void hack::intoPV()
 {
 	if (scriptGlobal(GLOBAL_MERRYWEATHER).at(298).as<int>() != -1)
-		scriptGlobal(2409291).at(8).as<int>() = 1;
+		scriptGlobal(2409299).at(8).as<int>() = 1;
 }
 
 void hack::loadSession(int id)
@@ -1056,7 +1056,7 @@ void hack::loadSession(int id)
 	}
 	else
 	{
-		scriptGlobal(1312854).as<int>() = id;
+		scriptGlobal(1312860).as<int>() = id;
 		scriptGlobal(1312443).as<int>() = 1;
 		Sleep(200);
 		scriptGlobal(1312443).as<int>() = 0;
@@ -1181,32 +1181,32 @@ void hack::callMerryweather(std::ptrdiff_t index)
 
 int hack::getPlayerId()
 {
-	return scriptGlobal(2440277).as<int>().value();
+	return scriptGlobal(2441237).as<int>().value();
 }
 
 int hack::getNetworkTime()
 {
-	return scriptGlobal(1312603).at(11).as<int>().value();
+	return scriptGlobal(1310987).at(11).as<int>().value();
 }
 
 void hack::setCasinoHeistCut(int playerIndex, int cut)
 {
-	scriptGlobal(1701669).at(getPlayerId(), 68).at(12).at(1).at(playerIndex).as<int>() = cut;
+	scriptGlobal(1707876).at(getPlayerId(), 68).at(12).at(1).at(playerIndex).as<int>() = cut;
 }
 
 int hack::getCasinoHeistCut(int playerIndex)
 {
-	return scriptGlobal(1701669).at(getPlayerId(), 68).at(12).at(1).at(playerIndex).as<int>().value();
+	return scriptGlobal(1707876).at(getPlayerId(), 68).at(12).at(1).at(playerIndex).as<int>().value();
 }
 
 void hack::createAmbientPickup(unsigned int pickupHash, float posX, float posY, float posZ, int value, unsigned int modelHash)
 {
-	scriptGlobal(2515430).at(1).as<int>() = value;
-	scriptGlobal(2515430).at(3).as<float>() = posX;
-	scriptGlobal(2515430).at(4).as<float>() = posY;
-	scriptGlobal(2515430).at(5).as<float>() = posZ;
-	scriptGlobal(4264051).at(scriptGlobal(2515430).as<int>().value(), 85).at(66).at(2).as<int>() = 2;
-	scriptGlobal(2515436).as<int>() = 1;
+	scriptGlobal(2518282).at(1).as<int>() = value;
+	scriptGlobal(2518282).at(3).as<float>() = posX;
+	scriptGlobal(2518282).at(4).as<float>() = posY;
+	scriptGlobal(2518282).at(5).as<float>() = posZ;
+	scriptGlobal(4264051).at(scriptGlobal(2518282).as<int>().value(), 85).at(66).at(2).as<int>() = 2;
+	scriptGlobal(2518288).as<int>() = 1;
 
 	m_unkModel.getModelHash();
 	if (m_unkModel.m_dwModelHash != modelHash)
@@ -1267,14 +1267,14 @@ void hack::consumeStatQueue()
 					g_pD3D9Render->m_sTitle = L"正在处理队列";
 					g_pD3D9Render->m_sDetail = L"剩余" + std::to_wstring(m_dStat.size()) + L"个待处理";
 
-					unsigned int resotreHash = scriptGlobal(1388013).at(4).as<unsigned int>().value();
+					unsigned int resotreHash = scriptGlobal(1390343).at(4).as<unsigned int>().value();
 					int resotreValue = scriptGlobal(939452).at(5526).as<int>().value();
 
-					scriptGlobal(1388013).at(4).as<unsigned int>() = m_dStat.front().first;
+					scriptGlobal(1390343).at(4).as<unsigned int>() = m_dStat.front().first;
 					scriptGlobal(939452).at(5526).as<int>() = m_dStat.front().second;
-					scriptGlobal(1377236).at(1139).as<int>() = -1;
+					scriptGlobal(1379108).at(1139).as<int>() = -1;
 					Sleep(1000);
-					scriptGlobal(1388013).at(4).as<unsigned int>() = resotreHash;
+					scriptGlobal(1390343).at(4).as<unsigned int>() = resotreHash;
 					scriptGlobal(939452).at(5526).as<int>() = resotreValue;
 					m_dStat.pop_front();
 				}
@@ -2382,13 +2382,13 @@ void hack::allowSellOnNonPublic(feat* feature)
 	{
 		if (!feature->m_bRestored)
 		{
-			scriptGlobal(2452015).at(742).as<int>() = 1;
+			scriptGlobal(2453009).at(742).as<int>() = 1;
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if (scriptGlobal(2452015).at(742).as<int>() != 0)
-		scriptGlobal(2452015).at(742).as<int>() = 0;
+	if (scriptGlobal(2453009).at(742).as<int>() != 0)
+		scriptGlobal(2453009).at(742).as<int>() = 0;
 
 	return;
 }
@@ -2399,13 +2399,13 @@ void hack::instantBullShark(feat* feature)
 	{
 		if (!feature->m_bRestored)
 		{
-			scriptGlobal(2440277).at(4006).as<int>() = 5;
+			scriptGlobal(2441237).at(4006).as<int>() = 5;
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if (scriptGlobal(2440277).at(4006).as<int>() == 0)
-		scriptGlobal(2440277).at(4006).as<int>() = 5;
+	if (scriptGlobal(2441237).at(4006).as<int>() == 0)
+		scriptGlobal(2441237).at(4006).as<int>() = 5;
 
 	return;
 }
@@ -2451,15 +2451,15 @@ void hack::offRadar(feat* feature)
 	{
 		if (!feature->m_bRestored)
 		{
-			scriptGlobal(2426097).at(getPlayerId(), 443).at(204).as<int>() = 0;
+			scriptGlobal(2426865).at(getPlayerId(), 443).at(204).as<int>() = 0;
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if (scriptGlobal(2426097).at(getPlayerId(), 443).at(204).as<int>() == 0)
+	if (scriptGlobal(2426865).at(getPlayerId(), 443).at(204).as<int>() == 0)
 	{
-		scriptGlobal(2426097).at(getPlayerId(), 443).at(204).as<int>() = 1;
-		scriptGlobal(2440277).at(70).as<int>() = getNetworkTime();
+		scriptGlobal(2426865).at(getPlayerId(), 443).at(204).as<int>() = 1;
+		scriptGlobal(2441237).at(70).as<int>() = getNetworkTime();
 	}
 
 	return;
@@ -2476,7 +2476,7 @@ void hack::disableThePhone(feat* feature)
 		return;
 	}
 	
-	scriptGlobal(19681).at(1).as<int>() = 3;
+	scriptGlobal(19798).at(1).as<int>() = 3;
 
 	return;
 }
