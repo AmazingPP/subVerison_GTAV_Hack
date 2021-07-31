@@ -207,6 +207,8 @@ BYTE hack::initPointers()
 		m_weapon.m_dwpAmmoInfo = m_dwpAmmoInfo;
 	}
 
+	g_pMemMan->readMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, original, sizeof(original), PAGE_EXECUTE_READWRITE);
+
 	return r;
 }
 
@@ -1710,7 +1712,6 @@ void hack::godMode(feat* feature)
 void hack::frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featFireAmmo, feat* featExplosiveAmmo)
 {
 	BYTE cur[5] = {};
-	static BYTE original[5] = {};
 	if (!featSuperJump->m_bOn && !featExplosiveMelee->m_bOn && !featFireAmmo->m_bOn && !featExplosiveAmmo->m_bOn)
 	{
 		if (!featSuperJump->m_bRestored || !featExplosiveMelee->m_bRestored || !featFireAmmo->m_bRestored || !featExplosiveAmmo->m_bRestored)
@@ -1739,9 +1740,6 @@ void hack::frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featF
 	g_pMemMan->readMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, cur, sizeof(cur), PAGE_EXECUTE_READWRITE);
 	BYTE value[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 };
 	if (cur[0] != value[0]) {
-		if (!original[0]) {
-			memcpy(original, cur, sizeof(cur));
-		}
 		g_pMemMan->writeMem<BYTE>((DWORD_PTR)m_hModule + ADDRESS_FRAME_FLAGS, value, sizeof(value), PAGE_EXECUTE_READWRITE);
 	}
 	m_player.getFrameFlags();

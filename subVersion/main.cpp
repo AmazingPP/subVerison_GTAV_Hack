@@ -533,10 +533,10 @@ DWORD __stdcall	threadKeys(LPVOID lpParam)
 DWORD __stdcall threadHack(LPVOID lpParam)
 {
 	g_pHack->m_hModule = g_pMemMan->getModule().hModule;
+	BYTE btInit = g_pHack->initPointers();
+
 	while(!g_bKillSwitch)
 	{
-		BYTE btInit	= g_pHack->initPointers();
-
 		if(!(btInit & INITPTR_INVALID_WORLD) && !(btInit & INITPTR_INVALID_PLAYER))
 		{
 			if(g_pSettings->getFeature(g_iFeature[FEATURE_P_GOD])->m_bOn || g_pSettings->getFeature(g_iFeature[FEATURE_P_TRUEGOD])->m_bOn)
