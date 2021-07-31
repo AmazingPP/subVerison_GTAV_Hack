@@ -38,7 +38,11 @@ subVerison重置版——GTAV线上外置修改器
 `subVersion` 是一款支持线上模式的外置修改器，带有d3d9实现的UI。
 
 ## 支持的版本
+<<<<<<< HEAD
 [GTAV 1.57](https://www.rockstargames.com/zh/games/info/V)
+=======
+[GTAV 1.54](https://www.rockstargames.com/zh/games/info/V)
+>>>>>>> 6dddd8b29a80b6367a73c293d831e151ef4c1fda
 
 线下及线上
 
@@ -381,7 +385,11 @@ F8       | 补满所有武器弹药
 - 无敌开启时，反NPC不会生效。必须使用半无敌
 - 传送到目标点仅限于任务目标（黄点），NPC和可拾取目标（绿点）等其他。
 - 如果尚未设定新的导航点，则传送到目标会传送到先前的导航点。
+<<<<<<< HEAD
 
+=======
+- 小部分电脑游戏会崩溃（请尝试少开些功能）。
+>>>>>>> 6dddd8b29a80b6367a73c293d831e151ef4c1fda
 ## TODO
 
 - [ ] 一个更好，更易用的**UI**。
