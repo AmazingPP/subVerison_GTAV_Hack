@@ -78,7 +78,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pHack			= new hack;
 
 	LPCSTR	szWindowTitleTarget	= "Grand Theft Auto V";
-	LPCWSTR	szWindowTitle		= L"subVersion mAsk°重制版 v1.3.6";
+	LPCWSTR	szWindowTitle		= L"subVersion mAsk°重制版 v1.3.7";
 	g_pMemMan->setWindowName(szWindowTitleTarget);
 	g_pD3D9Render->m_szWindowTitle = szWindowTitle;
 
@@ -349,8 +349,13 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeature(-1, merryweather, L"直升机接送", feat_btn, &hack::heliTaxi);
 	g_pSettings->addFeature(-1, merryweather, L"支援直升机", feat_btn, &hack::backupHeli);
 	g_pSettings->addFeature(-1, merryweather, L"空袭", feat_btn, &hack::airstrike);
+	int lester = g_pSettings->addFeature(-1, olService, L"莱斯特 >>", feat_parent);
+	g_iFeature[FEATURE_G_OFF_RADAR] = g_pSettings->addFeature(-1, lester, L"雷达隐匿", feat_toggle, "offRadar");
+	g_iFeature[FEATURE_G_GHOST_ORAGNIZATIO] = g_pSettings->addFeature(-1, lester, L"幽灵组织(仅限CEO)", feat_toggle, "ghostOragnization");
+	g_iFeature[FEATURE_G_BLIND_COPS] = g_pSettings->addFeature(-1, lester, L"警察无视犯罪", feat_toggle, "blindCops");
+	g_iFeature[FEATURE_G_REVEAL_PLAYERS] = g_pSettings->addFeature(-1, lester, L"显示所有玩家", feat_toggle, "revealPlayers");
+
 	g_iFeature[FEATURE_G_BULL_SHARK] = g_pSettings->addFeature(-1, olService, L"牛鲨睾酮", feat_toggle, "bullShark");
-	g_iFeature[FEATURE_G_OFF_RADAR] = g_pSettings->addFeature(-1, olService, L"雷达隐匿", feat_toggle, "offRadar");
 	g_iFeature[FEATURE_G_DISABLE_THE_PHONE] = g_pSettings->addFeature(-1, olService, L"屏蔽来电", feat_toggle, "disableThePhone");
 	g_iFeature[FEATURE_G_PASSIVE_CD] = g_pSettings->addFeature(-1, olService, L"杀人后被动无冷却", feat_toggle, "removePassiveModeCD");
 	g_iFeature[FEATURE_G_SEEL_NON_PUB] = g_pSettings->addFeature(-1, olService, L"非公开战局运货", feat_toggle, "allowSellOnNonPublic");
@@ -631,6 +636,9 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->antiRemoteVehicleKick(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_VEH_KICK]));
 				g_pHack->antiRemoteForceMission(g_pSettings->getFeature(g_iFeature[FEATURE_G_ANTI_SEND_MISSION]));
 				g_pHack->offRadar(g_pSettings->getFeature(g_iFeature[FEATURE_G_OFF_RADAR]));
+				g_pHack->ghostOragnization(g_pSettings->getFeature(g_iFeature[FEATURE_G_GHOST_ORAGNIZATIO]));
+				g_pHack->blindCops(g_pSettings->getFeature(g_iFeature[FEATURE_G_BLIND_COPS]));
+				g_pHack->revealPlayers(g_pSettings->getFeature(g_iFeature[FEATURE_G_REVEAL_PLAYERS]));
 				g_pHack->instantBullShark(g_pSettings->getFeature(g_iFeature[FEATURE_G_BULL_SHARK]));
 				g_pHack->removeSuicideCooldown(g_pSettings->getFeature(g_iFeature[FEATURE_T_SUICIDE_CD]));
 				g_pHack->tunableRpMult(g_pSettings->getFeature(g_iFeature[FEATURE_G_RP_MP]));
@@ -665,6 +673,8 @@ void	killProgram()
 	g_pHack->noReload(&dummyFeat);
 	dummyFeat.m_bRestored = false;
 	g_pHack->infAmmo(&dummyFeat);
+	dummyFeat.m_bRestored = false;
+	g_pHack->frameFlags(&dummyFeat, &dummyFeat, &dummyFeat, &dummyFeat);
 
 	delete	g_pHack;
 	delete	g_pD3D9Render;

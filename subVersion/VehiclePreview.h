@@ -52,6 +52,28 @@ struct VehiclePreview {
 	VehicleModValues VMod;
 };
 
+
+static const std::vector<VehiclePreview> TunerDLC
+{
+    { L"卡利科 GTF", "CALICO", VehicleModValues{ 22,27,7,24,10,7,2,26,3,0,20,4,3,3,58,4,5,40,0,3,0,0,0,4,0,7,15,17,0,0,0,0,0,4,8,11,3,6,2,5,0,2,15 }},
+    { L"陆上彗星 S2", "COMET6", VehicleModValues{ 24,8,10,10,5,7,0,14,4,3,2,4,3,3,58,4,5,50,0,3,5,2,0,7,0,4,14,16,0,0,0,0,0,0,0,0,9,7,6,0,3,0,15 }},
+    { L"塞弗", "CYPHER", VehicleModValues{ 14,12,5,9,8,9,13,14,2,5,8,4,3,3,58,4,5,40,0,0,2,9,2,4,1,8,11,16,0,0,0,0,0,12,0,17,9,8,7,4,0,0,15 }},
+    { L"公路霸者 ASP", "DOMINATOR7", VehicleModValues{ 23,14,13,18,8,5,3,25,1,6,3,4,3,3,58,4,5,50,0,0,0,3,0,4,6,6,14,16,0,0,0,0,0,4,25,16,4,6,3,1,2,11,15 }},
+    { L"公路霸者 GTT", "DOMINATOR8", VehicleModValues{ 9,2,5,6,6,5,3,17,5,0,4,4,3,3,58,4,5,50,0,0,7,2,0,0,0,0,14,16,0,0,0,0,0,6,14,12,8,5,0,3,0,0,15 }},
+    { L"欧洲", "EUROS", VehicleModValues{ 16,3,3,12,6,8,0,21,9,0,11,4,3,3,58,4,5,40,0,0,8,2,0,3,0,8,15,16,0,0,0,0,0,4,10,20,8,6,15,0,0,2,15 }},
+    { L"福多 GTX", "FUTO2", VehicleModValues{ 16,7,2,3,13,5,6,15,3,2,5,4,3,3,58,4,5,48,0,4,2,2,0,5,0,0,14,16,0,0,0,0,0,4,8,12,6,0,3,3,3,7,15 }},
+    { L"嚎叫者", "GROWLER", VehicleModValues{ 7,3,5,8,18,12,6,16,2,2,5,4,3,3,58,4,5,50,0,9,14,9,0,3,3,4,14,16,0,0,0,0,0,0,0,15,0,9,0,0,5,4,15 }},
+    { L"弄臣 RR", "JESTER4", VehicleModValues{ 14,12,11,9,13,9,8,13,2,5,5,4,3,3,58,4,5,36,0,0,3,11,2,4,4,8,11,16,0,0,0,0,0,5,9,17,3,0,2,8,0,0,15 }},
+    { L"普莱温", "previon", VehicleModValues{ 10,4,2,5,7,5,5,12,2,2,2,4,3,3,58,4,5,50,0,0,8,8,0,4,4,8,14,16,0,0,0,0,0,4,25,20,9,6,0,0,5,2,15 }},
+    { L"雷姆斯", "REMUS", VehicleModValues{ 17,6,6,4,13,5,6,11,7,3,4,4,3,3,58,4,5,50,0,0,7,3,0,5,15,7,14,16,0,0,0,2,0,6,10,12,5,0,5,5,0,1,15 }},
+    { L"RT3000", "RT3000", VehicleModValues{ 8,5,14,0,9,0,6,10,9,3,8,4,3,3,58,4,5,50,0,0,5,3,0,4,0,7,14,16,0,0,0,0,0,6,10,12,5,0,0,0,2,8,15 }},
+    { L"王者 RS 经典版", "SULTAN3", VehicleModValues{ 16,5,4,4,8,5,4,15,3,7,3,4,3,3,58,4,5,48,0,0,0,2,0,5,15,7,0,0,0,0,0,0,0,3,7,12,5,7,7,0,0,0,15 }},
+    { L"密探 S", "TAILGATER2", VehicleModValues{ 28,15,11,19,8,6,3,23,4,3,3,4,3,3,58,4,5,40,0,3,2,3,0,2,0,1,14,17,0,0,0,0,0,5,9,12,3,6,13,3,0,2,15 }},
+    { L"韦柯特", "VECTRE", VehicleModValues{ 18,9,9,16,5,8,0,20,4,0,8,4,3,3,58,4,5,40,0,0,13,2,0,3,0,8,15,16,0,0,0,0,0,4,10,20,7,8,14,0,0,2,15 }},
+    { L"守护星 HKR", "WARRENER2", VehicleModValues{ 8,10,2,0,8,5,3,7,2,0,3,4,3,3,58,4,5,48,0,0,6,8,0,5,4,9,14,16,0,0,0,0,0,4,4,12,2,4,6,5,0,11,15 }},
+    { L"ZR350", "ZR350", VehicleModValues{ 16,6,2,14,9,5,5,14,4,4,4,4,3,3,58,4,5,50,0,0,8,8,0,4,4,8,14,16,0,0,0,0,0,2,8,12,2,8,2,0,5,3,15 }},
+};
+
 static const std::vector<VehiclePreview> CandcHeistDLC
 {
     { L"RO-86 阿尔科诺斯特", "ALKONOST", VehicleModValues{ 0,2,0,0,0,0,0,0,0,4,0,4,3,0,0,0,5,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10 }},
@@ -856,8 +878,9 @@ static const std::vector<VehiclePreview> SUV {
 { L"贝飞特 XLS(装甲版)", "Xls2", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }},
 { L"贝飞特 XLS", "Xls", VehicleModValues{ 0,0,0,0,0,0,0,0,0,0,0,4,3,3,58,4,5,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }}
 };
-static const std::vector<std::pair<std::wstring, std::vector<VehiclePreview>>> vehiclePreview 
+static const std::vector<std::pair<std::wstring, const std::vector<VehiclePreview>&>> vehiclePreview 
 {
+    {L"车友会DLC >>", TunerDLC},
     {L"海岛DLC >>", CandcHeistDLC},
     {L"夏日DLC >>", SummerDLC},
 	{L"超跑 >>", Super},
@@ -865,22 +888,22 @@ static const std::vector<std::pair<std::wstring, std::vector<VehiclePreview>>> v
 	{L"经典跑车 >>", SportsClassics},
 	{L"轿跑 >>", Coupes},
 	{L"肌肉车 >>", Muscle},
-	{L"越野车 >>",Offroad},
-	{L"摩托车 >>",Motorcycles},
-	{L"军用车辆 >>",Military},
-	{L"应急车辆 >>",Emergency},
-	{L"服务车辆 >>",Service},
-	{L"轿车 >>",Sedans},
-	{L"工业车辆 >>",Industrial},
-	{L"小型车 >>",Compacts},
-	{L"商用车 >>",Commercial},
-	{L"飞机 >>",Planes},
-	{L"多用途车 >>",Utility},
-	{L"直升飞机 >>",Helicopters},
-	{L"厢式货车 >>",Vans},
-	{L"船 >>",Boats},
-	{L"自行车 >>",Cycles},
-	{L"火车 >>",Trains},
-	{L"拖车 >>",Trailer},
-	{L"SUV >>",SUV},
+	{L"越野车 >>", Offroad},
+	{L"摩托车 >>", Motorcycles},
+	{L"军用车辆 >>", Military},
+	{L"应急车辆 >>", Emergency},
+	{L"服务车辆 >>", Service},
+	{L"轿车 >>", Sedans},
+	{L"工业车辆 >>", Industrial},
+	{L"小型车 >>", Compacts},
+	{L"商用车 >>", Commercial},
+	{L"飞机 >>", Planes},
+	{L"多用途车 >>", Utility},
+	{L"直升飞机 >>", Helicopters},
+	{L"厢式货车 >>", Vans},
+	{L"船 >>", Boats},
+	{L"自行车 >>", Cycles},
+	{L"火车 >>", Trains},
+	{L"拖车 >>", Trailer},
+	{L"SUV >>", SUV},
 };

@@ -167,6 +167,9 @@ class hack : public trainer
 		void	backupHeli();
 		void	airstrike();
 		void	offRadar(feat* feature);
+		void	ghostOragnization(feat* feature);
+		void	blindCops(feat* feature);
+		void	revealPlayers(feat* feature);
 		void	disableThePhone(feat* feature);
 		void	antiCEOKick(feat* feature);
 		void	antiKickToSP(feat* feature);
