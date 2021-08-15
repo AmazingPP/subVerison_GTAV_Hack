@@ -1266,8 +1266,8 @@ void hack::consumeStatQueue()
 				if (!m_dStat.empty())
 				{
 					g_pD3D9Render->m_bMBShowing = true;
-					g_pD3D9Render->m_sTitle = L"’˝‘⁄¥¶¿Ì∂”¡–";
-					g_pD3D9Render->m_sDetail = L" £”‡" + std::to_wstring(m_dStat.size()) + L"∏ˆ¥˝¥¶¿Ì";
+					g_pD3D9Render->m_sTitle = L"Ê≠£Âú®Â§ÑÁêÜÈòüÂàó";
+					g_pD3D9Render->m_sDetail = L"Ââ©‰Ωô" + std::to_wstring(m_dStat.size()) + L"‰∏™ÂæÖÂ§ÑÁêÜ";
 
 					unsigned int resotreHash = scriptGlobal(1390343).at(4).as<unsigned int>().value();
 					int resotreValue = scriptGlobal(939452).at(5526).as<int>().value();
@@ -1383,7 +1383,7 @@ void hack::renderPlayerList()
 {
 	for (size_t i = 0; i < 32; i++)
 	{
-		g_pSettings->updataFeature(g_iFeaturePlayerList[i], -1, g_iFeature[FEATURE_P_PLAYER_LIST], std::to_wstring(i) + L"ÕÊº“ >>", feat_parent);
+		g_pSettings->updataFeature(g_iFeaturePlayerList[i], -1, g_iFeature[FEATURE_P_PLAYER_LIST], std::to_wstring(i) + L"Áé©ÂÆ∂ >>", feat_parent);
 	}
 }
 
@@ -2308,13 +2308,13 @@ void hack::tunableBunkerResearch(feat* feature)
 	{
 		if (!feature->m_bRestored)
 		{
-			scriptGlobal(GLOBAL_TUNEABLES).at(21389).as<int>() = 0;
+			scriptGlobal(GLOBAL_TUNEABLES).at(21560).as<int>() = 0;
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if (scriptGlobal(GLOBAL_TUNEABLES).at(21389).as<int>() != 1)
-		scriptGlobal(GLOBAL_TUNEABLES).at(21389).as<int>() = 1;
+	if (scriptGlobal(GLOBAL_TUNEABLES).at(21560).as<int>() != 1)
+		scriptGlobal(GLOBAL_TUNEABLES).at(21560).as<int>() = 1;
 	return;
 }
 
@@ -2646,14 +2646,14 @@ void hack::mpIndex(feat* feature)
 		if (!feature->m_bRestored)
 		{
 			m_mpId = "MP0_";
-			feature->m_szName = L"«–ªªΩ«…´ [µ±«∞£∫1]";
+			feature->m_szName = L"ÂàáÊç¢ËßíËâ≤ [ÂΩìÂâçÔºö1]";
 			feature->m_bRestored = true;
 		}
 		return;
 	}
 
 	m_mpId = "MP1_";
-	feature->m_szName = L"«–ªªΩ«…´ [µ±«∞£∫2]";
+	feature->m_szName = L"ÂàáÊç¢ËßíËâ≤ [ÂΩìÂâçÔºö2]";
 	
 	return;
 }
